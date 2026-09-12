@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<![CDATA[<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .pj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:16px; }
+  .pj-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+  @media (max-width:620px) { .pj-bar { flex-direction:column !important; align-items:stretch !important; } }
+</style>
+</helmet>
+
+<div data-page="projects" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="discover.dc.html">Discover</a>
+        <a href="projects.dc.html" class="on">Projects</a>
+        <a href="myraffles.dc.html">My Raffles</a>
+        <a href="communities.dc.html">Communities</a>
+        <a href="calendar.dc.html">Calendar</a>
+        <a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section class="ol-shell" style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;">
+    <div style="padding:50px 0 28px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF6A00;margin-bottom:13px;">THE TEAMS BEHIND THE DRAWS</div>
+      <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(34px,4vw,56px);line-height:1;letter-spacing:-.02em;margin:0 0 16px;">
+        <span class="vx-word" style="animation-delay:.1s;margin-right:.22em;">Who</span><span class="vx-word" style="animation-delay:.24s;margin-right:.22em;">actually</span><span class="vx-word" style="animation-delay:.38s;color:#FF6A00;text-shadow:0 0 46px rgba(255,106,0,.45);">ships</span><span class="vx-word" style="animation-delay:.52s;">.</span>
+      </h1>
+      <p style="font-size:16px;line-height:1.6;color:#9B8F96;max-width:580px;margin:0;text-wrap:pretty;">
+        <span class="vx-word" style="animation-delay:.7s;">Projects are the teams running the draws. Follow one and every allocation it opens reaches you before the entry window closes.</span>
+      </p>
+    </div>
+
+    <div class="pj-bar" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;">
+      <div style="position:relative;flex:1;min-width:240px;">
+        <span style="position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#6E646C;font-size:14px;">⌕</span>
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search projects…" style="width:100%;padding:14px 15px 14px 39px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:11px;color:#F4EDE6;font-size:14.5px;outline:none;transition:border-color .25s;" style-focus="border-color:rgba(255,106,0,.55)" />
+      </div>
+      <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:11px;flex-wrap:wrap;">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <button onClick="{{ f.pick }}" style="padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:{{ f.color }};background:{{ f.bg }};border:none;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .25s;">{{ f.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+      <div class="pj-grid vx-stagger">
+        <sc-for list="{{ rows }}" as="p" hint-placeholder-count="6">
+          <div>
+            <div class="vx-spot" style="display:flex;flex-direction:column;height:100%;border:1px solid rgba(255,255,255,.08);border-radius:17px;background:linear-gradient(160deg,#100c12,#0a070c);overflow:hidden;transition:transform .3s,border-color .3s;" style-hover="transform:translateY(-4px);border-color:rgba(255,106,0,.38)">
+              <div style="position:relative;height:92px;background:{{ p.banner }};">
+                <span style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(10,7,12,.92));"></span>
+                <span style="position:absolute;top:12px;right:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;padding:4px 8px;border-radius:5px;color:{{ p.tierColor }};border:1px solid {{ p.tierBorder }};background:rgba(8,6,10,.72);">{{ p.tier }}</span>
+                <span style="position:absolute;top:12px;left:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;padding:4px 8px;border-radius:5px;color:{{ p.stateColor }};border:1px solid {{ p.stateBorder }};background:{{ p.stateBg }};">{{ p.state }}</span>
+                <span style="position:absolute;left:18px;bottom:-19px;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:{{ p.art }};border:2px solid #0a070c;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px;color:#08060a;">{{ p.initials }}</span>
+              </div>
+
+              <div style="padding:28px 18px 0;">
+                <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+                  <a href="{{ p.href }}" style="font-family:'Chakra Petch',sans-serif;font-size:19px;font-weight:600;color:#F4EDE6;">{{ p.name }}</a>
+                  <sc-if value="{{ p.verified }}" hint-placeholder-val="{{ true }}"><span title="Verified project" style="color:#00D6B4;font-size:10px;">◈</span></sc-if>
+                </div>
+                <a href="{{ p.communityHref }}" style="display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-bottom:9px;">{{ p.community }} →</a>
+                <p style="font-size:12.5px;line-height:1.5;color:#8C8189;margin:0 0 16px;">{{ p.summary }}</p>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:11px;overflow:hidden;margin-bottom:16px;">
+                <sc-for list="{{ p.stats }}" as="s" hint-placeholder-count="3">
+                  <div style="background:#0b080d;padding:12px 11px;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:16px;font-weight:700;color:{{ s.color }};">{{ s.v }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:#6E646C;margin-top:5px;">{{ s.k }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="padding:16px 18px 0;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:#6E646C;">SPOTS DISTRIBUTED</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:600;color:#F4EDE6;">{{ p.distributed }}</span>
+                </div>
+                <div style="height:4px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;"><span style="display:block;height:100%;width:{{ p.fill }};border-radius:99px;background:linear-gradient(90deg,#FF6A00,#FFB061);"></span></div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:9px;padding:16px 18px 18px;">
+                <a href="{{ p.actionHref }}" style="display:flex;align-items:center;justify-content:center;min-height:42px;padding:11px;font-size:13px;font-weight:700;color:{{ p.actionInk }};background:rgba(255,255,255,.02);border:1px solid {{ p.actionBorder }};border-radius:9px;">{{ p.actionLabel }} →</a>
+                <div style="display:flex;gap:9px;">
+                  <a href="{{ p.href }}" style="flex:1;display:flex;align-items:center;justify-content:center;min-height:42px;padding:11px;font-size:13px;font-weight:600;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:9px;transition:transform .2s;" style-hover="transform:translateY(-2px);color:#08060a">Open project</a>
+                  <button onClick="{{ p.follow }}" style="flex:none;min-height:42px;padding:11px 15px;font-size:13px;font-weight:600;color:{{ p.followInk }};background:{{ p.followBg }};border:1px solid {{ p.followBorder }};border-radius:9px;cursor:pointer;transition:all .2s;">{{ p.followLabel }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:52px 40px;border:1px dashed rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.014);text-align:center;">
+        <h3 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:21px;margin:0 0 10px;">No projects match</h3>
+        <p style="font-size:14px;line-height:1.6;color:#9B8F96;max-width:420px;margin:0 auto 22px;">Loosen the filter or clear the search to see all {{ total }} projects running draws on The Outlaws.</p>
+        <button onClick="{{ clear }}" style="padding:13px 22px;font-size:14px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.35);border-radius:10px;cursor:pointer;">Clear filters</button>
+      </div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:330px;margin:0;">Web3 community raffle platform. Non-custodial, provably fair, and built so the winner selection can be recomputed by anyone.</p>
+      </div>
+      <div>
+        <div class="ol-ft-t">PLATFORM</div>
+        <div class="ol-ft-col"><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">ACCOUNT</div>
+        <div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="profile.dc.html">Profile</a><a href="profile.dc.html#notifications">Notifications</a><a href="premium.dc.html">Premium</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">VERIFICATION</div>
+        <div class="ol-ft-col"><a href="raffle.dc.html#fairness">Verify a draw</a><a href="verify.dc.html">Check eligibility</a><a href="support.dc.html#verification">How verification works</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">SUPPORT</div>
+        <div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="support.dc.html#terms">Terms</a><a href="support.dc.html#privacy">Privacy</a><a href="auth.dc.html">Sign in</a></div>
+      </div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>]]>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+const MET = '#00D6B4', PEND = '#FF6A00';
+
+const PROJECTS = [
+  { name: 'ARCforge Labs', initials: 'AF', community: 'ARCFORGE COMMUNITY · 12.4K', verified: true, raffles: 18, spots: 1482, distributed: 1204, rep: 94, tier: 'PLATINUM', banner: 'linear-gradient(135deg,#1b2a2f,#0a5a4c 55%,#00D6B4)', summary: 'Weighted allocation program for founder passes, shards and contributor seats. Publishes every evidence chain.', following: true, cat: 'Art', live: 4, next: 'ending', nextMins: 312 },
+  { name: 'Riftbound', initials: 'RB', community: 'RIFTBOUND ARENA · 9.8K', verified: true, raffles: 11, spots: 940, distributed: 712, rep: 88, tier: 'GOLD', banner: 'linear-gradient(135deg,#3b1e08,#7a2a00 55%,#FF6A00)', summary: 'Competitive arena studio. Gaming beta keys and tournament seats distributed first-come, first-served.', following: false, cat: 'Gamify', live: 2, next: 'live', nextMins: 1640 },
+  { name: 'Northstar Protocol', initials: 'NS', community: 'NORTHSTAR DAO · 7.1K', verified: true, raffles: 9, spots: 360, distributed: 248, rep: 91, tier: 'PLATINUM', banner: 'linear-gradient(135deg,#2a1b33,#5b2a7a 55%,#c46bff)', summary: 'Access pass issuance tied to reputation bands rather than wallet size. One allocation per member.', following: true, cat: 'DAO', live: 0, next: 'upcoming', nextMins: 4320 },
+  { name: 'Frontier Labs', initials: 'FL', community: 'FRONTIER COLLECTIVE · 8.1K', verified: true, raffles: 14, spots: 720, distributed: 508, rep: 84, tier: 'GOLD', banner: 'linear-gradient(135deg,#32210c,#8a5a12 55%,#FFC24D)', summary: 'Land pioneers curating tier-1 whitelist access across Base and Arbitrum with snapshot rules.', following: false, cat: 'Art', live: 2, next: 'ending', nextMins: 752 },
+  { name: 'Nova Protocol', initials: 'NP', community: 'NOVA MESH · 6.8K', verified: false, raffles: 6, spots: 210, distributed: 96, rep: 72, tier: 'SILVER', banner: 'linear-gradient(135deg,#1b2a2f,#0a5a4c 55%,#00D6B4)', summary: 'Liquidity mesh with recurring node operator incentive rounds, reviewed by the core team.', following: false, cat: 'Gamify', live: 1, next: 'live', nextMins: 4820 },
+  { name: 'Nightfall Interactive', initials: 'NI', community: 'NIGHTFALL GUILD · 9.2K', verified: true, raffles: 21, spots: 1300, distributed: 1018, rep: 89, tier: 'GOLD', banner: 'linear-gradient(135deg,#3b1e08,#7a2a00 55%,#FF6A00)', summary: 'Season-based arena access for guild members. Gaming category, random draw, published seeds.', following: false, cat: 'DAO', live: 3, next: 'ending', nextMins: 312 },
+  { name: 'Spectral DAO', initials: 'SA', community: 'SPECTRAL AUDIO · 5.2K', verified: true, raffles: 8, spots: 180, distributed: 112, rep: 86, tier: 'GOLD', banner: 'linear-gradient(135deg,#2a1b33,#5b2a7a 55%,#c46bff)', summary: 'Fractional music rights collective governed by on-chain member votes and weighted draws.', following: false, cat: 'Art', live: 1, next: 'live', nextMins: 2610 },
+  { name: 'Ember Labs', initials: 'EL', community: 'EMBER · 4.4K', verified: false, raffles: 5, spots: 90, distributed: 43, rep: 68, tier: 'SILVER', banner: 'linear-gradient(135deg,#32210c,#8a5a12 55%,#FFC24D)', summary: 'Founder pass issuance for the Ember toolchain. Application-reviewed rather than random.', following: false, cat: 'Gamify', live: 0, next: 'finalized', nextMins: 0 }
+];
+
+class Component extends DCLogic {
+  state = { query: '', filter: 'All', follows: {} };
+
+  fx() { if (window.OutlawsFX) return window.OutlawsFX.start(); this.r = setTimeout(() => this.fx(), 250); }
+  componentDidMount() { this.fx(); }
+  componentDidUpdate() { if (window.OutlawsFX) window.OutlawsFX.sweep(); }
+  componentWillUnmount() { clearTimeout(this.r); }
+
+  onQuery = e => this.setState({ query: e.target.value });
+  clear = () => this.setState({ query: '', filter: 'All' });
+
+  renderVals() {
+    const s = this.state;
+    const q = s.query.trim().toLowerCase();
+
+    let rows = PROJECTS.filter(p => {
+      if (s.filter === 'Following') return (s.follows[p.name] !== undefined ? s.follows[p.name] : p.following);
+      if (s.filter !== 'All' && p.cat !== s.filter) return false;
+      return true;
+    });
+    if (q) rows = rows.filter(p => (p.name + ' ' + p.summary + ' ' + p.community).toLowerCase().indexOf(q) > -1);
+
+    const view = rows.map(p => {
+      const on = s.follows[p.name] !== undefined ? s.follows[p.name] : p.following;
+      return {
+        name: p.name, initials: p.initials, community: p.community, verified: p.verified, summary: p.summary, banner: p.banner,
+        href: 'project.dc.html?p=' + p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        communityHref: 'community.dc.html?c=' + p.community.split(' · ')[0].toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        state: p.live ? p.live + (p.live === 1 ? ' LIVE RAFFLE' : ' LIVE RAFFLES') : p.next === 'upcoming' ? 'OPENS SOON' : 'NO OPEN RAFFLE',
+        stateColor: p.live ? (p.next === 'ending' ? '#FFB061' : PEND) : '#8C8189',
+        stateBorder: p.live ? (p.next === 'ending' ? 'rgba(255,176,97,.45)' : 'rgba(255,106,0,.45)') : 'rgba(255,255,255,.16)',
+        stateBg: p.live ? (p.next === 'ending' ? 'rgba(255,176,97,.1)' : 'rgba(255,106,0,.1)') : 'rgba(255,255,255,.03)',
+        actionLabel: p.live ? 'Open live raffle' : p.next === 'upcoming' ? 'See the schedule' : 'Verify past draws',
+        actionHref: p.live ? 'raffle.dc.html' : p.next === 'upcoming' ? 'calendar.dc.html' : 'raffle.dc.html#fairness',
+        actionInk: p.live ? '#FFB061' : '#8C8189',
+        actionBorder: p.live ? 'rgba(255,106,0,.42)' : 'rgba(255,255,255,.14)',
+        art: p.verified ? 'linear-gradient(135deg,#FFA047,#FF3C00)' : 'linear-gradient(135deg,#C6BBC1,#6E646C)',
+        stats: [
+          { k: 'RAFFLES', v: String(p.raffles), color: '#F4EDE6' },
+          { k: 'SPOTS', v: String(p.spots), color: PEND },
+          { k: 'REP', v: String(p.rep), color: MET }
+        ],
+        tier: p.tier,
+        tierColor: p.tier === 'PLATINUM' ? '#5ef2d6' : p.tier === 'GOLD' ? '#FFC24D' : '#C6BBC1',
+        tierBorder: p.tier === 'PLATINUM' ? 'rgba(94,242,214,.45)' : p.tier === 'GOLD' ? 'rgba(255,194,77,.45)' : 'rgba(198,187,193,.35)',
+        distributed: p.distributed.toLocaleString('en-US') + ' / ' + p.spots.toLocaleString('en-US'),
+        fill: Math.round((p.distributed / p.spots) * 100) + '%',
+        followLabel: on ? 'Following' : 'Follow',
+        followInk: on ? '#FF6A00' : '#C6BBC1',
+        followBg: on ? 'rgba(255,106,0,.08)' : 'transparent',
+        followBorder: on ? 'rgba(255,106,0,.35)' : 'rgba(255,255,255,.14)',
+        follow: () => this.setState(st => ({ follows: Object.assign({}, st.follows, { [p.name]: !on }) }))
+      };
+    });
+
+    return {
+      query: s.query, onQuery: this.onQuery, clear: this.clear, total: PROJECTS.length,
+      filters: ['All', 'Following', 'Art', 'Gamify', 'DAO'].map(f => ({
+        label: f.toUpperCase(),
+        color: s.filter === f ? '#08060a' : '#8C8189',
+        bg: s.filter === f ? '#FF6A00' : 'transparent',
+        pick: () => this.setState({ filter: f })
+      })),
+      rows: view, hasRows: view.length > 0, empty: view.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

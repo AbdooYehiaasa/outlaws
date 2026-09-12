@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .cd-split { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,1fr); gap:22px; align-items:start; }
+  .cd-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; }
+  .cd-two { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; }
+  .cd-chat { height:clamp(380px,58vh,560px); }
+  @media (max-width:1020px) { .cd-split { grid-template-columns:minmax(0,1fr); } }
+  @media (max-width:620px) {
+    .cd-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .cd-actions { flex-direction:column !important; }
+    .cd-actions > * { width:100%; justify-content:center; }
+    .cd-chat { height:clamp(340px,64vh,520px); }
+    .cd-msg-meta { flex-wrap:wrap; }
+  }
+</style>
+</helmet>
+
+<div data-page="community" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="discover.dc.html">Discover</a>
+        <a href="projects.dc.html">Projects</a>
+        <a href="myraffles.dc.html">My Raffles</a>
+        <a href="communities.dc.html" class="on">Communities</a>
+        <a href="calendar.dc.html">Calendar</a>
+        <a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <div style="border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.012);">
+    <div class="ol-shell ol-rail" style="max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;min-height:44px;display:flex;align-items:center;gap:12px;">
+      <a href="communities.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#6E646C;">COMMUNITIES</a>
+      <span style="color:#3E353C;font-size:10px;">/</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;color:#C6BBC1;white-space:nowrap;">ARCFORGE COMMUNITY</span>
+      <span style="flex:1;"></span>
+      <span style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#FF6A00;white-space:nowrap;">
+        <span style="width:6px;height:6px;border-radius:99px;background:#FF6A00;animation:vx-pulse 1.6s ease-in-out infinite;"></span>4 LIVE RAFFLES
+      </span>
+    </div>
+  </div>
+
+  <section class="ol-shell" style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;">
+
+    <!-- ░░ COMMUNITY HEADER ░░ -->
+    <div style="position:relative;margin-top:30px;border:1px solid rgba(255,106,0,.24);border-radius:22px;background:linear-gradient(150deg,rgba(255,106,0,.11),#0a070c 60%);overflow:hidden;padding:clamp(22px,3vw,32px);">
+      <div style="position:absolute;inset:0;opacity:.5;background-image:linear-gradient(rgba(255,106,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,106,0,.06) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:radial-gradient(480px 240px at 30% 40%,#000,transparent 72%);mask-image:radial-gradient(480px 240px at 30% 40%,#000,transparent 72%);pointer-events:none;"></div>
+
+      <div style="position:relative;display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:18px;">
+        <span style="width:64px;height:64px;flex:none;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#FFA047,#FF3C00);font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:22px;color:#08060a;box-shadow:0 14px 40px rgba(255,106,0,.3);">AC</span>
+        <div style="flex:1;min-width:220px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:#6E646C;margin-bottom:8px;">COMMUNITY</div>
+          <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:10px;">
+            <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,40px);line-height:1;letter-spacing:-.015em;margin:0;">
+              <span class="vx-word" style="animation-delay:.1s;margin-right:.2em;">ARCforge</span><span class="vx-word" style="animation-delay:.24s;">Community</span>
+            </h1>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#00D6B4;padding:4px 9px;border:1px solid rgba(0,214,180,.3);border-radius:5px;background:rgba(0,214,180,.07);">◈ VERIFIED</span>
+            <span style="display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#FFC24D;padding:4px 9px;border:1px solid rgba(255,194,77,.4);border-radius:5px;background:rgba(255,194,77,.07);">GOLD TIER</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#6E646C;">12.4K MEMBERS · SINCE JAN 2026 · OWNED BY</span>
+            <a href="project.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#FF6A00;">ARCFORGE LABS →</a>
+          </div>
+        </div>
+        <div class="cd-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button onClick="{{ join }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:700;color:{{ joinInk }};background:{{ joinBg }};border:1px solid {{ joinBorder }};border-radius:10px;cursor:pointer;transition:transform .2s;" style-hover="transform:translateY(-2px)">{{ joinLabel }}</button>
+          <button onClick="{{ openChat }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;cursor:pointer;">Open chat</button>
+        </div>
+      </div>
+
+      <p style="position:relative;font-size:15.5px;line-height:1.6;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">
+        <span class="vx-word" style="animation-delay:.45s;">{{ description }}</span>
+      </p>
+    </div>
+
+    <!-- ░░ STATISTICS — reputation lives here, not as a badge ░░ -->
+    <div class="cd-stats vx-stagger" style="margin:20px 0 26px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div class="vx-spot" style="background:#0b080d;padding:19px 17px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:23px;font-weight:700;color:{{ s.color }};">{{ s.v }}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#6E646C;margin-top:7px;line-height:1.4;">{{ s.k }}</div>
+          <div style="font-size:12px;line-height:1.5;color:#8C8189;margin-top:9px;">{{ s.note }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <!-- ░░ CONTEXT NAVIGATION ░░ -->
+    <div id="context" style="scroll-margin-top:92px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:22px;">
+      <div class="ol-rail" style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:11px;">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+          <button onClick="{{ t.pick }}" style="min-height:40px;padding:10px 15px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:{{ t.color }};background:{{ t.bg }};border:none;border-radius:8px;cursor:pointer;white-space:nowrap;transition:all .25s;">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#6E646C;">{{ tabNote }}</span>
+    </div>
+
+    <div class="cd-split">
+      <div>
+
+        <!-- ░░ OVERVIEW ░░ -->
+        <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="cd-two">
+              <sc-for list="{{ overview }}" as="o" hint-placeholder-count="4">
+                <div style="padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:{{ o.tone }};margin-bottom:11px;">{{ o.k }}</div>
+                  <div style="font-size:13.5px;line-height:1.6;color:#9B8F96;">{{ o.v }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.07);">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">OPEN RIGHT NOW</span>
+                <button onClick="{{ goRaffles }}" style="min-height:36px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#FF6A00;background:transparent;border:1px solid rgba(255,106,0,.35);border-radius:8px;cursor:pointer;">ALL RAFFLES →</button>
+              </div>
+              <sc-for list="{{ topRaffles }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:13px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;">
+                  <span style="width:9px;height:9px;flex:none;border-radius:3px;background:{{ r.dot }};"></span>
+                  <a href="raffle.dc.html" style="flex:1;min-width:160px;font-size:14px;font-weight:600;color:#F4EDE6;">{{ r.title }}</a>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:{{ r.timeColor }};">{{ r.time }}</span>
+                  <a href="{{ r.ctaHref }}" style="min-height:36px;display:inline-flex;align-items:center;padding:9px 12px;font-size:12px;font-weight:700;color:{{ r.ctaInk }};background:{{ r.ctaBg }};border:1px solid {{ r.ctaBorder }};border-radius:8px;">{{ r.ctaLabel }}</a>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ░░ PUBLIC COMMUNITY CHAT ░░ -->
+        <sc-if value="{{ isChat }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:#0a070c;overflow:hidden;">
+
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.015);">
+              <sc-for list="{{ channels }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.pick }}" style="min-height:36px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.07em;color:{{ c.color }};background:{{ c.bg }};border:1px solid {{ c.border }};border-radius:8px;cursor:pointer;white-space:nowrap;">{{ c.label }}</button>
+              </sc-for>
+              <span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;">{{ presence }}</span>
+            </div>
+
+            <div class="cd-chat" style="display:flex;flex-direction:column;">
+              <div style="flex:1;min-height:0;overflow-y:auto;padding:6px 0;">
+
+                <sc-if value="{{ chatLoading }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:10px;padding:14px;">
+                    <sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="4">
+                      <div style="display:flex;gap:12px;align-items:flex-start;">
+                        <span class="vx-skel" style="width:34px;height:34px;flex:none;border-radius:99px;"></span>
+                        <span style="flex:1;display:flex;flex-direction:column;gap:7px;">
+                          <span class="vx-skel" style="height:10px;width:{{ k.a }};border-radius:5px;"></span>
+                          <span class="vx-skel" style="height:10px;width:{{ k.b }};border-radius:5px;"></span>
+                        </span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ chatError }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin:14px;padding:18px;border:1px solid rgba(255,60,0,.3);border-radius:14px;background:rgba(255,60,0,.05);">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                      <span style="width:24px;height:24px;display:grid;place-items:center;border-radius:8px;background:rgba(255,60,0,.14);color:#FF3C00;font-size:12px;">!</span>
+                      <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;color:#FF6A00;">Channel did not load</span>
+                    </div>
+                    <p style="font-size:13px;line-height:1.6;color:#9B8F96;margin:0 0 14px;">{{ chatErrorBody }}</p>
+                    <button onClick="{{ retryChat }}" style="min-height:40px;padding:11px 16px;font-size:13px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.4);border-radius:10px;cursor:pointer;">Retry</button>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ chatEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:44px 24px;text-align:center;">
+                    <div style="width:44px;height:44px;margin:0 auto 16px;display:grid;place-items:center;border-radius:13px;border:1px solid rgba(255,106,0,.3);color:#FF6A00;font-size:17px;">◌</div>
+                    <div style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:18px;margin-bottom:9px;">Nothing here yet</div>
+                    <p style="font-size:13.5px;line-height:1.6;color:#8C8189;max-width:330px;margin:0 auto;">{{ chatEmptyBody }}</p>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ chatReady }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;">
+                    <sc-for list="{{ messages }}" as="m" hint-placeholder-count="6">
+                      <div style="display:flex;gap:12px;padding:11px 14px;background:{{ m.rowBg }};">
+                        <a href="profile.dc.html" aria-label="Open {{ m.author }}" style="width:34px;height:34px;flex:none;border-radius:99px;display:grid;place-items:center;background:{{ m.art }};font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#08060a;">{{ m.initials }}</a>
+                        <div style="flex:1;min-width:0;">
+                          <div class="cd-msg-meta" style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                            <a href="profile.dc.html" style="font-size:13.5px;font-weight:600;color:{{ m.nameInk }};">{{ m.author }}</a>
+                            <span title="Community role" style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:{{ m.roleInk }};border:1px solid {{ m.roleBorder }};background:{{ m.roleBg }};border-radius:4px;padding:2px 6px;">{{ m.role }}</span>
+                            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#4E454C;">{{ m.time }}</span>
+                            <span style="flex:1;"></span>
+                            <button onClick="{{ m.moderate }}" aria-label="{{ m.modLabel }} message from {{ m.author }}" style="min-height:30px;padding:5px 9px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:{{ m.modInk }};background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:6px;cursor:pointer;">{{ m.modLabel }}</button>
+                          </div>
+                          <div style="font-size:14px;line-height:1.6;color:{{ m.bodyInk }};text-wrap:pretty;">{{ m.body }}</div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.015);padding:12px 14px;">
+                <sc-if value="{{ sendFailed }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:10px 12px;border:1px solid rgba(255,60,0,.3);border-radius:10px;background:rgba(255,60,0,.05);">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#FF6A00;">{{ sendError }}</span>
+                    <button onClick="{{ resend }}" style="min-height:34px;padding:7px 11px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#FF6A00;background:transparent;border:1px solid rgba(255,106,0,.4);border-radius:7px;cursor:pointer;">RESEND</button>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ canPost }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;gap:9px;align-items:flex-end;">
+                    <textarea value="{{ draft }}" onInput="{{ onDraft }}" onKeyDown="{{ onDraftKey }}" rows="1" placeholder="{{ composerHint }}" aria-label="Write a message" style="flex:1;min-width:0;min-height:46px;max-height:120px;resize:none;padding:13px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:11px;color:#F4EDE6;font-family:inherit;font-size:15px;line-height:1.4;outline:none;" style-focus="border-color:rgba(255,106,0,.55)"></textarea>
+                    <button onClick="{{ send }}" style="flex:none;min-height:46px;padding:13px 18px;font-size:14px;font-weight:700;color:{{ sendInk }};background:{{ sendBg }};border:1px solid {{ sendBorder }};border-radius:11px;cursor:pointer;">Send</button>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#4E454C;">{{ counter }}</span>
+                    <span style="flex:1;"></span>
+                    <button onClick="{{ goRules }}" style="min-height:32px;padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:7px;cursor:pointer;">COMMUNITY RULES</button>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ readOnly }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 2px;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;">{{ readOnlyNote }}</span>
+                    <span style="flex:1;"></span>
+                    <button onClick="{{ goRules }}" style="min-height:32px;padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:7px;cursor:pointer;">COMMUNITY RULES</button>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ░░ PROJECTS ░░ -->
+        <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ false }}">
+          <div class="cd-two">
+            <sc-for list="{{ projectCards }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                  <a href="{{ p.href }}" style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:{{ p.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13px;color:#08060a;">{{ p.initials }}</a>
+                  <div style="min-width:0;">
+                    <a href="{{ p.href }}" style="display:block;font-size:15px;font-weight:600;color:#F4EDE6;">{{ p.name }}</a>
+                    <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-top:4px;">{{ p.meta }}</span>
+                  </div>
+                </div>
+                <p style="flex:1;font-size:13px;line-height:1.55;color:#8C8189;margin:0 0 15px;">{{ p.desc }}</p>
+                <a href="{{ p.href }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:11px;font-size:13px;font-weight:600;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:9px;">Open project →</a>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- ░░ RAFFLES ░░ -->
+        <sc-if value="{{ isRaffles }}" hint-placeholder-val="{{ false }}">
+          <div class="vx-stagger" style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ raffles }}" as="r" hint-placeholder-count="4">
+              <div>
+                <div class="vx-spot" style="display:flex;align-items:center;gap:15px;padding:16px 18px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:linear-gradient(160deg,#100c12,#0a070c);transition:transform .28s,border-color .28s;flex-wrap:wrap;" style-hover="transform:translateY(-3px);border-color:rgba(255,106,0,.4)">
+                  <span style="width:9px;height:9px;flex:none;border-radius:3px;background:{{ r.dot }};"></span>
+                  <div style="flex:1;min-width:180px;">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em;padding:3px 7px;border-radius:4px;color:{{ r.dot }};border:1px solid {{ r.border }};background:{{ r.bg }};">{{ r.state }}</span>
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#6E646C;">{{ r.mode }}</span>
+                    </div>
+                    <a href="raffle.dc.html" style="display:block;font-size:15px;font-weight:600;color:#F4EDE6;">{{ r.title }}</a>
+                    <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:5px;">{{ r.prize }}</div>
+                  </div>
+                  <div style="flex:none;text-align:right;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:#6E646C;margin-bottom:5px;">{{ r.timeLabel }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:13.5px;font-weight:600;color:{{ r.timeColor }};">{{ r.time }}</div>
+                  </div>
+                  <a href="{{ r.ctaHref }}" style="min-height:38px;display:inline-flex;align-items:center;padding:10px 13px;font-size:12.5px;font-weight:700;color:{{ r.ctaInk }};background:{{ r.ctaBg }};border:1px solid {{ r.ctaBorder }};border-radius:8px;white-space:nowrap;">{{ r.ctaLabel }}</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- ░░ MEMBERS ░░ -->
+        <sc-if value="{{ isMembers }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">MEMBER ROSTER · COMMUNITY ROLE FIRST</span>
+              <span style="flex:1;"></span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#00D6B4;">{{ onlineCount }}</span>
+            </div>
+            <sc-for list="{{ members }}" as="m" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:13px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;">
+                <a href="profile.dc.html" aria-label="Open {{ m.name }}" style="position:relative;width:38px;height:38px;flex:none;border-radius:99px;display:grid;place-items:center;background:{{ m.art }};font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#08060a;">{{ m.initials }}<span style="position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:99px;border:2px solid #0a070c;background:{{ m.dot }};"></span></a>
+                <div style="flex:1;min-width:150px;">
+                  <a href="profile.dc.html" style="font-size:14px;font-weight:600;color:#F4EDE6;">{{ m.name }}</a>
+                  <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:6px;">
+                    <span title="Community / Discord role" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:{{ m.roleInk }};border:1px solid {{ m.roleBorder }};background:{{ m.roleBg }};border-radius:4px;padding:3px 7px;">{{ m.role }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#6E646C;">{{ m.activity }}</span>
+                  </div>
+                </div>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.07em;color:#00D6B4;">REP {{ m.rep }}</span>
+                <a href="profile.dc.html" style="flex:none;min-height:36px;display:inline-flex;align-items:center;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#C6BBC1;border:1px solid rgba(255,255,255,.13);border-radius:8px;">PROFILE →</a>
+              </div>
+            </sc-for>
+            <div style="padding:14px 18px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.7;letter-spacing:.06em;color:#4E454C;">COMMUNITY ROLE IS A DISCORD ROLE INSIDE THIS COMMUNITY. IT IS NOT A PROJECT ROLE — THOSE LIVE ON THE PROJECT PAGE.</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ░░ RULES ░░ -->
+        <sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ rules }}" as="r" hint-placeholder-count="5">
+              <div style="display:flex;gap:14px;padding:18px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.016);">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:{{ r.tone }};flex:none;">{{ r.n }}</span>
+                <div style="min-width:0;">
+                  <div style="font-size:14.5px;font-weight:600;color:#F4EDE6;margin-bottom:7px;">{{ r.title }}</div>
+                  <p style="font-size:13px;line-height:1.6;color:#8C8189;margin:0;text-wrap:pretty;">{{ r.body }}</p>
+                </div>
+              </div>
+            </sc-for>
+            <div style="padding:18px 20px;border:1px solid rgba(0,214,180,.22);border-radius:14px;background:rgba(0,214,180,.035);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;color:#00D6B4;margin-bottom:10px;">AUDITABLE RAFFLE RULES</div>
+              <p style="font-size:13px;line-height:1.6;color:#9B8F96;margin:0 0 14px;">Entry cost, snapshot block and weighting bands are published before entries open and travel with every evidence bundle — so a rule cannot change after the fact.</p>
+              <a href="raffle.dc.html#fairness" style="display:inline-flex;align-items:center;min-height:40px;padding:11px 15px;font-size:13px;font-weight:600;color:#00D6B4;border:1px solid rgba(0,214,180,.4);border-radius:10px;">See a published rule set →</a>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ░░ ACTIVITY ░░ -->
+        <sc-if value="{{ isActivity }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <sc-for list="{{ feed }}" as="f" hint-placeholder-count="5">
+              <div style="display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;background:{{ f.bg }};color:{{ f.color }};font-size:12px;">{{ f.icon }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:13.5px;line-height:1.5;color:#C6BBC1;">{{ f.text }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:#6E646C;margin-top:5px;">{{ f.meta }}</div>
+                </div>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#4E454C;">{{ f.time }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- ░░ ASIDE ░░ -->
+      <aside style="display:flex;flex-direction:column;gap:16px;">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">PROJECTS IN THIS COMMUNITY</div>
+          <sc-for list="{{ projectCards }}" as="p" hint-placeholder-count="3">
+            <a href="{{ p.href }}" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s,padding-left .25s;" style-hover="background:rgba(255,255,255,.03);padding-left:23px">
+              <span style="width:32px;height:32px;flex:none;border-radius:9px;display:grid;place-items:center;background:{{ p.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:11px;color:#08060a;">{{ p.initials }}</span>
+              <span style="flex:1;min-width:0;">
+                <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:#6E646C;margin-top:4px;">{{ p.meta }}</span>
+              </span>
+            </a>
+          </sc-for>
+        </div>
+
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">YOUR ROLES HERE</div>
+          <sc-for list="{{ myRoles }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span style="width:17px;height:17px;flex:none;display:grid;place-items:center;border-radius:99px;border:1.5px solid {{ r.color }};color:{{ r.color }};font-size:8px;font-weight:700;">{{ r.icon }}</span>
+              <span style="flex:1;min-width:0;font-size:13.5px;color:#DCD2D6;">{{ r.label }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:{{ r.color }};">{{ r.state }}</span>
+            </div>
+          </sc-for>
+          <div style="padding:14px 18px;">
+            <a href="verify.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:#FF6A00;">RE-CHECK MY ROLES →</a>
+          </div>
+        </div>
+
+        <div style="padding:18px 20px;border:1px solid rgba(0,214,180,.22);border-radius:18px;background:rgba(0,214,180,.035);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;color:#00D6B4;margin-bottom:11px;">OPERATOR RECORD</div>
+          <p style="font-size:12.5px;line-height:1.6;color:#9B8F96;margin:0;">18 finalized draws, 18 published evidence chains, zero disputed results. Every claim here is checkable from the draw data.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:330px;margin:0;">Web3 community raffle platform. Non-custodial, provably fair, and built so the winner selection can be recomputed by anyone.</p>
+      </div>
+      <div>
+        <div class="ol-ft-t">PLATFORM</div>
+        <div class="ol-ft-col"><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">ACCOUNT</div>
+        <div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="profile.dc.html">Profile</a><a href="profile.dc.html#notifications">Notifications</a><a href="premium.dc.html">Premium</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">VERIFICATION</div>
+        <div class="ol-ft-col"><a href="raffle.dc.html#fairness">Verify a draw</a><a href="verify.dc.html">Check eligibility</a><a href="support.dc.html#verification">How verification works</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">SUPPORT</div>
+        <div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="support.dc.html#terms">Terms</a><a href="support.dc.html#privacy">Privacy</a><a href="auth.dc.html">Sign in</a></div>
+      </div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+const MET = '#00D6B4', PEND = '#FF6A00', WARN = '#FFB061', FAIL = '#FF3C00', DEAD = '#6E646C';
+
+/* Community (Discord) roles — a different concept from project roles. */
+const ROLE_ART = {
+  OWNER:    ['#FFB061', 'rgba(255,106,0,.4)',   'rgba(255,106,0,.1)'],
+  MOD:      ['#9AA6FF', 'rgba(154,166,255,.35)', 'rgba(154,166,255,.09)'],
+  CORE:     ['#5ef2d6', 'rgba(94,242,214,.35)',  'rgba(94,242,214,.08)'],
+  PREMIUM:  ['#FFC24D', 'rgba(255,194,77,.35)',  'rgba(255,194,77,.08)'],
+  MEMBER:   ['#8C8189', 'rgba(255,255,255,.13)', 'rgba(255,255,255,.03)']
+};
+
+const CHANNELS = [
+  { id: 'general', label: '# general', post: true },
+  { id: 'alpha', label: '# alpha', post: true },
+  { id: 'announcements', label: '# announcements', post: false },
+  { id: 'winners', label: '# winners', post: true }
+];
+
+const HISTORY = {
+  general: [
+    { author: 'kade.eth', initials: 'KE', role: 'MOD', time: 'TODAY 09:12', body: 'Genesis Pass snapshot is at close, not at entry. If you are buying a Shard to qualify, you have until the timer hits zero.' },
+    { author: 'vex_2847', initials: 'VX', role: 'PREMIUM', time: 'TODAY 09:20', body: 'Does the repost count if my X account is connected but the post is quoted rather than reposted?' },
+    { author: 'kade.eth', initials: 'KE', role: 'MOD', time: 'TODAY 09:24', body: 'Quote counts. The social block is ANY OF — the follow alone already satisfies it for most of you.' },
+    { author: 'nora_vale', initials: 'NV', role: 'CORE', time: 'TODAY 10:02', body: 'Reminder that the contributor seat is application-reviewed, so the free-text answer actually gets read. Write two sentences, not two words.' },
+    { author: 'Ariana Forge', initials: 'AF', role: 'OWNER', time: 'TODAY 10:41', body: 'Wave 2 opens 19 Sep with a reputation floor of 80. Rules are published now so nobody has to guess later.' },
+    { author: 'mesa_runner', initials: 'MR', role: 'MEMBER', time: 'TODAY 11:15', body: 'Recomputed the Founder Key draw from the revealed seed — got the same winner. Nice.' }
+  ],
+  alpha: [],
+  announcements: [
+    { author: 'Ariana Forge', initials: 'AF', role: 'OWNER', time: 'MON 08:00', body: 'Shard Drop is live: 250 allocations, weighted by reputation band. Three requirement blocks, all published.' },
+    { author: 'Ariana Forge', initials: 'AF', role: 'OWNER', time: 'FRI 17:30', body: 'Founder Key finalized. Seed revealed, entries hash published, 412 external recomputes so far.' }
+  ],
+  winners: [
+    { author: 'arc_director', initials: 'A', role: 'OWNER', time: 'THU 21:04', body: 'Northstar Access Pass claimed. Thanks to whoever explained the signature step in general.' },
+    { author: 'obsidian_kate', initials: 'OK', role: 'MEMBER', time: 'WED 12:44', body: 'First allocation after six months of losing every draw. Persistence is a strategy.' }
+  ]
+};
+
+class Component extends DCLogic {
+  state = {
+    tab: 'Overview', joined: true,
+    channel: 'general', msgs: null, loading: true, error: false,
+    draft: '', sendError: '', pending: '', moderated: {}
+  };
+
+  fx() { if (window.OutlawsFX) return window.OutlawsFX.start(); this.r = setTimeout(() => this.fx(), 250); }
+  componentDidMount() {
+    this.fx();
+    this.timers = [];
+    if (location.hash === '#chat') this.setState({ tab: 'Chat' });
+    this.load('general');
+  }
+  componentDidUpdate() { if (window.OutlawsFX) window.OutlawsFX.sweep(); }
+  componentWillUnmount() { clearTimeout(this.r); (this.timers || []).forEach(clearTimeout); }
+
+  later(fn, ms) { const t = setTimeout(fn, ms); (this.timers = this.timers || []).push(t); return t; }
+
+  /* channel history loads asynchronously: loading → ready | error */
+  load(channel) {
+    this.setState({ channel, loading: true, error: false, sendError: '' });
+    this.later(() => {
+      if (channel === 'winners' && !this.recovered) {
+        this.setState({ loading: false, error: true });
+        return;
+      }
+      this.setState({ loading: false, error: false, msgs: Object.assign({}, HISTORY, this.state.msgs || {}) });
+    }, 620);
+  }
+  pickChannel = id => () => this.load(id);
+  retryChat = () => { this.recovered = true; this.load(this.state.channel); };
+
+  goTab = tab => () => {
+    this.setState({ tab });
+    const el = document.getElementById('context');
+    if (el) window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 88, behavior: 'smooth' });
+  };
+  openChat = () => this.goTab('Chat')();
+  goRaffles = () => this.goTab('Raffles')();
+  goRules = () => this.goTab('Rules')();
+
+  onDraft = e => this.setState({ draft: e.target.value, sendError: '' });
+  onDraftKey = e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); this.send(); }
+  };
+  send = () => {
+    const body = this.state.draft.trim();
+    if (!body) return;
+    if (body.length > 400) {
+      this.setState({ sendError: 'MESSAGE TOO LONG — 400 CHARACTERS MAX', pending: body });
+      return;
+    }
+    this.commit(body);
+  };
+  resend = () => { if (this.state.pending) this.commit(this.state.pending.slice(0, 400)); };
+  commit(body) {
+    const ch = this.state.channel;
+    const store = Object.assign({}, this.state.msgs || HISTORY);
+    store[ch] = (store[ch] || []).concat([{
+      author: 'arc_director', initials: 'A', role: 'OWNER', time: 'NOW', body, mine: true
+    }]);
+    this.setState({ msgs: store, draft: '', sendError: '', pending: '' });
+  }
+  moderate = i => () => this.setState(s => ({ moderated: Object.assign({}, s.moderated, { [s.channel + i]: true }) }));
+
+  renderVals() {
+    const s = this.state;
+    const store = s.msgs || HISTORY;
+    const list = store[s.channel] || [];
+    const channelDef = CHANNELS.filter(c => c.id === s.channel)[0] || CHANNELS[0];
+    const ready = !s.loading && !s.error && list.length > 0;
+
+    const messages = list.map((m, i) => {
+      const [ink, border, bg] = ROLE_ART[m.role] || ROLE_ART.MEMBER;
+      const hidden = !!s.moderated[s.channel + i];
+      return {
+        author: m.author, initials: m.initials, time: m.time,
+        body: hidden ? 'Message hidden by you. Moderators keep a copy for review.' : m.body,
+        bodyInk: hidden ? '#6E646C' : '#DCD2D6',
+        role: m.role, roleInk: ink, roleBorder: border, roleBg: bg,
+        nameInk: m.mine ? '#FFB061' : '#F4EDE6',
+        rowBg: m.mine ? 'rgba(255,106,0,.04)' : 'transparent',
+        art: m.role === 'OWNER' ? 'linear-gradient(135deg,#FFA047,#FF3C00)'
+          : m.role === 'MOD' ? 'linear-gradient(135deg,#9AA6FF,#4b54a8)'
+          : m.role === 'CORE' ? 'linear-gradient(135deg,#5ef2d6,#00806c)'
+          : 'linear-gradient(135deg,#C6BBC1,#6E646C)',
+        modLabel: hidden ? 'HIDDEN' : m.mine ? 'DELETE' : 'HIDE',
+        modInk: hidden ? '#4E454C' : '#8C8189',
+        moderate: this.moderate(i)
+      };
+    });
+
+    const raffleRows = [
+      { title: 'ARCforge Genesis Pass', prize: '1 × Genesis Pass with founder rights', state: 'LIVE', dot: PEND, mode: 'WEIGHTED', timeLabel: 'CLOSES IN', time: '2d 14h', timeColor: '#F4EDE6', status: 'live', fit: 'partial', missing: 1 },
+      { title: 'Forge Beta Access', prize: '1,000 × beta keys, first valid entries', state: 'ENDING SOON', dot: WARN, mode: 'FCFS', timeLabel: 'CLOSES IN', time: '05h 12m', timeColor: PEND, status: 'ending', fit: 'unknown' },
+      { title: 'ARCforge Shard Drop', prize: '250 × Shard allocation', state: 'LIVE', dot: PEND, mode: 'WEIGHTED', timeLabel: 'CLOSES IN', time: '4d 06h', timeColor: '#F4EDE6', status: 'live', fit: 'eligible' },
+      { title: 'Genesis Pass · Wave 2', prize: '3 × Genesis Pass, reputation ≥ 80', state: 'UPCOMING', dot: DEAD, mode: 'WEIGHTED', timeLabel: 'OPENS', time: '19 SEP', timeColor: '#9B8F96', status: 'upcoming', fit: 'unknown' },
+      { title: 'Founder Key', prize: '1 × Founder Key · winner published', state: 'FINALIZED', dot: MET, mode: 'RANDOM', timeLabel: 'DRAW', time: 'verified', timeColor: MET, status: 'finalized', fit: 'eligible', entered: true }
+    ].map(r => {
+      const c = window.OutlawsFX.cta(r);
+      return Object.assign({}, r, {
+        border: r.dot === DEAD ? 'rgba(255,255,255,.14)' : r.dot + '55',
+        bg: r.dot === DEAD ? 'rgba(255,255,255,.04)' : r.dot + '14',
+        ctaLabel: c.label, ctaHref: c.href, ctaInk: c.ink, ctaBg: c.bg, ctaBorder: c.border
+      });
+    });
+
+    const members = [
+      { name: 'Ariana Forge', initials: 'AF', role: 'OWNER', rep: '96', activity: 'POSTED 20M AGO', online: true },
+      { name: 'kade.eth', initials: 'KE', role: 'MOD', rep: '88', activity: 'POSTED 1H AGO', online: true },
+      { name: 'nora_vale', initials: 'NV', role: 'CORE', rep: '84', activity: 'POSTED 2H AGO', online: true },
+      { name: 'vex_2847', initials: 'VX', role: 'PREMIUM', rep: '91', activity: '12 ENTRIES THIS MONTH', online: false },
+      { name: 'mesa_runner', initials: 'MR', role: 'MEMBER', rep: '74', activity: 'RECOMPUTED 3 DRAWS', online: true },
+      { name: 'obsidian_kate', initials: 'OK', role: 'MEMBER', rep: '69', activity: 'JOINED 4D AGO', online: false }
+    ].map(m => {
+      const [ink, border, bg] = ROLE_ART[m.role];
+      return Object.assign({}, m, {
+        roleInk: ink, roleBorder: border, roleBg: bg,
+        dot: m.online ? MET : '#3E353C',
+        art: m.role === 'OWNER' ? 'linear-gradient(135deg,#FFA047,#FF3C00)'
+          : m.role === 'MOD' ? 'linear-gradient(135deg,#9AA6FF,#4b54a8)'
+          : m.role === 'CORE' ? 'linear-gradient(135deg,#5ef2d6,#00806c)'
+          : 'linear-gradient(135deg,#C6BBC1,#6E646C)'
+      });
+    });
+
+    const TABS = ['Overview', 'Chat', 'Projects', 'Raffles', 'Members', 'Rules', 'Activity'];
+    const notes = {
+      Overview: 'WHAT THIS COMMUNITY IS AND WHAT IS OPEN',
+      Chat: 'PUBLIC · MODERATED · NOT SUPPORT',
+      Projects: '3 PROJECTS RUNNING DRAWS HERE',
+      Raffles: '4 OPEN · 18 FINALIZED',
+      Members: '12.4K MEMBERS · 6 SHOWN',
+      Rules: 'PUBLISHED BEFORE EVERY DRAW',
+      Activity: 'LAST 7 DAYS'
+    };
+
+    return {
+      description: 'A governance guild running weighted allocations for the ARCforge projects. Rules are published before entries open, and every finalized draw ships its evidence chain.',
+      join: () => this.setState({ joined: !s.joined }),
+      joinLabel: s.joined ? 'Joined' : 'Join community',
+      joinInk: s.joined ? '#FF6A00' : '#08060a',
+      joinBg: s.joined ? 'rgba(255,106,0,.08)' : 'linear-gradient(180deg,#FFA047,#FF6A00)',
+      joinBorder: s.joined ? 'rgba(255,106,0,.35)' : 'transparent',
+      openChat: this.openChat, goRaffles: this.goRaffles, goRules: this.goRules,
+
+      stats: [
+        { k: 'MEMBERS', v: '12.4K', color: '#F4EDE6', note: '2.8K on Premium.' },
+        { k: 'ACTIVE RAFFLES', v: '4', color: PEND, note: 'One closes in 5 hours.' },
+        { k: 'FINALIZED DRAWS', v: '18', color: '#F4EDE6', note: 'All 18 evidence chains published.' },
+        { k: 'COMMUNITY REPUTATION', v: '91', color: MET, note: 'Operator trust score, not a badge.' }
+      ],
+
+      tabs: TABS.map(t => ({
+        label: t.toUpperCase(),
+        color: s.tab === t ? '#08060a' : '#8C8189',
+        bg: s.tab === t ? '#FF6A00' : 'transparent',
+        pick: this.goTab(t)
+      })),
+      tabNote: notes[s.tab],
+      isOverview: s.tab === 'Overview', isChat: s.tab === 'Chat', isProjects: s.tab === 'Projects',
+      isRaffles: s.tab === 'Raffles', isMembers: s.tab === 'Members', isRules: s.tab === 'Rules',
+      isActivity: s.tab === 'Activity',
+
+      overview: [
+        { k: 'WHAT THIS IS', tone: PEND, v: 'The social and allocation home for the ARCforge projects. Raffles are announced here first, and the chat is where requirement questions get answered.' },
+        { k: 'WHO RUNS IT', tone: WARN, v: 'Owned by ARCforge Labs. Ariana Forge publishes the rules, kade.eth moderates and reviews eligibility disputes.' },
+        { k: 'WHAT IS INSIDE', tone: MET, v: '3 projects, 4 open raffles, 18 finalized draws, a public chat with four channels, and a member roster with community roles.' },
+        { k: 'HOW TO TAKE PART', tone: '#9AA6FF', v: 'Join, connect the identities the raffles ask for, then check eligibility on any open raffle. Entry is free and gasless.' }
+      ],
+      topRaffles: raffleRows.filter(r => r.status !== 'finalized' && r.status !== 'upcoming').slice(0, 3),
+      raffles: raffleRows,
+
+      channels: CHANNELS.map(c => ({
+        label: c.label,
+        color: s.channel === c.id ? '#08060a' : '#8C8189',
+        bg: s.channel === c.id ? '#FF6A00' : 'transparent',
+        border: s.channel === c.id ? '#FF6A00' : 'rgba(255,255,255,.12)',
+        pick: this.pickChannel(c.id)
+      })),
+      presence: '212 ONLINE · SLOW MODE OFF',
+      messages,
+      chatLoading: s.loading,
+      chatError: s.error,
+      chatErrorBody: 'The message history for this channel could not be fetched. Nothing was lost — retry to load it again.',
+      chatEmpty: !s.loading && !s.error && list.length === 0,
+      chatEmptyBody: 'No messages in this channel yet. Say something and it becomes the first entry in the history.',
+      chatReady: ready,
+      skeletons: [{ a: '46%', b: '78%' }, { a: '38%', b: '62%' }, { a: '52%', b: '84%' }, { a: '42%', b: '70%' }],
+      draft: s.draft,
+      onDraft: this.onDraft, onDraftKey: this.onDraftKey, send: this.send, resend: this.resend,
+      retryChat: this.retryChat,
+      canPost: channelDef.post && !s.error,
+      readOnly: !channelDef.post,
+      readOnlyNote: 'ANNOUNCEMENTS IS READ-ONLY — OWNERS AND MODERATORS POST HERE',
+      composerHint: s.joined ? 'Message # ' + s.channel + ' — enter sends, shift+enter for a new line' : 'Join the community to post',
+      counter: s.draft.length + ' / 400 · PUBLIC MESSAGE · NOT A SUPPORT TICKET',
+      sendFailed: !!s.sendError,
+      sendError: s.sendError,
+      sendInk: s.draft.trim() ? '#08060a' : '#6E646C',
+      sendBg: s.draft.trim() ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+      sendBorder: s.draft.trim() ? 'transparent' : 'rgba(255,255,255,.14)',
+
+      projectCards: [
+        { initials: 'AF', name: 'ARCforge Labs', meta: '4 LIVE · 18 FINALIZED', href: 'project.dc.html?p=arcforge-labs', art: 'linear-gradient(135deg,#FFA047,#FF3C00)', desc: 'The core team. Founder passes, shards and contributor seats, all drawn in public.' },
+        { initials: 'AS', name: 'ARCforge Studios', meta: '1 UPCOMING', href: 'project.dc.html?p=arcforge-studios', art: 'linear-gradient(135deg,#FFD08A,#FF8A33)', desc: 'Game and cosmetics arm. First allocation wave opens 19 September.' },
+        { initials: 'AT', name: 'ARCforge Treasury', meta: 'QUARTERLY DRAWS', href: 'project.dc.html?p=arcforge-treasury', art: 'linear-gradient(135deg,#C6BBC1,#6E646C)', desc: 'Treasury distributions voted on-chain and drawn once per quarter.' }
+      ],
+
+      members, onlineCount: '4 ONLINE NOW',
+
+      myRoles: [
+        { label: 'Founder', state: 'HELD', color: MET, icon: '✓' },
+        { label: 'Community Manager (CM)', state: 'HELD', color: MET, icon: '✓' },
+        { label: 'Collaborator Manager', state: 'NOT HELD', color: DEAD, icon: '·' }
+      ],
+
+      rules: [
+        { n: '01', tone: PEND, title: 'No admin will ever DM you first', body: 'Nobody from this community asks for a seed phrase, a private key, or an approval transaction. Report it in chat and the wallet gets published.' },
+        { n: '02', tone: WARN, title: 'One identity, many wallets', body: 'Multiple signed wallets are fine for holdings, but one entry per verified identity. Duplicate-identity entries are removed before the ledger freezes.' },
+        { n: '03', tone: MET, title: 'Requirement questions belong in chat', body: 'Ask in # general and a moderator answers in public, so the next person finds the answer. Support tickets are for account and claim problems only.' },
+        { n: '04', tone: '#9AA6FF', title: 'Rules are published before entries open', body: 'Snapshot block, weighting bands and entry mode are fixed when the raffle opens. If something changes, the change is announced before entries open — never after.' },
+        { n: '05', tone: '#C6BBC1', title: 'Keep it civil', body: 'Shill freely, insult nobody. Moderators can hide a message; hidden messages stay recoverable for review.' }
+      ],
+
+      feed: [
+        { icon: '▸', color: PEND, bg: 'rgba(255,106,0,.09)', text: 'ARCforge Shard Drop opened — 250 allocations', meta: 'WEIGHTED · 3 REQUIREMENT BLOCKS', time: '12m' },
+        { icon: '◵', color: WARN, bg: 'rgba(255,176,97,.09)', text: 'Snapshot window for Genesis Pass moved to close', meta: 'RULE CHANGE PUBLISHED BEFORE ENTRIES OPENED', time: '3h' },
+        { icon: '◆', color: MET, bg: 'rgba(0,214,180,.09)', text: 'Founder Key finalized — 1 winner drawn', meta: 'SEED REVEALED · 412 EXTERNAL RECOMPUTES', time: '1d' },
+        { icon: '★', color: MET, bg: 'rgba(0,214,180,.09)', text: 'kade.eth added as community manager', meta: 'ROLE VERIFIED BY OPERATOR', time: '3d' },
+        { icon: '·', color: DEAD, bg: 'rgba(255,255,255,.05)', text: 'Beta Access requirement relaxed to any-of', meta: 'DISCORD ROLE OR NODE HOLDING', time: '5d' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<![CDATA[<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .pr-mrow { display:grid; grid-template-columns:minmax(0,1fr) repeat(3,58px); gap:10px; align-items:center; }
+  @media (max-width:520px) { .pr-mrow { grid-template-columns:minmax(0,1fr) repeat(3,48px); gap:6px; } }
+  .pr-split { display:grid; grid-template-columns:minmax(0,1fr) 360px; gap:22px; align-items:start; }
+  .pr-id { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .pr-quad { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; }
+  @media (max-width:1080px) { .pr-split { grid-template-columns:minmax(0,1fr); } .pr-side { position:static !important; } }
+  @media (max-width:620px) { .pr-quad { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+</style>
+</helmet>
+
+<div data-page="profile" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="discover.dc.html">Discover</a>
+        <a href="projects.dc.html">Projects</a>
+        <a href="myraffles.dc.html">My Raffles</a>
+        <a href="communities.dc.html">Communities</a>
+        <a href="calendar.dc.html">Calendar</a>
+        <a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section class="ol-shell" style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:46px 28px 0;">
+    <div class="pr-id" style="margin-bottom:30px;">
+      <span style="width:88px;height:88px;flex:none;border-radius:24px;display:grid;place-items:center;background:linear-gradient(135deg,#FFA047,#FF3C00);font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:32px;color:#08060a;box-shadow:0 16px 44px rgba(255,106,0,.3);">A</span>
+      <div style="flex:1;min-width:240px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:9px;">
+          <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);line-height:1;letter-spacing:-.01em;margin:0;">{{ handle }}</h1>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#00D6B4;padding:4px 9px;border:1px solid rgba(0,214,180,.3);border-radius:5px;background:rgba(0,214,180,.07);">◈ VERIFIED IDENTITY</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#FF8A33;padding:4px 9px;border:1px solid rgba(255,106,0,.3);border-radius:5px;background:rgba(255,106,0,.07);">PREMIUM</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.07em;color:#6E646C;">{{ idLine }}</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onClick="{{ toggleEdit }}" style="padding:12px 19px;font-size:13.5px;font-weight:600;color:#C6BBC1;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;cursor:pointer;transition:all .2s;" style-hover="border-color:#FF6A00;color:#FF6A00">{{ editLabel }}</button>
+        <a href="premium.dc.html" style="padding:12px 19px;font-size:13.5px;font-weight:600;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:10px;transition:transform .2s;" style-hover="transform:translateY(-2px);color:#08060a">Manage plan</a>
+      </div>
+    </div>
+
+    <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:18px;border:1px solid rgba(255,106,0,.3);border-radius:14px;background:rgba(255,106,0,.04);margin-bottom:26px;">
+        <label style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#6E646C;">DISPLAY HANDLE</span>
+          <input value="{{ handleDraft }}" onInput="{{ editHandle }}" style="width:100%;padding:13px 15px;min-height:46px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#F4EDE6;font-size:15px;outline:none;" style-focus="border-color:rgba(255,106,0,.6)" />
+        </label>
+        <label style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#6E646C;">NOTIFICATION EMAIL</span>
+          <input value="{{ email }}" onInput="{{ updateEmail }}" style="width:100%;padding:13px 15px;min-height:46px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;color:#F4EDE6;font-size:15px;outline:none;" style-focus="border-color:rgba(255,106,0,.6)" />
+        </label>
+        <button onClick="{{ saveProfile }}" style="flex:none;min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Save changes</button>
+      </div>
+    </sc-if>
+
+    <div class="pr-split">
+      <div>
+        <!-- reputation -->
+        <div class="vx-spot" style="border:1px solid rgba(255,255,255,.09);border-radius:19px;background:linear-gradient(165deg,#141017,#0b080d 60%);overflow:hidden;margin-bottom:20px;">
+          <div style="height:2px;background:linear-gradient(90deg,#FF3C00,#FFA047,#00D6B4);"></div>
+          <div style="padding:24px 24px 0;display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:#6E646C;margin-bottom:12px;">REPUTATION SCORE</div>
+              <div style="display:flex;align-items:baseline;gap:11px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:clamp(44px,5vw,62px);font-weight:700;line-height:.9;color:#F4EDE6;">{{ score }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#6E646C;">/ 100 · {{ band }}</span>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#6E646C;margin-bottom:7px;">BAND RANGE 85–94</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#00D6B4;">EVERY IDENTITY VERIFIED · NO DISPUTES</div>
+            </div>
+          </div>
+          <div style="padding:20px 24px 0;">
+            <div style="height:6px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;">
+              <span style="display:block;height:100%;width:{{ score }}%;border-radius:99px;background:linear-gradient(90deg,#FF3C00,#FFA047);transition:width 1s cubic-bezier(.16,1,.3,1);"></span>
+            </div>
+          </div>
+          <div class="pr-quad" style="margin:22px 0 0;background:rgba(255,255,255,.07);border-top:1px solid rgba(255,255,255,.07);">
+            <sc-for list="{{ factors }}" as="f" hint-placeholder-count="4">
+              <div style="background:#0b080d;padding:17px 15px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;color:{{ f.color }};">{{ f.v }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:#6E646C;margin-top:6px;line-height:1.4;">{{ f.k }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:16px 24px;background:rgba(255,106,0,.04);border-top:1px solid rgba(255,255,255,.06);">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.65;letter-spacing:.05em;color:#8C8189;">REPUTATION IS A TRUST SIGNAL. SOME PROJECTS USE IT AS AN ENTRY REQUIREMENT. IT DOES NOT CHANGE YOUR ODDS IN A DRAW — WHERE A PROJECT WEIGHTS ENTRIES, THE BANDS ARE PUBLISHED IN THAT RAFFLE’S OWN RULES.</span>
+          </div>
+        </div>
+
+        <!-- notification matrix: every channel × category is independent -->
+        <div id="notifications" style="border:1px solid rgba(255,255,255,.09);border-radius:19px;background:rgba(255,255,255,.016);overflow:hidden;margin-bottom:20px;scroll-margin-top:96px;">
+          <div style="padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+            <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;letter-spacing:.03em;">NOTIFICATIONS</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:#6E646C;">{{ notifSummary }}</span>
+          </div>
+
+          <div style="padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <input value="{{ email }}" onInput="{{ updateEmail }}" aria-label="Notification email" placeholder="Notification email" style="min-width:220px;flex:1;min-height:44px;padding:12px 14px;background:#08060a;border:1px solid rgba(255,255,255,.13);border-radius:10px;color:#F4EDE6;font-family:'JetBrains Mono',monospace;font-size:12px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            <span style="padding:11px 12px;border:1px solid rgba(255,176,97,.25);border-radius:9px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#FFB061;">ANTI-SPAM · ONE DIGEST MAX PER DAY</span>
+          </div>
+
+          <div class="pr-matrix" style="padding:8px 22px 20px;">
+            <div class="pr-mrow" style="padding:12px 0 10px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">CATEGORY</span>
+              <sc-for list="{{ notificationChannels }}" as="c" hint-placeholder-count="3">
+                <span style="justify-self:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#8C8189;">{{ c }}</span>
+              </sc-for>
+            </div>
+            <sc-for list="{{ notificationRows }}" as="n" hint-placeholder-count="4">
+              <div class="pr-mrow" style="padding:11px 0;border-top:1px solid rgba(255,255,255,.06);">
+                <span style="min-width:0;">
+                  <span style="display:block;font-size:14px;font-weight:600;color:#DCD2D6;">{{ n.label }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#6E646C;margin-top:4px;">{{ n.meta }}</span>
+                </span>
+                <sc-for list="{{ n.cells }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.toggle }}" role="switch" aria-checked="{{ c.on }}" aria-label="{{ n.label }} via {{ c.name }}" style="justify-self:center;width:44px;height:26px;min-height:26px;border-radius:99px;border:1px solid {{ c.border }};background:{{ c.track }};position:relative;cursor:pointer;transition:background .25s,border-color .25s;">
+                    <span style="position:absolute;top:3px;left:{{ c.x }};width:18px;height:18px;border-radius:99px;background:{{ c.knob }};transition:left .25s cubic-bezier(.16,1,.3,1);"></span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding:15px 22px;background:rgba(255,255,255,.015);border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.6;letter-spacing:.05em;color:#8C8189;">DISCORD DM AND TELEGRAM ALERTS REQUIRE A CONNECTED ACCOUNT.</span>
+            <span style="flex:1;"></span>
+            <a href="premium.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#FF6A00;">INSTANT ALERTS → PREMIUM</a>
+          </div>
+        </div>
+
+        <!-- connections -->
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:19px;background:rgba(255,255,255,.016);overflow:hidden;margin-bottom:20px;">
+          <div style="padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+            <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;letter-spacing:.03em;">CONNECTED IDENTITIES</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:#6E646C;">USED BY THE REQUIREMENT ENGINE</span>
+          </div>
+          <sc-for list="{{ socialGroups }}" as="g" hint-placeholder-count="3">
+            <div style="border-bottom:1px solid rgba(255,255,255,.05);">
+              <div style="display:flex;align-items:center;gap:10px;padding:14px 22px 8px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:#6E646C;">{{ g.title }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ g.countColor }};">{{ g.count }}</span>
+              </div>
+              <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:13px;padding:11px 22px;flex-wrap:wrap;">
+                  <span style="width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;background:{{ c.bg }};color:{{ c.color }};font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;">{{ c.icon }}</span>
+                  <div style="flex:1;min-width:150px;">
+                    <div style="font-size:13.5px;font-weight:600;color:#F4EDE6;">{{ c.handle }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#6E646C;margin-top:4px;">{{ c.meta }}</div>
+                  </div>
+                  <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ c.color }};">{{ c.state }}</span>
+                  <div style="display:flex;gap:7px;flex:none;">
+                    <button onClick="{{ c.primary }}" title="{{ c.primaryTitle }}" style="min-height:38px;padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ c.primaryInk }};background:{{ c.primaryBg }};border:1px solid {{ c.primaryBorder }};border-radius:8px;cursor:pointer;transition:all .2s;">{{ c.primaryLabel }}</button>
+                    <button onClick="{{ c.remove }}" aria-label="Disconnect {{ c.handle }}" style="min-height:38px;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;transition:all .2s;" style-hover="border-color:#FF3C00;color:#FF3C00">REMOVE</button>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="padding:4px 22px 16px;">
+                <button onClick="{{ g.add }}" style="min-height:40px;padding:11px 15px;font-size:12.5px;font-weight:600;color:{{ g.addInk }};background:{{ g.addBg }};border:1px dashed {{ g.addBorder }};border-radius:10px;cursor:pointer;transition:all .2s;">{{ g.addLabel }}</button>
+              </div>
+            </div>
+          </sc-for>
+
+          <sc-for list="{{ walletGroups }}" as="w" hint-placeholder-count="2">
+            <div style="border-bottom:1px solid rgba(255,255,255,.05);">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:16px 22px 10px;">
+                <div style="min-width:0;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:{{ w.tone }};">{{ w.title }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#6E646C;">{{ w.count }}</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.55;color:#8C8189;margin-top:7px;max-width:520px;">{{ w.note }}</div>
+                </div>
+                <sc-if value="{{ w.hasRotate }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ w.rotate }}" style="flex:none;display:flex;align-items:center;gap:10px;min-height:38px;padding:9px 13px;background:transparent;border:1px solid {{ w.rotateBorder }};border-radius:9px;cursor:pointer;">
+                    <span style="width:16px;height:16px;display:grid;place-items:center;border:1px solid {{ w.rotateBorder }};border-radius:4px;background:{{ w.rotateBg }};color:#08060a;font-size:10px;">{{ w.rotateIcon }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ w.rotateInk }};">AUTO-ROTATE</span>
+                  </button>
+                </sc-if>
+              </div>
+              <sc-for list="{{ w.items }}" as="a" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:13px;padding:11px 22px;flex-wrap:wrap;">
+                  <span style="width:34px;height:34px;flex:none;display:grid;place-items:center;border-radius:10px;background:{{ a.chainBg }};color:{{ a.chainInk }};font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;">{{ a.chainTag }}</span>
+                  <div style="flex:1;min-width:160px;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;">{{ a.addr }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#6E646C;margin-top:4px;">{{ a.meta }}</div>
+                  </div>
+                  <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ a.stateColor }};">{{ a.state }}</span>
+                  <div style="display:flex;gap:7px;flex:none;">
+                    <button onClick="{{ a.copy }}" aria-label="Copy {{ a.addr }}" style="min-height:38px;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#C6BBC1;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;transition:all .2s;" style-hover="border-color:#FF6A00;color:#FF6A00">{{ a.copyLabel }}</button>
+                    <button onClick="{{ a.primary }}" style="min-height:38px;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ a.primaryInk }};background:{{ a.primaryBg }};border:1px solid {{ a.primaryBorder }};border-radius:8px;cursor:pointer;transition:all .2s;">{{ a.primaryLabel }}</button>
+                    <button onClick="{{ a.remove }}" aria-label="Remove {{ a.addr }}" style="min-height:38px;padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;transition:all .2s;" style-hover="border-color:#FF3C00;color:#FF3C00">REMOVE</button>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="display:flex;gap:9px;flex-wrap:wrap;padding:4px 22px 16px;">
+                <sc-for list="{{ w.chains }}" as="ch" hint-placeholder-count="4">
+                  <button onClick="{{ ch.add }}" style="min-height:40px;padding:11px 14px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ w.tone }};background:{{ w.addBg }};border:1px dashed {{ w.addBorder }};border-radius:10px;cursor:pointer;transition:all .2s;">+ {{ ch.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+
+          <div style="padding:15px 22px;background:rgba(0,214,180,.04);">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:.05em;color:#8C8189;">SIGNED WALLETS PROVE OWNERSHIP AND SATISFY HOLDING REQUIREMENTS. ENTRY WALLETS ONLY RECEIVE ALLOCATIONS — NO SIGNATURE, NO HOLDING CHECK. NO PRIVATE KEY EVER LEAVES YOUR WALLET.</span>
+          </div>
+        </div>
+
+        <!-- activity -->
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:19px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;letter-spacing:.03em;">YOUR ACTIVITY</div>
+          <sc-for list="{{ activity }}" as="a" hint-placeholder-count="5">
+            <div style="display:flex;gap:13px;padding:15px 22px;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span style="width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:8px;background:{{ a.bg }};color:{{ a.color }};font-size:11px;">{{ a.icon }}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:13.5px;line-height:1.5;color:#C6BBC1;">{{ a.text }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:#6E646C;margin-top:5px;">{{ a.meta }}</div>
+              </div>
+              <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#4E454C;">{{ a.time }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- side -->
+      <aside class="pr-side" style="position:sticky;top:96px;display:flex;flex-direction:column;gap:16px;">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">FOLLOWING</div>
+          <sc-for list="{{ following }}" as="f" hint-placeholder-count="4">
+            <a href="community.dc.html" style="display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s;" style-hover="background:rgba(255,255,255,.03)">
+              <span style="width:30px;height:30px;flex:none;border-radius:9px;display:grid;place-items:center;background:{{ f.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:11px;color:#08060a;">{{ f.initials }}</span>
+              <span style="flex:1;min-width:0;font-size:13px;font-weight:600;color:#DCD2D6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ f.name }}</span>
+              <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:{{ f.liveColor }};">{{ f.live }}</span>
+            </a>
+          </sc-for>
+          <div style="padding:14px 18px;">
+            <a href="communities.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:#FF6A00;">ALL COMMUNITIES →</a>
+          </div>
+        </div>
+
+        <div style="padding:18px 20px;border:1px solid rgba(255,60,0,.22);border-radius:18px;background:rgba(255,60,0,.035);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;color:#FF3C00;margin-bottom:11px;">SECURITY</div>
+          <p style="font-size:12.5px;line-height:1.6;color:#9B8F96;margin:0 0 14px;">The Outlaws never asks for a private key or seed phrase. Wallet proofs are read-only signatures.</p>
+          <a href="support.dc.html" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:#FF6A00;">REPORT AN IMPERSONATION →</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:330px;margin:0;">Web3 community raffle platform. Non-custodial, provably fair, and built so the winner selection can be recomputed by anyone.</p>
+      </div>
+      <div>
+        <div class="ol-ft-t">PLATFORM</div>
+        <div class="ol-ft-col"><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">ACCOUNT</div>
+        <div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="profile.dc.html">Profile</a><a href="profile.dc.html#notifications">Notifications</a><a href="premium.dc.html">Premium</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">VERIFICATION</div>
+        <div class="ol-ft-col"><a href="raffle.dc.html#fairness">Verify a draw</a><a href="verify.dc.html">Check eligibility</a><a href="support.dc.html#verification">How verification works</a></div>
+      </div>
+      <div>
+        <div class="ol-ft-t">SUPPORT</div>
+        <div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="support.dc.html#terms">Terms</a><a href="support.dc.html#privacy">Privacy</a><a href="auth.dc.html">Sign in</a></div>
+      </div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>]]>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280}}">
+const MET = '#00D6B4', PEND = '#FF6A00', DEAD = '#6E646C';
+
+class Component extends DCLogic {
+  state = {
+    prefs: { closing: true, opens: true, wins: true, digest: false },
+    email: 'arc_director@outlaws.xyz',
+    notifications: {
+      wins: { push: true, email: true, discord: false },
+      daily: { push: false, email: false, discord: false },
+      minting: { push: false, email: false, discord: false },
+      collab: { push: false, email: false, discord: false }
+    }
+  };
+
+  // ── identity book: many socials, signed wallets (ownership proof) and
+  //    entry wallets (added plainly, only used to receive allocations)
+  socials = {
+    x: [
+      { handle: '@vex_2847', meta: '2,841 FOLLOWERS · ETHOS 1.42' },
+      { handle: '@vex_alt', meta: '412 FOLLOWERS · USED BY AUTO-REGISTER' }
+    ],
+    discord: [
+      { handle: 'arc_director#2847', meta: '6 GUILDS · 4 ROLES MATCHED' }
+    ],
+    telegram: []
+  };
+
+  updateEmail = e => this.setState({ email: e.target.value });
+  updateHandle = e => this.setState({ handle: e.target.value });
+
+  nextHandle(kind) {
+    const n = (this.state.socials || this.socials)[kind].length + 1;
+    return kind === 'x' ? '@vex_' + (2847 + n * 13) : kind === 'discord' ? 'arc_alt_' + n + '#' + (1000 + n * 7) : '@outlaw_tg_' + n;
+  }
+  socialsNow() { return this.state.socials || this.socials; }
+  walletsNow(group) {
+    const d = {
+      signed: [
+        { addr: '0x8f2c4d19aa7e5b3c94f0d2e1b8c77a6e5d4c3b2a1', chain: 'ETH', meta: 'EIP-712 · SIGNED 9D AGO · 1 NODE NFT' },
+        { addr: '0x41ae90d7c2b15e8fa3406b9cd7e21f5480ab97d0', chain: 'ETH', meta: 'EIP-712 · SIGNED 22D AGO' },
+        { addr: '7xKq9vTn4mS2bQ8dRfJ1cWyP5hAe3ZgLuN6oXtVi', chain: 'SOL', meta: 'ED25519 · SIGNED 3D AGO' }
+      ],
+      entry: [
+        { addr: '0x6b0d33f81ce4a75290bd6e1f8a4c22d70b9512ef', chain: 'ETH', meta: 'ADDED MANUALLY · RECEIVES ALLOCATIONS' }
+      ]
+    };
+    return (this.state.wallets || {})[group] || d[group];
+  }
+  mutate(group, list) {
+    this.setState(s => ({
+      wallets: Object.assign({ signed: this.walletsNow('signed'), entry: this.walletsNow('entry') }, (s.wallets || {}), { [group]: list })
+    }));
+  }
+  addSocial = kind => () => {
+    const now = this.socialsNow();
+    const list = now[kind].concat([{ handle: this.nextHandle(kind), meta: kind === 'telegram' ? 'ALERTS ONLY · NO REQUIREMENTS' : 'JUST CONNECTED · RE-CHECK PENDING' }]);
+    this.setState({ socials: Object.assign({}, now, { [kind]: list }) });
+  };
+  removeSocial = (kind, i) => () => {
+    const now = this.socialsNow();
+    this.setState({ socials: Object.assign({}, now, { [kind]: now[kind].filter((x, n) => n !== i) }) });
+  };
+  setPrimarySocial = (kind, i) => () => this.setState(s => ({ primary: Object.assign({}, s.primary, { [kind]: i }) }));
+  addWallet = (group, chain) => () => {
+    const list = this.walletsNow(group);
+    if (list.length >= 6) return;
+    const seed = (list.length * 7919 + (group === 'signed' ? 31 : 17)).toString(16);
+    const addr = chain === 'SOL'
+      ? (seed + 'kq9vtn4ms2bq8drfj1cwyp5hae3zgluN6oXtVi').slice(0, 40)
+      : '0x' + (seed + 'c41d7ae9b2508f63dd1a7c4e90b85f27aa63e1').slice(0, 40);
+    this.mutate(group, list.concat([{
+      addr, chain,
+      meta: group === 'signed' ? 'SIGNATURE REQUESTED · AWAITING WALLET' : 'ADDED MANUALLY · RECEIVES ALLOCATIONS'
+    }]));
+  };
+  removeWallet = (group, i) => () => this.mutate(group, this.walletsNow(group).filter((x, n) => n !== i));
+  setPrimaryWallet = (group, i) => () => this.setState(s => ({ primary: Object.assign({}, s.primary, { [group]: i }) }));
+  copyAddr = (group, i) => () => {
+    /* the row may have been removed since this handler was bound */
+    const w = this.walletsNow(group)[i];
+    if (!w) return;
+    if (navigator.clipboard) navigator.clipboard.writeText(w.addr).catch(() => {});
+    this.setState({ copied: group + i });
+    clearTimeout(this.copyTimer);
+    this.copyTimer = setTimeout(() => this.setState({ copied: null }), 1600);
+  };
+  toggleRotate = () => this.setState(s => ({ rotate: !s.rotate }));
+
+  buildSocials() {
+    const now = this.socialsNow();
+    const primary = this.state.primary || {};
+    const art = {
+      x: { icon: 'X', bg: 'rgba(255,255,255,.08)', color: '#F4EDE6' },
+      discord: { icon: 'D', bg: 'rgba(88,101,242,.18)', color: '#9AA6FF' },
+      telegram: { icon: 'T', bg: 'rgba(0,214,180,.12)', color: '#00D6B4' }
+    };
+    return [
+      ['x', 'X ACCOUNTS', 'Add X account', 'Social requirements run against every connected account.'],
+      ['discord', 'DISCORD ACCOUNTS', 'Add Discord account', 'Roles are read from all connected accounts.'],
+      ['telegram', 'TELEGRAM', 'Connect Telegram', 'Alerts only.']
+    ].map(([kind, title, addLabel]) => {
+      const p = primary[kind] === undefined ? 0 : primary[kind];
+      return {
+        title,
+        count: now[kind].length ? now[kind].length + (kind === 'telegram' ? ' CONNECTED' : ' LINKED') : 'NOT CONNECTED',
+        countColor: now[kind].length ? MET : PEND,
+        addLabel: '+ ' + addLabel,
+        addInk: PEND, addBg: 'rgba(255,106,0,.06)', addBorder: 'rgba(255,106,0,.35)',
+        add: this.addSocial(kind),
+        items: now[kind].map((it, i) => ({
+          handle: it.handle,
+          meta: it.meta,
+          icon: art[kind].icon, bg: art[kind].bg, color: i === p ? MET : '#C6BBC1',
+          state: kind === 'telegram' ? 'ALERTS' : i === p ? 'PRIMARY · VERIFIED' : 'VERIFIED',
+          primaryLabel: i === p ? 'PRIMARY' : 'MAKE PRIMARY',
+          primaryTitle: i === p ? 'Used first for requirement checks' : 'Use this account first',
+          primaryInk: i === p ? '#08060a' : '#8C8189',
+          primaryBg: i === p ? '#FF6A00' : 'transparent',
+          primaryBorder: i === p ? '#FF6A00' : 'rgba(255,255,255,.13)',
+          primary: this.setPrimarySocial(kind, i),
+          remove: this.removeSocial(kind, i)
+        }))
+      };
+    });
+  }
+
+  buildWallets() {
+    const primary = this.state.primary || {};
+    const chainArt = {
+      ETH: { tag: 'ETH', bg: 'rgba(255,255,255,.07)', ink: '#DCD2D6' },
+      SOL: { tag: 'SOL', bg: 'rgba(0,214,180,.13)', ink: '#5ef2d6' },
+      BTC: { tag: 'BTC', bg: 'rgba(255,176,97,.15)', ink: '#FFB061' },
+      STX: { tag: 'STX', bg: 'rgba(255,106,0,.13)', ink: '#FF8A33' }
+    };
+    return [
+      {
+        group: 'signed', title: 'SIGNED WALLETS', tone: MET,
+        note: 'Ownership proven by signature. These are the wallets checked for holdings, NFTs and on-chain requirements.',
+        hasRotate: false
+      },
+      {
+        group: 'entry', title: 'ENTRY WALLETS', tone: PEND,
+        note: 'Added without a signature and used only to enter and receive allocations. Auto-rotate spreads your entries across them.',
+        hasRotate: true
+      }
+    ].map(g => {
+      const list = this.walletsNow(g.group);
+      const p = primary[g.group] === undefined ? 0 : primary[g.group];
+      const rotate = !!this.state.rotate;
+      return Object.assign({}, g, {
+        count: list.length + ' OF 6',
+        addBg: g.group === 'signed' ? 'rgba(0,214,180,.05)' : 'rgba(255,106,0,.05)',
+        addBorder: g.group === 'signed' ? 'rgba(0,214,180,.32)' : 'rgba(255,106,0,.3)',
+        rotate: this.toggleRotate,
+        rotateIcon: rotate ? '✓' : '',
+        rotateBg: rotate ? '#FF6A00' : 'transparent',
+        rotateBorder: rotate ? 'rgba(255,106,0,.5)' : 'rgba(255,255,255,.14)',
+        rotateInk: rotate ? '#FFB061' : '#8C8189',
+        chains: [['ETH', 'ETHEREUM'], ['SOL', 'SOLANA'], ['BTC', 'BITCOIN'], ['STX', 'BTC STACKS']].map(([c, label]) => ({
+          label, add: this.addWallet(g.group, c)
+        })),
+        items: list.map((w, i) => {
+          const a = chainArt[w.chain] || chainArt.ETH;
+          const short = w.addr.length > 22 ? w.addr.slice(0, 10) + '…' + w.addr.slice(-6) : w.addr;
+          const awaiting = /AWAITING/.test(w.meta);
+          return {
+            addr: short, meta: w.meta,
+            chainTag: a.tag, chainBg: a.bg, chainInk: a.ink,
+            state: g.group === 'signed' ? (awaiting ? 'AWAITING SIGNATURE' : 'PROOF SIGNED') : 'ENTRY ONLY',
+            stateColor: g.group === 'signed' ? (awaiting ? PEND : MET) : PEND,
+            copyLabel: this.state.copied === g.group + i ? 'COPIED' : 'COPY',
+            copy: this.copyAddr(g.group, i),
+            primaryLabel: i === p ? 'PRIMARY' : 'SET PRIMARY',
+            primaryInk: i === p ? '#08060a' : '#8C8189',
+            primaryBg: i === p ? (g.group === 'signed' ? '#00D6B4' : '#FF6A00') : 'transparent',
+            primaryBorder: i === p ? (g.group === 'signed' ? '#00D6B4' : '#FF6A00') : 'rgba(255,255,255,.13)',
+            primary: this.setPrimaryWallet(g.group, i),
+            remove: this.removeWallet(g.group, i)
+          };
+        })
+      });
+    });
+  }
+  toggleEdit = () => this.setState(s => ({ editing: !s.editing, handleDraft: s.handle || 'arc_director' }));
+  saveProfile = () => this.setState(s => ({ editing: false, handle: s.handleDraft || s.handle || 'arc_director' }));
+  editHandle = e => this.setState({ handleDraft: e.target.value });
+
+  toggleNotification = (row, channel) => () => this.setState(s => ({
+    notifications: Object.assign({}, s.notifications, {
+      [row]: Object.assign({}, s.notifications[row], { [channel]: !s.notifications[row][channel] })
+    })
+  }));
+
+  fx() { if (window.OutlawsFX) return window.OutlawsFX.start(); this.r = setTimeout(() => this.fx(), 250); }
+  componentDidMount() { this.fx(); }
+  componentDidUpdate() { if (window.OutlawsFX) window.OutlawsFX.sweep(); }
+  componentWillUnmount() { clearTimeout(this.r); }
+
+  renderVals() {
+    const s = this.state;
+    return {
+      score: 91, band: 'TRUSTED',
+      /* Supporting metrics describe the identity record behind the score.
+         They are deliberately not odds inputs — the reputation formula is
+         not a settled business rule and is never implied here. */
+      factors: [
+        { k: 'VERIFIED IDENTITIES', v: '6', color: MET },
+        { k: 'COMPLETED ENTRIES', v: '15', color: '#F4EDE6' },
+        { k: 'COMMUNITIES ACTIVE IN', v: '6', color: '#F4EDE6' },
+        { k: 'DISPUTED ENTRIES', v: '0', color: MET }
+      ],
+      idLine: 'JOINED MAR 2026 · 6 COMMUNITIES · ' + this.walletsNow('signed').length + ' SIGNED · ' + this.walletsNow('entry').length + ' ENTRY WALLETS',
+      socialGroups: this.buildSocials(),
+      walletGroups: this.buildWallets(),
+      handle: s.handle || 'arc_director',
+      editing: !!s.editing,
+      handleDraft: s.handleDraft || s.handle || 'arc_director',
+      editHandle: this.editHandle,
+      toggleEdit: this.toggleEdit,
+      saveProfile: this.saveProfile,
+      editLabel: s.editing ? 'Cancel' : 'Edit profile',
+
+      activity: [
+        { icon: '▸', color: PEND, bg: 'rgba(255,106,0,.09)', text: 'Entered ARCforge Genesis Pass', meta: 'LEDGER POSITION #4,809', time: '2h' },
+        { icon: '★', color: MET, bg: 'rgba(0,214,180,.09)', text: 'Won Northstar Access Pass', meta: 'DRAW VERIFIED · CLAIM PENDING', time: '7d' },
+        { icon: '◈', color: MET, bg: 'rgba(0,214,180,.09)', text: 'Wallet proof re-signed for 0x41ae…97D0', meta: 'EIP-712 · GASLESS', time: '9d' },
+        { icon: '▸', color: PEND, bg: 'rgba(255,106,0,.09)', text: 'Joined Northstar DAO', meta: 'FOLLOWING · CALENDAR SYNCED', time: '12d' },
+        { icon: '·', color: DEAD, bg: 'rgba(255,255,255,.05)', text: 'Not selected in Ember Labs Founder Pass', meta: '6,204 ENTRIES · 3 WINNERS', time: '14d' }
+      ],
+      prefs: [
+        ['closing', 'Closing soon', 'RAFFLES YOU ENTERED · 6H BEFORE'],
+        ['opens', 'New raffles', 'FROM FOLLOWED COMMUNITIES'],
+        ['wins', 'Draw results', 'WIN OR NOT SELECTED'],
+        ['digest', 'Weekly digest', 'EMAIL · MONDAYS']
+      ].map(([key, label, meta]) => ({
+        label, meta,
+        track: s.prefs[key] ? '#FF6A00' : 'rgba(255,255,255,.14)',
+        x: s.prefs[key] ? '21px' : '3px',
+        toggle: () => this.setState(st => ({ prefs: Object.assign({}, st.prefs, { [key]: !st.prefs[key] }) }))
+      })),
+      email: s.email,
+      updateEmail: this.updateEmail,
+      notificationChannels: ['PUSH', 'EMAIL', 'DISCORD'],
+      notifSummary: (() => {
+        let n = 0;
+        Object.keys(s.notifications).forEach(k => ['push', 'email', 'discord'].forEach(c => { if (s.notifications[k][c]) n++; }));
+        return n + ' OF 12 CHANNELS ON';
+      })(),
+      notificationRows: [
+        ['wins', 'Wins', 'YOU WERE DRAWN — OR YOU WERE NOT'],
+        ['daily', 'Daily', 'ONE SUMMARY OF WHAT OPENED AND CLOSED'],
+        ['minting', 'Minting', 'A FOLLOWED PROJECT STARTS ITS MINT'],
+        ['collab', 'Collab', 'PARTNER ALLOCATIONS YOU QUALIFY FOR']
+      ].map(([key, label, meta]) => ({
+        label, meta,
+        cells: ['push', 'email', 'discord'].map(channel => {
+          const on = s.notifications[key][channel];
+          return {
+            name: channel, on,
+            track: on ? '#FF6A00' : 'transparent',
+            border: on ? '#FF6A00' : 'rgba(255,255,255,.2)',
+            knob: on ? '#08060a' : '#6E646C',
+            x: on ? '22px' : '3px',
+            toggle: this.toggleNotification(key, channel)
+          };
+        })
+      })),
+      following: [
+        { name: 'ARCforge Community', initials: 'AC', live: '4 LIVE', liveColor: PEND, art: 'linear-gradient(135deg,#FFA047,#FF3C00)' },
+        { name: 'Northstar DAO', initials: 'ND', live: '1 LIVE', liveColor: PEND, art: 'linear-gradient(135deg,#FFD08A,#FF8A33)' },
+        { name: 'Riftbound Arena', initials: 'RA', live: '2 LIVE', liveColor: PEND, art: 'linear-gradient(135deg,#5ef2d6,#00806c)' },
+        { name: 'Frontier Collective', initials: 'FC', live: 'NONE', liveColor: DEAD, art: 'linear-gradient(135deg,#C6BBC1,#6E646C)' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
