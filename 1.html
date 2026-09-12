@@ -40,6 +40,9 @@
   /* ── self-drawing grid + detail dots ── */
   @keyframes vx-draw { 0% { stroke-dashoffset:1200; opacity:0; } 45% { opacity:.5; } 100% { stroke-dashoffset:0; opacity:.22; } }
   @keyframes vx-dotglow { 0%,100% { opacity:.12; transform:scale(1); } 50% { opacity:.55; transform:scale(1.45); } }
+  .vx-line { stroke:#FF6A00; stroke-width:.6; opacity:0; stroke-dasharray:6 7; stroke-dashoffset:1200; animation:vx-draw 2.6s cubic-bezier(.16,1,.3,1) forwards; }
+  .vx-dot { fill:#FF8A33; opacity:0; transform-box:fill-box; transform-origin:center; animation:vx-dotglow 3.4s ease-in-out infinite; }
+
   /* ── floating motes ── */
   @keyframes vx-float { 0%,100% { transform:translate3d(0,0,0); opacity:.18; } 25% { transform:translate3d(6px,-14px,0); opacity:.7; } 50% { transform:translate3d(-4px,-7px,0); opacity:.35; } 75% { transform:translate3d(9px,-19px,0); opacity:.85; } }
   .vx-mote { position:absolute; width:2px; height:2px; border-radius:99px; background:#FF8A33; box-shadow:0 0 8px rgba(255,106,0,.9); animation:vx-float 9s ease-in-out infinite; }
@@ -77,6 +80,7 @@
   @keyframes ol-hl-in { from { transform:translateY(108%) rotate(1.2deg); opacity:0; } to { transform:translateY(0) rotate(0); opacity:1; } }
   @keyframes ol-rule-in { from { transform:scaleX(0); } to { transform:scaleX(1); } }
   @keyframes ol-cue { 0%,100% { transform:translateY(0); opacity:.3; } 50% { transform:translateY(7px); opacity:.9; } }
+  @keyframes ol-scan { from { transform:translateY(-100%); } to { transform:translateY(2100%); } }
   @keyframes ol-ember { 0% { transform:translate3d(0,0,0); opacity:0; } 12% { opacity:.75; } 100% { transform:translate3d(var(--dx,14px),-190px,0); opacity:0; } }
 
   .ol-hero-atmos { animation:ol-atmos 2.4s ease-out both; }
@@ -84,29 +88,14 @@
   .ol-hl-line > span { display:block; animation:ol-hl-in 1.05s cubic-bezier(.16,1,.3,1) both; }
   .ol-ember { position:absolute; width:2px; height:2px; border-radius:99px; background:#FF8A33; box-shadow:0 0 9px rgba(255,106,0,.85); animation:ol-ember 11s linear infinite; }
 
-
   @media (max-width:900px) {
-    .ol-hero { min-height:auto !important; padding:48px 16px 42px !important; }
-    .ol-hero-copy { width:min(100%, 680px); }
-    .ol-hero-badge { max-width:min(100%, 560px); padding:9px 14px !important; font-size:10px !important; line-height:1.4; }
-    .ol-hero-title { font-size:clamp(42px,11.5vw,76px) !important; line-height:.94 !important; max-width:100% !important; }
-    .ol-hero-subtitle { max-width:620px !important; font-size:15.5px !important; line-height:1.55 !important; }
-    .ol-hero-actions { width:min(100%, 460px); flex-direction:column !important; gap:10px !important; }
-    .ol-hero-cta { width:100%; justify-content:center; min-height:54px !important; padding:15px 20px !important; }
-    .ol-hero-cue { margin-top:36px !important; }
-  }
-
-  @media (max-width:520px) {
-    .ol-hero { padding:38px 12px 34px !important; }
-    .ol-hero-badge { letter-spacing:.08em !important; }
-    .ol-hero-title { font-size:clamp(40px,12.5vw,58px) !important; letter-spacing:-.025em !important; }
-    .ol-hero-subtitle { font-size:14.5px !important; }
-    .ol-hero-cue { font-size:8.5px !important; letter-spacing:.13em !important; }
+    .ol-hero { min-height:auto !important; padding:56px 0 46px !important; }
+    .ol-hero-foot { flex-direction:column !important; align-items:flex-start !important; gap:14px !important; }
+    .ol-hero-cta { width:100%; justify-content:center; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ol-hero-atmos, .ol-hl-line > span, .ol-ember, .ol-cue { animation:none !important; opacity:1 !important; transform:none !important; }
-    .ol-hero canvas { opacity:.55 !important; }
     .ol-hl-line { clip-path:none !important; }
     .vx-word, .vx-line, .vx-mote, .vx-rise { animation:none !important; opacity:1 !important; }
     .vx-reveal, .vx-stagger > * { opacity:1 !important; transform:none !important; filter:none !important; }
@@ -150,7 +139,18 @@
   <div id="vx-aura" style="position:fixed;inset:0;pointer-events:none;z-index:0;will-change:transform;background:radial-gradient(1100px 620px at 72% -8%, rgba(255,106,0,.16), transparent 65%), radial-gradient(720px 520px at 4% 12%, rgba(255,60,0,.07), transparent 70%);"></div>
   <div style="position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;background-image:linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);background-size:76px 76px;mask-image:radial-gradient(1000px 700px at 50% 0%, #000 20%, transparent 78%);-webkit-mask-image:radial-gradient(1000px 700px at 50% 0%, #000 20%, transparent 78%);"></div>
 
-
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;">
+    <line x1="0" y1="22%" x2="100%" y2="22%" class="vx-line" style="animation-delay:.4s" />
+    <line x1="0" y1="78%" x2="100%" y2="78%" class="vx-line" style="animation-delay:.9s" />
+    <line x1="16%" y1="0" x2="16%" y2="100%" class="vx-line" style="animation-delay:1.3s" />
+    <line x1="84%" y1="0" x2="84%" y2="100%" class="vx-line" style="animation-delay:1.7s" />
+    <line x1="50%" y1="0" x2="50%" y2="100%" class="vx-line" style="animation-delay:2.1s;opacity:.05" />
+    <circle cx="16%" cy="22%" r="2.4" class="vx-dot" style="animation-delay:2.6s" />
+    <circle cx="84%" cy="22%" r="2.4" class="vx-dot" style="animation-delay:2.85s" />
+    <circle cx="16%" cy="78%" r="2.4" class="vx-dot" style="animation-delay:3.1s" />
+    <circle cx="84%" cy="78%" r="2.4" class="vx-dot" style="animation-delay:3.35s" />
+    <circle cx="50%" cy="50%" r="1.6" class="vx-dot" style="animation-delay:3.6s" />
+  </svg>
 
   <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:0;">
     <span class="vx-mote" style="top:18%;left:12%;animation-delay:.3s"></span>
@@ -163,7 +163,12 @@
     <span class="vx-mote" style="top:55%;left:71%;animation-delay:4.1s"></span>
   </div>
 
-
+  <div aria-hidden="true" style="position:fixed;inset:0;pointer-events:none;z-index:30;">
+    <span class="vx-rise" style="position:absolute;top:88px;left:16px;width:34px;height:34px;border-left:1px solid rgba(255,106,0,.35);border-top:1px solid rgba(255,106,0,.35);animation-delay:3.6s"></span>
+    <span class="vx-rise" style="position:absolute;top:88px;right:16px;width:34px;height:34px;border-right:1px solid rgba(255,106,0,.35);border-top:1px solid rgba(255,106,0,.35);animation-delay:3.75s"></span>
+    <span class="vx-rise" style="position:absolute;bottom:16px;left:16px;width:34px;height:34px;border-left:1px solid rgba(255,106,0,.35);border-bottom:1px solid rgba(255,106,0,.35);animation-delay:3.9s"></span>
+    <span class="vx-rise" style="position:absolute;bottom:16px;right:16px;width:34px;height:34px;border-right:1px solid rgba(255,106,0,.35);border-bottom:1px solid rgba(255,106,0,.35);animation-delay:4.05s"></span>
+  </div>
 
   <div id="vx-halo" aria-hidden="true" style="position:fixed;top:0;left:0;width:520px;height:520px;border-radius:99px;pointer-events:none;z-index:1;opacity:0;filter:blur(58px);will-change:transform,opacity;transition:opacity .5s ease;background:radial-gradient(circle, rgba(255,106,0,.13), rgba(255,60,0,.05) 45%, transparent 70%);"></div>
 
@@ -196,37 +201,38 @@
   <!-- ░░ OPENING HERO — the front door ░░ -->
   <section class="ol-hero" style="position:relative;z-index:1;min-height:calc(100svh - 70px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 24px 60px;overflow:hidden;">
 
-    <!-- atmosphere: preserve the original smoke shader; add luminous moving bodies on top -->
+    <!-- atmosphere: WebGL2 shader, CSS layers carry it if the context is gone -->
     <div class="ol-hero-atmos" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;z-index:0;">
       <div style="position:absolute;inset:0;background:radial-gradient(760px 420px at 50% 46%, rgba(255,106,0,.14), transparent 68%);"></div>
-      <canvas id="ol-hero-net" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0;transition:opacity 1.8s ease-out;-webkit-mask-image:radial-gradient(125% 110% at 50% 50%,#000 40%,transparent 84%);mask-image:radial-gradient(125% 110% at 50% 50%,#000 40%,transparent 84%);"></canvas>
-      <div style="position:absolute;inset:0;background:radial-gradient(780px 440px at 50% 48%, rgba(8,6,10,.58), rgba(8,6,10,.28) 52%, transparent 80%);"></div>
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,6,10,.55) 0%,transparent 24%,transparent 72%,#08060a 100%);"></div>
+      <canvas id="ol-hero-net" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.8s ease-out;-webkit-mask-image:radial-gradient(125% 110% at 50% 50%,#000 40%,transparent 84%);mask-image:radial-gradient(125% 110% at 50% 50%,#000 40%,transparent 84%);"></canvas>
+      <div style="position:absolute;inset:0;background:radial-gradient(780px 440px at 50% 48%, rgba(8,6,10,.76), rgba(8,6,10,.44) 52%, transparent 80%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,6,10,.6) 0%,transparent 24%,transparent 68%,#08060a 100%);"></div>
+      <div style="position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,106,0,.28),transparent);animation:ol-scan 16s linear infinite;"></div>
     </div>
 
     <!-- 1 · trust badge -->
-    <div class="ol-hero-atmos" style="animation-delay:.55s;position:relative;z-index:1;flex:none;margin-bottom:clamp(22px,3.6vw,36px);">
-      <div class="ol-hero-badge" style="display:inline-flex;align-items:center;gap:10px;padding:11px 20px;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.3);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:#FFB061;">
+    <div class="ol-hero-atmos" style="animation-delay:.55s;position:relative;z-index:1;flex:none;margin-bottom:clamp(26px,4vw,40px);">
+      <div style="display:inline-flex;align-items:center;gap:10px;padding:11px 20px;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.3);border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:#FFB061;">
         <span style="color:#00D6B4;">◈</span>
         <span>1,840 COMMUNITIES · EVERY DRAW RECOMPUTABLE</span>
       </div>
     </div>
 
     <!-- 2 · headline, revealed line by line -->
-    <h1 class="ol-hero-title" style="position:relative;z-index:1;flex:none;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(44px,7.6vw,116px);line-height:.92;letter-spacing:-.03em;margin:0 0 clamp(22px,3vw,34px);max-width:14ch;">
+    <h1 style="position:relative;z-index:1;flex:none;font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(44px,7.6vw,116px);line-height:.92;letter-spacing:-.03em;margin:0 0 clamp(22px,3vw,34px);max-width:14ch;">
       <span class="ol-hl-line"><span style="animation-delay:.85s;">Every draw,</span></span>
       <span class="ol-hl-line"><span style="animation-delay:1.05s;color:#FF6A00;text-shadow:0 0 80px rgba(255,106,0,.45);">mathematically</span></span>
       <span class="ol-hl-line"><span style="animation-delay:1.25s;">accountable.</span></span>
     </h1>
 
     <!-- 3 · product statement -->
-    <p class="ol-hero-atmos ol-hero-subtitle" style="animation-delay:1.6s;position:relative;z-index:1;flex:none;font-size:clamp(16px,1.5vw,20px);line-height:1.6;color:#9B8F96;max-width:640px;margin:0 0 clamp(30px,4vw,44px);text-wrap:pretty;">
+    <p class="ol-hero-atmos" style="animation-delay:1.6s;position:relative;z-index:1;flex:none;font-size:clamp(16px,1.5vw,20px);line-height:1.6;color:#9B8F96;max-width:640px;margin:0 0 clamp(30px,4vw,44px);text-wrap:pretty;">
       Curated raffles from real communities. Satisfy the requirements once, enter free, then recompute the winner selection yourself — seed, ledger, entropy and draw published for every finalized raffle.
     </p>
 
     <!-- 4 · actions -->
-    <div class="ol-hero-atmos ol-hero-actions" style="animation-delay:1.95s;position:relative;z-index:1;flex:none;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
-      <a class="ol-hero-cta" href="discover.dc.html" style="position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:12px;min-height:58px;padding:18px 32px;background:linear-gradient(180deg,#FFA047,#FF6A00);color:#08060a;font-size:16px;font-weight:700;border-radius:99px;box-shadow:0 12px 40px rgba(255,106,0,.32);transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-2px) scale(1.025);box-shadow:0 18px 54px rgba(255,106,0,.5)">
+    <div class="ol-hero-atmos" style="animation-delay:1.95s;position:relative;z-index:1;flex:none;display:flex;flex-wrap:wrap;gap:14px;justify-content:center;">
+      <a class="ol-hero-cta" href="discover.dc.html" style="position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:12px;min-height:58px;padding:18px 32px;background:linear-gradient(180deg,#FFA047,#FF6A00);color:#08060a;font-size:16px;font-weight:700;border-radius:99px;box-shadow:0 12px 40px rgba(255,106,0,.32);transition:transform .3s,box-shadow .3s;" style-hover="transform:translateY(-2px) scale(1.03);box-shadow:0 18px 54px rgba(255,106,0,.5)">
         <span>Explore live raffles</span>
         <span style="font-family:'JetBrains Mono',monospace;font-size:14px;">→</span>
         <span aria-hidden="true" style="position:absolute;top:0;bottom:0;width:34%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.42),transparent);animation:vx-sweep 4.4s ease-in-out infinite;"></span>
@@ -237,10 +243,28 @@
     </div>
 
     <!-- 5 · scroll cue into the command center -->
-    <span class="ol-cue ol-hero-atmos ol-hero-cue" style="animation-delay:2.3s;position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:9px;margin-top:clamp(34px,5vw,58px);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:#6E646C;">
+    <span class="ol-cue ol-hero-atmos" style="animation-delay:2.3s;position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:9px;margin-top:clamp(38px,6vw,70px);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:#6E646C;">
       <span style="display:inline-block;animation:ol-cue 2.6s ease-in-out infinite;">↓</span>YOUR COMMAND CENTER
     </span>
   </section>
+
+  <!-- ░░ TICKER ░░ -->
+  <div style="border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.012);overflow:hidden;height:38px;display:flex;align-items:center;">
+    <div style="flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;height:100%;border-right:1px solid rgba(255,255,255,.07);background:rgba(255,106,0,.07);">
+      <span style="width:6px;height:6px;border-radius:99px;background:#FF6A00;animation:vx-pulse 1.6s ease-in-out infinite;"></span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:#FF8A33;">LIVE</span>
+    </div>
+    <div style="flex:1;overflow:hidden;position:relative;">
+      <div style="display:flex;width:max-content;animation:vx-marquee 46s linear infinite;">
+        <sc-for list="{{ tickerLoop }}" as="t" hint-placeholder-count="12">
+          <span style="display:flex;align-items:center;gap:9px;padding:0 22px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em;color:#6E646C;white-space:nowrap;">
+            <span style="color:{{ t.tone }};">{{ t.tag }}</span>
+            <span>{{ t.text }}</span>
+          </span>
+        </sc-for>
+      </div>
+    </div>
+  </div>
 
   <!-- ░░ COMMAND CENTER — your live entry, continuing from the opening ░░ -->
   <section style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;">
@@ -674,33 +698,45 @@ class Component extends DCLogic {
     const VS = '#version 300 es\nprecision highp float;in vec4 position;void main(){gl_Position=position;}';
     const FS = [
       '#version 300 es',
-      'precision highp float;',
-      'out vec4 O;',
-      'uniform vec2 resolution;',
-      'uniform float time;',
-      'uniform vec2 touch;',
-      'uniform float pointer;',
+      'precision highp float;out vec4 O;',
+      'uniform vec2 resolution;uniform float time;uniform vec2 touch;uniform float pointer;',
       'float rnd(vec2 p){p=fract(p*vec2(12.9898,78.233));p+=dot(p,p+34.56);return fract(p.x*p.y);}',
-      'float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}',
-      'float fbm(vec2 p){float t=0.,a=1.;mat2 m=mat2(1.,-.5,.2,1.2);for(int i=0;i<5;i++){t+=a*noise(p);p*=2.*m;a*=.5;}return t;}',
-      'float clouds(vec2 p){float d=1.,t=0.;for(float i=0.;i<3.;i++){float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);t=mix(t,d,a);d=a;p*=2./(i+1.);}return t;}',
-      'void main(void){',
-      'vec2 uv=(gl_FragCoord.xy-.5*resolution)/min(resolution.x,resolution.y),st=uv*vec2(2.,1.);',
-      'vec3 col=vec3(0);',
-      'float bg=clouds(vec2(st.x+time*.5,-st.y));',
-      'uv*=1.-.3*(sin(time*.2)*.5+.5);',
-      'for(float i=1.;i<12.;i++){',
-      'uv+=.1*cos(i*vec2(.1+.01*i,.8)+i*i+time*.5+.1*uv.x);',
-      'vec2 p=uv;',
-      'float d=length(p);',
-      'col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);',
-      'float b=noise(i+p+bg*1.731);',
-      'col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));',
-      'col=mix(col,vec3(bg*.25,bg*.137,bg*.05),d);',
-      '}',
-      'O=vec4(col,1);',
-      '}']
-      .join('\n');
+      'float noise(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);',
+      'float a=rnd(i),b=rnd(i+vec2(1,0)),c=rnd(i+vec2(0,1)),d=rnd(i+1.);',
+      'return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);}',
+      'float fbm(vec2 p){float t=0.,a=1.;mat2 m=mat2(1.,-.5,.2,1.2);',
+      'for(int i=0;i<5;i++){t+=a*noise(p);p*=2.*m;a*=.5;}return t;}',
+      'float clouds(vec2 p){float d=1.,t=0.;',
+      ' for(float i=0.;i<3.;i++){',
+      '  float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);',
+      '  t=mix(t,d,a);d=a;p*=2./(i+1.);}',
+      ' return t;}',
+      'void main(){',
+      ' float mn=min(resolution.x,resolution.y);',
+      ' vec2 uv=(gl_FragCoord.xy-.5*resolution)/mn, st=uv*vec2(2,1);',
+      ' float T=time*.16;',
+      ' vec3 col=vec3(0);',
+      ' float bg=clouds(vec2(st.x+T*.5,-st.y));',
+      ' vec2 m=(touch-.5*resolution)/mn;',
+      ' uv+=(m-uv)*.045*pointer;',
+      ' uv*=1.-.28*(sin(T*.2)*.5+.5);',
+      ' for(float i=1.;i<12.;i++){',
+      '  uv+=.1*cos(i*vec2(.1+.01*i,.8)+i*i+T*.5+.1*uv.x);',
+      '  vec2 p=uv;float d=max(length(p),.22);',
+      /* brand grade: amber streaks instead of the rainbow ramp */
+      '  col+=.0008/d*vec3(1.,.46,.12)*1.5;',
+      '  float b=noise(i+p+bg*1.731);',
+      '  col+=.0011*b/length(max(abs(p),vec2(.16,.10)))*vec3(1.,.58,.24);',
+      '  col=mix(col,vec3(bg*.20,bg*.098,bg*.034),d);',
+      ' }',
+      /* one restrained verification accent on the brightest filaments */
+      ' float hi=smoothstep(.55,1.05,max(col.r,max(col.g,col.b)));',
+      ' col+=vec3(0.,.84,.71)*hi*.06;',
+      ' col=max(col,vec3(.031,.024,.039));',
+      ' col*=1.-.5*length(uv*vec2(.5,.82));',
+      ' O=vec4(col,1.);',
+      '}'
+    ].join('\n');
 
     const mk = (type, src) => {
       const s = gl.createShader(type);
@@ -1011,13 +1047,21 @@ class Component extends DCLogic {
       { v: p(total % 60), l: 'SEC' }
     ];
 
-
+    const ticker = [
+      { tag: 'ENTRY', tone: '#FF6A00', text: 'vex_2847 entered Arcforge Genesis Pass · #4,821' },
+      { tag: 'FINALIZED', tone: '#00D6B4', text: 'Morrow Genesis — 1 winner · seed revealed' },
+      { tag: 'NEW', tone: '#FF6A00', text: 'Riftbound Arena opened Beta Key raffle · 50 spots' },
+      { tag: 'ENDING', tone: '#FFB061', text: 'Nightfall Arena Access closes in 12h 32m' },
+      { tag: 'VERIFIED', tone: '#00D6B4', text: 'Atlas Realm draw recomputed by 412 external parties' },
+      { tag: 'COMMUNITY', tone: '#FF6A00', text: 'Frontier Collective published a snapshot event' }
+    ];
 
     return {
       accent,
       latency: this.state.latency,
       entriesLive: (feat.entries + (fi === 0 ? this.state.entries - 4821 : 0)).toLocaleString('en-US'),
       countdown,
+      tickerLoop: [...ticker, ...ticker],
       nav: [
         { label: 'Home' }, { label: 'Raffles' }, { label: 'Projects' },
         { label: 'Communities' }, { label: 'Calendar' }, { label: 'My Raffles' }
