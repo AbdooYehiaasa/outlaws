@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .mg-s { display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:18px; align-items:start; }
+  @media (max-width:900px){ .mg-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="messages" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 22px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:22px;flex-wrap:wrap;">
+      <div style="min-width:0;">
+        <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 11px;">Messages</h1>
+        <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:640px;margin:0;text-wrap:pretty;">Internal conversations with community teams and the platform. Support requests live in their own queue, and hiring conversations never mix with support threads.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="requests.dc.html" style="min-height:42px;display:inline-flex;align-items:center;padding:11px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Support requests</a>
+        <button onClick="{{ compose }}" style="min-height:42px;padding:11px 18px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">New message</button>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <div class="mg-s">
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <div style="padding:13px;border-bottom:1px solid rgba(255,255,255,.07);">
+          <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search conversations…" style="width:100%;padding:11px 13px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#F4EDE6;font-size:13.5px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+          <div style="display:flex;gap:5px;margin-top:10px;flex-wrap:wrap;">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="3">
+              <button onClick="{{ c.pick }}" style="min-height:30px;padding:7px 11px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:1px solid {{ c.border }};border-radius:99px;cursor:pointer;">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{ threads }}" as="t" hint-placeholder-count="5">
+          <button onClick="{{ t.pick }}" style="display:flex;width:100%;text-align:left;align-items:flex-start;gap:12px;padding:15px 16px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:{{ t.bg }};cursor:pointer;">
+            <span style="width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ t.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:12px;color:#08060a;">{{ t.tag }}</span>
+            <span style="flex:1;min-width:0;">
+              <span style="display:flex;align-items:center;justify-content:space-between;gap:9px;">
+                <span style="font-size:13.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.who }}</span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;color:#6E646C;">{{ t.when }}</span>
+              </span>
+              <span style="display:block;font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ t.preview }}</span>
+              <span style="display:flex;align-items:center;gap:8px;margin-top:7px;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:{{ t.kindInk }};padding:3px 6px;border:1px solid {{ t.kindBorder }};border-radius:4px;">{{ t.kind }}</span>
+                <sc-if value="{{ t.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:99px;background:#FF6A00;"></span></sc-if>
+              </span>
+            </span>
+          </button>
+        </sc-for>
+        <sc-if value="{{ threadsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:36px 20px;text-align:center;font-size:13.5px;color:#8C8189;">No conversations match.</div>
+        </sc-if>
+      </div>
+
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;display:flex;flex-direction:column;min-height:560px;">
+        <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <span style="width:36px;height:36px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ openArt }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:12px;color:#08060a;">{{ openTag }}</span>
+            <div style="min-width:0;">
+              <div style="font-size:15px;font-weight:600;color:#F4EDE6;">{{ openWho }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;margin-top:5px;">{{ openMeta }}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <sc-for list="{{ threadActions }}" as="a" hint-placeholder-count="2">
+              <button onClick="{{ a.go }}" style="min-height:36px;padding:9px 13px;font-size:12.5px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;">{{ a.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="flex:1;padding:19px;display:flex;flex-direction:column;gap:13px;overflow:auto;">
+          <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:{{ m.align }};">
+              <div style="max-width:min(560px,82%);padding:14px 16px;border:1px solid {{ m.border }};border-radius:{{ m.radius }};background:{{ m.bg }};">
+                <div style="font-size:13.5px;line-height:1.6;color:{{ m.ink }};text-wrap:pretty;">{{ m.text }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;margin-top:8px;">{{ m.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:15px 19px;border-top:1px solid rgba(255,255,255,.07);">
+          <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+            <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Write a reply…" style="flex:1;min-width:220px;min-height:62px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;line-height:1.55;outline:none;resize:vertical;" style-focus="border-color:rgba(255,106,0,.55)"></textarea>
+            <button onClick="{{ send }}" style="min-height:48px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Send</button>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#4E454C;margin-top:10px;">{{ footNote }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Internal messaging stays separate from support and hiring queues.</p>
+      </div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="notifications.dc.html">Notifications</a><a href="wins.dc.html">My Wins</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="hiring.dc.html">Talent and hiring</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="requests.dc.html">Support requests</a><a href="support.dc.html">Help center</a><a href="sitemap.dc.html">Page map</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const THREADS = [
+  { who: 'ARCforge team', tag: 'AC', kind: 'COMMUNITY', when: '2h', unread: true,
+    meta: 'MAYA CHEN · COMMUNITY MANAGER · ARCFORGE',
+    preview: 'Your allocation is reserved — claim before Thursday 18:00Z.',
+    msgs: [
+      ['in', 'Congratulations on the Ember Final Draw allocation. Your spot is reserved under the wallet ending 9f04.', 'MAYA CHEN · 4H AGO'],
+      ['out', 'Thanks — can I claim with a different wallet than the one I entered with?', 'YOU · 3H AGO'],
+      ['in', 'No. The claim must use the same verified main wallet that the entry was made with, otherwise the fairness record would not match.', 'MAYA CHEN · 2H AGO'],
+      ['in', 'Claim window closes Thursday 18:00Z. After that the position is rerolled automatically.', 'MAYA CHEN · 2H AGO']
+    ] },
+  { who: 'Platform team', tag: 'OL', kind: 'PLATFORM', when: '1d', unread: true,
+    meta: 'THE OUTLAWS · VERIFIED PLATFORM ACCOUNT',
+    preview: 'Your community verification review is complete.',
+    msgs: [
+      ['in', 'ARCforge Community passed verification review. The verified badge is now live and the community appears in Discover.', 'PLATFORM · 1D AGO'],
+      ['out', 'Does the badge affect raffle odds in any way?', 'YOU · 1D AGO'],
+      ['in', 'No. Verification affects discovery and trust signals only. Odds are determined solely by the published draw algorithm.', 'PLATFORM · 1D AGO']
+    ] },
+  { who: 'Northwind Labs', tag: 'NW', kind: 'COMMUNITY', when: '3d', unread: false,
+    meta: 'DEX ORR · HEAD OF COLLAB · NORTHWIND',
+    preview: 'We would like ARCforge as a collab partner for the whitelist.',
+    msgs: [
+      ['in', 'We are running a 300-winner whitelist and would like ARCforge to co-host. Requirement tree would include either community role.', 'DEX ORR · 3D AGO'],
+      ['out', 'Interested. Send the requirement tree and the proposed snapshot time.', 'YOU · 3D AGO']
+    ] },
+  { who: 'Ilo Vance', tag: 'IV', kind: 'HIRING', when: '5d', unread: false,
+    meta: 'APPLICANT · COMMUNITY MODERATOR · PHASE 2',
+    preview: 'Accepted the Hiring Manager invitation.',
+    msgs: [
+      ['in', 'Accepted the invitation — thanks. When does the moderator rota start?', 'ILO VANCE · 5D AGO'],
+      ['out', 'Next Monday. Your scope is hiring only; feed moderation stays with the Moderator role.', 'YOU · 5D AGO'],
+      ['in', 'Understood.', 'ILO VANCE · 5D AGO']
+    ] },
+  { who: 'Forge Pass collab', tag: 'FP', kind: 'COMMUNITY', when: '1w', unread: false,
+    meta: 'PYRA · COLLAB MANAGER · ARCFORGE',
+    preview: 'Requirement tree draft for the application raffle.',
+    msgs: [
+      ['in', 'Draft tree: (Discord role Holder OR OG) AND (X follow @arcforge) AND CAPTCHA. Application answers reviewed manually.', 'PYRA · 1W AGO'],
+      ['out', 'Approved. Keep the role block mutable so it rechecks at finalization.', 'YOU · 1W AGO']
+    ] }
+];
+
+class Component extends DCLogic {
+  state = { open: 0, query: '', chip: 'All', draft: '', sent: {}, read: [] };
+
+  renderVals() {
+    const S = this.state;
+    const list = THREADS
+      .filter(t => !S.query || (t.who + ' ' + t.preview).toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(t => S.chip === 'All' || t.kind === S.chip.toUpperCase());
+    const open = THREADS[S.open];
+    const extra = S.sent[S.open] || [];
+
+    return {
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: ['All', 'Community', 'Platform', 'Hiring'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent',
+        border: S.chip === c ? '#FF6A00' : 'rgba(255,255,255,.12)',
+        pick: () => this.setState({ chip: c })
+      })),
+      threads: list.map(t => {
+        const i = THREADS.indexOf(t);
+        const unread = t.unread && S.read.indexOf(i) < 0;
+        return {
+          who: t.who, tag: t.tag, when: t.when.toUpperCase(), preview: t.preview, kind: t.kind,
+          unread: unread,
+          bg: i === S.open ? 'rgba(255,106,0,.06)' : unread ? 'rgba(255,106,0,.02)' : 'transparent',
+          art: t.kind === 'PLATFORM' ? 'linear-gradient(135deg,#5ef2d6,#00806c)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+          kindInk: t.kind === 'PLATFORM' ? '#5ef2d6' : t.kind === 'HIRING' ? '#8C8189' : '#FFB061',
+          kindBorder: t.kind === 'PLATFORM' ? 'rgba(0,214,180,.3)' : t.kind === 'HIRING' ? 'rgba(255,255,255,.12)' : 'rgba(255,106,0,.3)',
+          pick: () => this.setState(st => ({ open: i, draft: '', read: st.read.concat([i]) }))
+        };
+      }),
+      threadsEmpty: list.length === 0,
+      openWho: open.who, openTag: open.tag, openMeta: open.meta,
+      openArt: open.kind === 'PLATFORM' ? 'linear-gradient(135deg,#5ef2d6,#00806c)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+      threadActions: (open.kind === 'HIRING'
+        ? [['Open hiring', 'hiring.dc.html'], ['Mute thread', null]]
+        : open.kind === 'PLATFORM'
+          ? [['Open support request', 'requests.dc.html'], ['Mute thread', null]]
+          : [['Open community', 'community.dc.html'], ['Mute thread', null]]
+      ).map(a => ({
+        label: a[0], go: a[1] ? () => location.href = a[1] : () => this.setState({ draft: '' })
+      })),
+      msgs: open.msgs.concat(extra).map(m => ({
+        text: m[1], meta: m[2],
+        align: m[0] === 'out' ? 'flex-end' : 'flex-start',
+        ink: m[0] === 'out' ? '#08060a' : '#DCD2D6',
+        bg: m[0] === 'out' ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'rgba(255,255,255,.03)',
+        border: m[0] === 'out' ? 'transparent' : 'rgba(255,255,255,.08)',
+        radius: m[0] === 'out' ? '13px 13px 4px 13px' : '13px 13px 13px 4px'
+      })),
+      draft: S.draft, onDraft: e => this.setState({ draft: e.target.value }),
+      send: () => {
+        if (!S.draft.trim()) return;
+        this.setState(st => ({
+          sent: Object.assign({}, st.sent, { [st.open]: (st.sent[st.open] || []).concat([['out', st.draft, 'YOU · JUST NOW']]) }),
+          draft: ''
+        }));
+      },
+      compose: () => this.setState({ open: 1, draft: '', chip: 'All' }),
+      footNote: open.kind === 'HIRING'
+        ? 'HIRING CONVERSATIONS ARE SEPARATE FROM SUPPORT REQUESTS · NO JOB CHAT'
+        : 'FOR ACCOUNT, WALLET OR FAIRNESS ISSUES USE SUPPORT REQUESTS INSTEAD'
+    };
+  }
+}
+</script>
+</body>
+</html>

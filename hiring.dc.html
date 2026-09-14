@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .hr-s { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .hr-c { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:16px; }
+  .hr-f { display:grid; grid-template-columns:repeat(auto-fit,minmax(234px,1fr)); gap:16px; }
+  @media (max-width:980px){ .hr-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="hiring" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-bottom:20px;">
+      <div style="min-width:0;max-width:700px;">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#FFB061;padding:5px 9px;border:1px solid rgba(255,106,0,.35);border-radius:5px;background:rgba(255,106,0,.07);">PHASE 2</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#8C8189;padding:5px 9px;border:1px solid rgba(255,255,255,.14);border-radius:5px;">HIRING SCOPE IS INDEPENDENT OF RAFFLE SCOPES</span>
+        </div>
+        <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 12px;">Talent &amp; hiring</h1>
+        <p style="font-size:15px;line-height:1.6;color:#9B8F96;margin:0;text-wrap:pretty;">Communities post openings, candidates apply with a profile that already carries verified participation history. Hiring conversations stay separate from support requests — there is no standalone job chat.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onClick="{{ goPost }}" style="min-height:44px;padding:12px 18px;font-size:13.5px;font-weight:700;color:{{ postInk }};background:{{ postBg }};border:1px solid {{ postBorder }};border-radius:10px;cursor:pointer;">+ Post an opening</button>
+        <a href="messages.dc.html" style="min-height:44px;display:inline-flex;align-items:center;padding:12px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Hiring messages</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:13px 17px;border:1px solid rgba(255,106,0,.24);border-radius:13px;background:rgba(255,106,0,.05);margin-bottom:18px;">
+      <div style="font-size:13.5px;color:#DCD2D6;">Viewing as <b style="color:#F4EDE6;">{{ sideLabel }}</b> · {{ sideNote }}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <sc-for list="{{ sides }}" as="s" hint-placeholder-count="2">
+          <button onClick="{{ s.pick }}" style="min-height:34px;padding:8px 13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ s.ink }};background:{{ s.bg }};border:1px solid {{ s.border }};border-radius:99px;cursor:pointer;">{{ s.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ isJobs }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search openings by role, community or skill…" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+        <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+            <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div class="hr-c vx-stagger">
+        <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="6">
+          <div class="vx-spot" style="display:flex;flex-direction:column;padding:19px;border:1px solid {{ j.border }};border-radius:15px;background:{{ j.bg }};">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px;">
+              <div style="min-width:0;">
+                <div style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:17px;color:#F4EDE6;">{{ j.role }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#6E646C;margin-top:6px;">{{ j.community }}</div>
+              </div>
+              <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ j.stateInk }};padding:4px 8px;border:1px solid {{ j.stateBorder }};border-radius:5px;">{{ j.state }}</span>
+            </div>
+            <p style="font-size:13px;line-height:1.55;color:#8C8189;margin:0 0 13px;min-height:58px;">{{ j.desc }}</p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+              <sc-for list="{{ j.tags }}" as="t" hint-placeholder-count="3">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8C8189;padding:4px 8px;border:1px solid rgba(255,255,255,.11);border-radius:5px;">{{ t }}</span>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#6E646C;margin-bottom:15px;">
+              <span>{{ j.applicants }} APPLICANTS</span><span>{{ j.posted }}</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:auto;">
+              <button onClick="{{ j.primary }}" style="flex:1;min-height:42px;padding:12px;font-size:13px;font-weight:700;color:{{ j.ctaInk }};background:{{ j.ctaBg }};border:1px solid {{ j.ctaBorder }};border-radius:9px;cursor:pointer;">{{ j.cta }}</button>
+              <button onClick="{{ j.secondary }}" style="flex:none;min-height:42px;padding:12px 14px;font-size:13px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:9px;cursor:pointer;">{{ j.cta2 }}</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ jobsEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:44px 24px;text-align:center;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+          <div style="font-size:15px;font-weight:600;color:#DCD2D6;margin-bottom:9px;">No openings match this filter</div>
+          <button onClick="{{ clear }}" style="min-height:40px;padding:11px 18px;font-size:13.5px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.35);border-radius:9px;cursor:pointer;">Clear filters</button>
+        </div>
+      </sc-if>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isApplicants }}" hint-placeholder-val="{{ false }}">
+      <div class="hr-s">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">{{ pipelineTitle }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#6E646C;">{{ applicantCount }} CANDIDATES</span>
+          </div>
+          <sc-for list="{{ applicants }}" as="a" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:13px;align-items:center;padding:15px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span style="width:36px;height:36px;flex:none;border-radius:99px;display:grid;place-items:center;background:{{ a.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:12px;color:#08060a;">{{ a.initials }}</span>
+              <div style="min-width:0;">
+                <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                  <span style="font-size:14px;font-weight:600;color:#F4EDE6;">{{ a.name }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:{{ a.stageInk }};padding:3px 7px;border:1px solid {{ a.stageBorder }};border-radius:4px;">{{ a.stage }}</span>
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ a.meta }}</div>
+              </div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;">
+                <sc-for list="{{ a.actions }}" as="x" hint-placeholder-count="2">
+                  <button onClick="{{ x.go }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:{{ x.ink }};background:transparent;border:1px solid {{ x.border }};border-radius:7px;cursor:pointer;">{{ x.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;">
+            <sc-for list="{{ stageCounts }}" as="s" hint-placeholder-count="4">
+              <div style="background:#0b080d;padding:15px 14px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:{{ s.ink }};">{{ s.v }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:#6E646C;margin-top:6px;">{{ s.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">CANDIDATE CONTEXT</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 13px;">Applications carry verified platform history — communities joined, raffles run, claim reliability — so a reviewer sees real participation, not self-reported claims.</p>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ contextFacts }}" as="f" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                  <span style="color:#6E646C;">{{ f.k }}</span><span style="color:#DCD2D6;">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">COMMUNICATION</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 13px;">Candidate conversations run through internal messaging with a HIRING label. Support requests stay in their own queue and are never mixed in.</p>
+            <a href="messages.dc.html" style="display:flex;align-items:center;justify-content:center;min-height:42px;padding:12px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Open hiring messages</a>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;">{{ toast }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+      <div class="hr-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 7px;">Post an opening</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#8C8189;margin:0 0 20px;">Posting requires the hiring scope in the community. The opening appears on the community page and in the talent directory.</p>
+          <div class="hr-f" style="margin-bottom:18px;">
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">ROLE TITLE</span>
+              <input value="{{ fRole }}" onInput="{{ onRole }}" placeholder="e.g. Collab Manager" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">COMMITMENT</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <sc-for list="{{ commits }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.pick }}" style="flex:1;min-height:44px;padding:12px 10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:1px solid {{ c.border }};border-radius:10px;cursor:pointer;">{{ c.label }}</button>
+                </sc-for>
+              </div>
+            </label>
+          </div>
+          <label style="display:block;margin-bottom:18px;">
+            <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">WHAT THE ROLE OWNS</span>
+            <textarea onInput="{{ onDesc }}" placeholder="Responsibilities, the scopes they will hold, and how success is measured…" style="width:100%;min-height:120px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;line-height:1.55;outline:none;resize:vertical;" style-focus="border-color:rgba(255,106,0,.55)">{{ fDesc }}</textarea>
+          </label>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">COMMUNITY SCOPES GRANTED ON HIRE</div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px;">
+            <sc-for list="{{ grants }}" as="g" hint-placeholder-count="5">
+              <button onClick="{{ g.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:12px 14px;border:1px solid {{ g.border }};border-radius:10px;background:{{ g.bg }};cursor:pointer;">
+                <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ g.dot }};color:{{ g.dot }};font-size:10px;font-weight:700;">{{ g.mark }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ g.label }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:4px;">{{ g.key }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">APPLICATION QUESTIONS</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+            <sc-for list="{{ questions }}" as="q" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);">
+                <span style="flex:1;min-width:0;font-size:13.5px;color:#C6BBC1;">{{ q.text }}</span>
+                <button onClick="{{ q.drop }}" style="flex:none;background:transparent;border:0;color:#6E646C;cursor:pointer;font-size:12px;">✕</button>
+              </div>
+            </sc-for>
+            <button onClick="{{ addQ }}" style="min-height:42px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#FFB061;background:rgba(255,106,0,.06);border:1px dashed rgba(255,106,0,.32);border-radius:10px;cursor:pointer;">+ ADD QUESTION</button>
+          </div>
+          <button onClick="{{ publish }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:{{ postInk }};background:{{ postBg }};border:1px solid {{ postBorder }};border-radius:11px;cursor:pointer;">Publish opening</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">PHASE 2 SCOPE</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Job openings, applications and candidate states ship in Phase 2. Advanced interview and offer workflows, plus the final Premium entitlement for hiring, are still open decisions.</p>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">WHO CAN DO WHAT</div>
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <sc-for list="{{ perms }}" as="p" hint-placeholder-count="4">
+                <div style="display:flex;gap:11px;">
+                  <span style="flex:none;color:#00D6B4;font-size:12px;">◈</span>
+                  <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ p }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMine }}" hint-placeholder-val="{{ false }}">
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">MY APPLICATIONS</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#6E646C;">{{ mineCount }} SUBMITTED</span>
+        </div>
+        <sc-for list="{{ mine }}" as="m" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr) minmax(0,.9fr) auto;gap:13px;align-items:center;padding:15px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+            <div style="min-width:0;">
+              <div style="font-size:14px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ m.role }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ m.community }}</div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ m.ink }};padding:4px 8px;border:1px solid {{ m.border }};border-radius:5px;justify-self:start;">{{ m.stage }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#8C8189;">{{ m.when }}</span>
+            <button onClick="{{ m.go }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#FFB061;background:transparent;border:1px solid rgba(255,106,0,.3);border-radius:7px;cursor:pointer;">{{ m.cta }}</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Hiring is a Phase 2 module with its own permission scope.</p>
+      </div>
+      <div><div class="ol-ft-t">HIRING</div><div class="ol-ft-col"><a href="hiring.dc.html">Open roles</a><a href="hiring.dc.html#post">Post an opening</a><a href="messages.dc.html">Hiring messages</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="community-admin.dc.html#roles">Roles &amp; permissions</a><a href="raffle-admin.dc.html">Raffle manager</a></div></div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="profile.dc.html">Profile</a><a href="settings.dc.html">Account settings</a><a href="notifications.dc.html">Notifications</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const JOBS = [
+  ['Collab Manager', 'ARCFORGE COMMUNITY', 'Open', 'Own the raffle pipeline end to end: requirement trees, scheduling and finalization prep for the Arc collections.', ['FULL TIME', 'REMOTE', 'RAFFLE OPS'], 24, 'POSTED 02 SEP'],
+  ['Community Moderator', 'ARCFORGE COMMUNITY', 'Open', 'Moderate the feed and member reports, run onboarding for new holders, escalate abuse to the platform team.', ['PART TIME', 'REMOTE', 'MODERATION'], 61, 'POSTED 28 AUG'],
+  ['Discord Engineer', 'NORTHWIND LABS', 'Closed', 'Build and maintain the Discord automation that backs role requirements and announcement delivery.', ['CONTRACT', 'REMOTE', 'ENGINEERING'], 18, 'POSTED 14 AUG'],
+  ['Content Lead', 'HALO GUILD', 'Open', 'Write raffle announcements, mint guides and the weekly community brief across X and Discord.', ['PART TIME', 'REMOTE', 'CONTENT'], 9, 'POSTED 09 SEP'],
+  ['Partnerships Lead', 'NORTHWIND LABS', 'Open', 'Source collab raffles with other communities and negotiate the shared requirement trees.', ['FULL TIME', 'REMOTE', 'PARTNERSHIPS'], 14, 'POSTED 05 SEP'],
+  ['Analytics Contractor', 'CIPHER COLLECTIVE', 'Draft', 'Model entry funnels and eligibility pass rates; not published until the community passes verification review.', ['CONTRACT', 'REMOTE', 'DATA'], 0, 'DRAFT']
+];
+const APPLICANTS = [
+  ['Ilo Vance', 'IV', 'Shortlisted', '@ilo · REP 79 · 3 COMMUNITIES · 142 ENTRIES'],
+  ['Pyra', 'PY', 'Interviewing', '@pyra · REP 74 · COLLAB MANAGER AT ARCFORGE'],
+  ['Solvent', 'SO', 'Applied', '@solvent · REP 77 · MODERATOR AT ARCFORGE'],
+  ['Veer', 'VE', 'Applied', '@veer.eth · REP 76 · 203 ENTRIES · 4 WINS'],
+  ['Halcyon', 'HA', 'Rejected', '@halcyon · REP 58 · 34 ENTRIES'],
+  ['Nine Lives', 'NL', 'Applied', '@nine_lives · REP 69 · 97 ENTRIES']
+];
+const MINE = [
+  ['Partnerships Lead', 'NORTHWIND LABS', 'Interviewing', 'APPLIED 06 SEP', 'Open thread'],
+  ['Content Lead', 'HALO GUILD', 'Applied', 'APPLIED 10 SEP', 'Withdraw'],
+  ['Discord Engineer', 'NORTHWIND LABS', 'Closed', 'APPLIED 16 AUG', 'View'],
+  ['Community Moderator', 'ARCFORGE COMMUNITY', 'Shortlisted', 'APPLIED 30 AUG', 'Open thread']
+];
+
+class Component extends DCLogic {
+  state = {
+    side: 'community', tab: 'jobs', query: '', chip: 'All', toast: '',
+    fRole: '', fDesc: '', commit: 'FULL TIME',
+    grants: ['manage_hiring'],
+    questions: ['Which communities have you run raffles for?', 'Describe a requirement tree you designed and why.'],
+    stages: {}
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h === 'post') this.setState({ tab: 'post' });
+  }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state, isTeam = S.side === 'community';
+    const tabs = isTeam
+      ? [['jobs', 'Openings'], ['applicants', 'Applicants'], ['post', 'Post an opening']]
+      : [['jobs', 'Open roles'], ['mine', 'My applications']];
+    const tab = tabs.some(t => t[0] === S.tab) ? S.tab : 'jobs';
+
+    const jobs = JOBS
+      .filter(j => !S.query || j.slice(0, 3).join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(j => S.chip === 'All' || j[2] === S.chip)
+      .filter(j => isTeam || j[2] === 'Open');
+    const tone = s => s === 'Open' ? ['#00D6B4', 'rgba(0,214,180,.3)']
+      : s === 'Draft' ? ['#8C8189', 'rgba(255,255,255,.12)'] : ['#FFB061', 'rgba(255,106,0,.3)'];
+    const stageTone = s => s === 'Shortlisted' ? ['#5ef2d6', 'rgba(0,214,180,.28)']
+      : s === 'Interviewing' ? ['#00D6B4', 'rgba(0,214,180,.3)']
+      : s === 'Rejected' || s === 'Closed' ? ['#8C8189', 'rgba(255,255,255,.12)'] : ['#FFB061', 'rgba(255,106,0,.3)'];
+
+    return {
+      sides: [['community', 'COMMUNITY SIDE'], ['candidate', 'CANDIDATE SIDE']].map(s => ({
+        label: s[1], ink: S.side === s[0] ? '#08060a' : '#8C8189',
+        bg: S.side === s[0] ? '#FF6A00' : 'transparent',
+        border: S.side === s[0] ? '#FF6A00' : 'rgba(255,255,255,.14)',
+        pick: () => this.setState({ side: s[0], tab: 'jobs', toast: '' })
+      })),
+      sideLabel: isTeam ? 'Hiring Manager · ARCforge' : 'Candidate · arc_director',
+      sideNote: isTeam ? 'HOLDS MANAGE_HIRING · CANNOT TOUCH RAFFLE OR ROLE SCOPES' : 'APPLICATIONS CARRY YOUR VERIFIED PARTICIPATION HISTORY',
+      tabs: tabs.map(t => ({
+        label: t[1], pick: () => this.setState({ tab: t[0], toast: '' }),
+        ink: t[0] === tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isJobs: tab === 'jobs', isApplicants: isTeam && tab === 'applicants',
+      isPost: isTeam && tab === 'post', isMine: !isTeam && tab === 'mine',
+
+      goPost: () => isTeam ? this.setState({ tab: 'post' }) : this.flash('Switch to the community side to post an opening — it needs the manage_hiring scope.'),
+      postInk: isTeam ? '#08060a' : '#4E454C',
+      postBg: isTeam ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+      postBorder: isTeam ? 'transparent' : 'rgba(255,255,255,.1)',
+
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: ['All', 'Open', 'Closed', 'Draft'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      jobs: jobs.map(j => {
+        const t = tone(j[2]);
+        return {
+          role: j[0], community: j[1], state: j[2].toUpperCase(), desc: j[3], tags: j[4],
+          applicants: j[5], posted: j[6],
+          stateInk: t[0], stateBorder: t[1],
+          border: 'rgba(255,255,255,.09)', bg: 'rgba(255,255,255,.016)',
+          cta: isTeam ? 'Review applicants' : 'Apply',
+          cta2: isTeam ? 'Edit' : 'Save',
+          ctaInk: '#08060a', ctaBg: 'linear-gradient(180deg,#FFA047,#FF6A00)', ctaBorder: 'transparent',
+          primary: () => isTeam
+            ? this.setState({ tab: 'applicants', toast: '' })
+            : this.flash('Application started for ' + j[0] + ' · your verified history is attached automatically.'),
+          secondary: () => isTeam
+            ? this.setState({ tab: 'post', fRole: j[0], toast: 'Editing ' + j[0] + '.' })
+            : this.flash(j[0] + ' saved to your list.')
+        };
+      }),
+      jobsEmpty: jobs.length === 0,
+      clear: () => this.setState({ query: '', chip: 'All' }),
+
+      pipelineTitle: 'COLLAB MANAGER · PIPELINE',
+      applicantCount: APPLICANTS.length,
+      applicants: APPLICANTS.map(a => {
+        const stage = S.stages[a[0]] || a[2];
+        const t = stageTone(stage);
+        return {
+          name: a[0], initials: a[1], stage: stage.toUpperCase(), meta: a[3],
+          stageInk: t[0], stageBorder: t[1],
+          art: stage === 'Rejected' ? 'linear-gradient(135deg,#6E646C,#3A333A)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+          actions: [
+            { label: 'ADVANCE', ink: '#5ef2d6', border: 'rgba(0,214,180,.3)',
+              go: () => this.setState(st => ({
+                stages: Object.assign({}, st.stages, { [a[0]]: stage === 'Applied' ? 'Shortlisted' : stage === 'Shortlisted' ? 'Interviewing' : 'Interviewing' }),
+                toast: a[0] + ' advanced · candidate notified through internal messaging.'
+              })) },
+            { label: 'REJECT', ink: '#8C8189', border: 'rgba(255,255,255,.12)',
+              go: () => this.setState(st => ({ stages: Object.assign({}, st.stages, { [a[0]]: 'Rejected' }), toast: a[0] + ' rejected · a short note is sent automatically.' })) }
+          ]
+        };
+      }),
+      stageCounts: [
+        { v: APPLICANTS.filter(a => (S.stages[a[0]] || a[2]) === 'Applied').length, l: 'APPLIED', ink: '#FFB061' },
+        { v: APPLICANTS.filter(a => (S.stages[a[0]] || a[2]) === 'Shortlisted').length, l: 'SHORTLISTED', ink: '#5ef2d6' },
+        { v: APPLICANTS.filter(a => (S.stages[a[0]] || a[2]) === 'Interviewing').length, l: 'INTERVIEWING', ink: '#00D6B4' },
+        { v: APPLICANTS.filter(a => (S.stages[a[0]] || a[2]) === 'Rejected').length, l: 'REJECTED', ink: '#8C8189' }
+      ],
+      contextFacts: [
+        { k: 'VERIFIED HISTORY', v: 'ATTACHED' }, { k: 'REPUTATION SHOWN', v: 'YES' },
+        { k: 'AFFECTS RAFFLE ODDS', v: 'NEVER' }, { k: 'OWN PERMISSION SCOPE', v: 'MANAGE_HIRING' }
+      ],
+
+      fRole: S.fRole, onRole: e => this.setState({ fRole: e.target.value }),
+      fDesc: S.fDesc, onDesc: e => this.setState({ fDesc: e.target.value }),
+      commits: ['FULL TIME', 'PART TIME', 'CONTRACT'].map(c => ({
+        label: c, ink: S.commit === c ? '#08060a' : '#8C8189',
+        bg: S.commit === c ? '#FF6A00' : 'transparent',
+        border: S.commit === c ? '#FF6A00' : 'rgba(255,255,255,.12)',
+        pick: () => this.setState({ commit: c })
+      })),
+      grants: [
+        ['manage_hiring', 'Hiring management'], ['create_raffle', 'Create raffles'],
+        ['manage_requirements', 'Build requirement trees'], ['moderate_feed', 'Moderate the feed'],
+        ['manage_templates', 'Manage templates']
+      ].map(g => {
+        const on = S.grants.indexOf(g[0]) >= 0;
+        return {
+          label: g[1], key: g[0], mark: on ? '✓' : '', dot: on ? '#00D6B4' : '#4E454C',
+          border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.02)',
+          toggle: () => this.setState(st => ({ grants: on ? st.grants.filter(k => k !== g[0]) : st.grants.concat([g[0]]) }))
+        };
+      }),
+      questions: S.questions.map((q, i) => ({
+        text: q, drop: () => this.setState(st => ({ questions: st.questions.filter((x, j) => j !== i) }))
+      })),
+      addQ: () => this.setState(st => ({ questions: st.questions.concat(['New question ' + (st.questions.length + 1)]) })),
+      publish: () => this.flash(S.fRole
+        ? 'Published · ' + S.fRole + ' (' + S.commit.toLowerCase() + ') is live with ' + S.grants.length + ' scopes granted on hire.'
+        : 'Give the role a title before publishing.'),
+      perms: [
+        'Only members holding manage_hiring can post openings or review applicants.',
+        'Hiring scope grants no raffle, role or settings access in the community.',
+        'Candidate conversations use internal messaging with a HIRING label.',
+        'Hiring decisions are audited like any other community action.'
+      ],
+
+      mineCount: MINE.length,
+      mine: MINE.map(m => {
+        const t = stageTone(m[2]);
+        return {
+          role: m[0], community: m[1], stage: m[2].toUpperCase(), when: m[3], cta: m[4].toUpperCase(),
+          ink: t[0], border: t[1],
+          go: () => m[4] === 'Withdraw'
+            ? this.flash('Application to ' + m[0] + ' withdrawn.')
+            : location.href = 'messages.dc.html'
+        };
+      }),
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

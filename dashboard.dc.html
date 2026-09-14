@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .db-shell { display:grid; grid-template-columns:262px minmax(0,1fr); min-height:100vh; }
+  .db-k { display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:1px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+  .db-s { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .db-nav { display:contents; }
+  @media (max-width:1080px){
+    .db-shell { grid-template-columns:minmax(0,1fr); }
+    .db-side { position:static!important; height:auto!important; border-right:0!important; border-bottom:1px solid rgba(255,255,255,.07); }
+    .db-nav { display:grid; grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); gap:12px; align-items:start; }
+    .db-roles { display:grid!important; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
+  }
+  @media (max-width:980px){ .db-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="dashboard" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <div class="db-shell">
+    <!-- ░░ ADMIN SIDEBAR — separate app, separate auth realm ░░ -->
+    <aside class="db-side" style="position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid rgba(255,255,255,.07);background:#0b080d;padding:20px 16px;">
+      <div style="display:flex;align-items:center;gap:11px;padding:0 6px 18px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:16px;">
+        <span style="width:26px;height:26px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+        <div>
+          <div style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.14em;">OUTLAWS</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:#FF8A33;margin-top:4px;">SUPER ADMIN</div>
+        </div>
+      </div>
+
+      <div style="padding:11px 12px;border:1px solid rgba(255,60,0,.26);border-radius:10px;background:rgba(255,60,0,.05);margin-bottom:16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.13em;color:#FF6A6A;">SEPARATE AUTH REALM · 2FA ENFORCED</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:#6E646C;margin-top:6px;">WEB BROWSER ONLY · NO MOBILE ACCESS</div>
+      </div>
+
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:#4E454C;padding:0 8px 9px;">ADMIN ROLE</div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:18px;">
+        <sc-for list="{{ adminRoles }}" as="r" hint-placeholder-count="4">
+          <button onClick="{{ r.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:9px;width:100%;text-align:left;min-height:38px;padding:9px 11px;font-size:12.5px;font-weight:600;color:{{ r.ink }};background:{{ r.bg }};border:1px solid {{ r.border }};border-radius:9px;cursor:pointer;">
+            <span>{{ r.label }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:#6E646C;">{{ r.n }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="4">
+        <div style="margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:#4E454C;padding:0 8px 8px;">{{ g.title }}</div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="5">
+              <button onClick="{{ i.pick }}" style="display:flex;align-items:center;justify-content:space-between;gap:9px;width:100%;text-align:left;min-height:36px;padding:9px 11px;font-size:13px;font-weight:{{ i.weight }};color:{{ i.ink }};background:{{ i.bg }};border:0;border-left:2px solid {{ i.edge }};border-radius:0 8px 8px 0;cursor:pointer;">
+                <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ i.label }}</span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:{{ i.badgeInk }};">{{ i.badge }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+
+      <div style="padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.02);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.12em;color:#6E646C;margin-bottom:8px;">SIGNED IN AS</div>
+        <div style="font-size:12.5px;font-weight:600;color:#DCD2D6;">platform_admin</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ roleLabel }} · 2FA ACTIVE</div>
+        <a href="index.html" style="display:flex;align-items:center;justify-content:center;min-height:36px;margin-top:11px;font-size:12px;font-weight:600;color:#8C8189;border:1px solid rgba(255,255,255,.1);border-radius:8px;">Back to platform</a>
+      </div>
+    </aside>
+
+    <!-- ░░ MAIN ░░ -->
+    <main style="min-width:0;padding:22px 26px 44px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="min-width:0;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:10px;">{{ crumb }}</div>
+          <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(23px,2.4vw,32px);letter-spacing:-.01em;margin:0 0 10px;">{{ title }}</h1>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:680px;margin:0;text-wrap:pretty;">{{ sub }}</p>
+        </div>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;">
+          <sc-for list="{{ headActions }}" as="a" hint-placeholder-count="2">
+            <button onClick="{{ a.go }}" style="min-height:40px;padding:11px 16px;font-size:13px;font-weight:{{ a.weight }};color:{{ a.ink }};background:{{ a.bg }};border:1px solid {{ a.border }};border-radius:9px;cursor:pointer;">{{ a.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <sc-if value="{{ denied }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:44px 30px;border:1px solid rgba(255,60,0,.3);border-radius:17px;background:linear-gradient(160deg,rgba(255,60,0,.08),transparent 65%);text-align:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF3C00;margin-bottom:13px;">403 · ADMIN SCOPE REQUIRED</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 12px;">{{ roleLabel }} cannot open {{ title }}</h2>
+          <p style="font-size:14.5px;line-height:1.6;color:#9B8F96;max-width:540px;margin:0 auto 22px;text-wrap:pretty;">Admin RBAC is granular and enforced in the Admin API, not just in this UI. Switch to an admin role that holds the <b style="color:#FFB061;">{{ neededScope }}</b> scope.</p>
+          <button onClick="{{ asSuper }}" style="min-height:44px;padding:12px 20px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Switch to Super Admin</button>
+        </div>
+      </sc-if>
+
+      <!-- ░ OVERVIEW ░ -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+        <div class="db-k vx-stagger" style="margin-bottom:18px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="8">
+            <div class="vx-spot" style="background:#0b080d;padding:17px 16px;">
+              <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:21px;font-weight:700;color:{{ k.ink }};">{{ k.v }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;color:#6E646C;margin-top:7px;">{{ k.l }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:{{ k.dInk }};margin-top:6px;">{{ k.d }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div class="db-s">
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+              <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15px;letter-spacing:.03em;">QUEUE · NEEDS A DECISION</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#FF8A33;">{{ queueCount }} ITEMS</span>
+              </div>
+              <sc-for list="{{ queue }}" as="q" hint-placeholder-count="6">
+                <button onClick="{{ q.go }}" style="display:grid;width:100%;text-align:left;grid-template-columns:auto minmax(0,1fr) auto;gap:13px;align-items:center;padding:14px 19px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:transparent;cursor:pointer;" style-hover="background:rgba(255,106,0,.05)">
+                  <span style="width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:8px;background:{{ q.bg }};color:{{ q.ink }};font-size:11px;">{{ q.icon }}</span>
+                  <span style="min-width:0;">
+                    <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ q.title }}</span>
+                    <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ q.meta }}</span>
+                  </span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:{{ q.ink }};">{{ q.cta }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+              <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15px;letter-spacing:.03em;">PLATFORM LOAD · LAST 24H</div>
+              <div style="padding:19px;">
+                <div style="display:flex;align-items:flex-end;gap:5px;height:130px;margin-bottom:13px;">
+                  <sc-for list="{{ bars }}" as="b" hint-placeholder-count="24">
+                    <div title="{{ b.title }}" style="flex:1;height:{{ b.h }};min-width:4px;border-radius:3px 3px 0 0;background:{{ b.bg }};"></div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;">
+                  <span>00:00Z</span><span>ENTRIES PER HOUR · PEAK 11,204</span><span>24:00Z</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+              <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">SERVICE HEALTH</div>
+              <sc-for list="{{ services }}" as="s" hint-placeholder-count="8">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.04);">
+                  <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                    <span style="width:6px;height:6px;flex:none;border-radius:99px;background:{{ s.ink }};"></span>
+                    <span style="font-size:13px;color:#DCD2D6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ s.name }}</span>
+                  </div>
+                  <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:{{ s.ink }};">{{ s.state }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:19px;border:1px solid rgba(255,60,0,.26);border-radius:16px;background:rgba(255,60,0,.05);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF3C00;margin-bottom:12px;">FRAUD SIGNALS · 24H</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ fraud }}" as="f" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                    <span style="color:#C6BBC1;">{{ f.k }}</span><span style="color:{{ f.ink }};">{{ f.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ░ TABLE MODULES ░ -->
+      <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="{{ searchHint }}" style="flex:1;min-width:210px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:13.5px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+          <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.pick }}" style="min-height:31px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ exportCsv }}" style="min-height:40px;padding:11px 15px;font-size:13px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:9px;cursor:pointer;">Export CSV</button>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:auto;">
+          <div style="min-width:760px;">
+            <div style="display:grid;grid-template-columns:{{ gridCols }};gap:12px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+              <sc-for list="{{ cols }}" as="c" hint-placeholder-count="5">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">{{ c }}</div>
+              </sc-for>
+            </div>
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="8">
+              <div style="display:grid;grid-template-columns:{{ gridCols }};gap:12px;align-items:center;padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+                  <div style="min-width:0;font-family:{{ c.font }};font-size:13px;font-weight:{{ c.weight }};color:{{ c.ink }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.v }}</div>
+                </sc-for>
+                <div style="display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;">
+                  <sc-for list="{{ r.actions }}" as="a" hint-placeholder-count="2">
+                    <button onClick="{{ a.go }}" style="min-height:32px;padding:8px 11px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:{{ a.ink }};background:transparent;border:1px solid {{ a.border }};border-radius:7px;cursor:pointer;">{{ a.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ tableEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:40px 22px;text-align:center;font-size:13.5px;color:#8C8189;">No records match this filter.</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:13px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;">{{ tableFoot }}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;">{{ toast }}</span>
+        </div>
+      </sc-if>
+
+      <!-- ░ RULE CATALOG ░ -->
+      <sc-if value="{{ isRuleCatalog }}" hint-placeholder-val="{{ false }}">
+        <div class="db-s">
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ catalog }}" as="r" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;border:1px solid {{ r.border }};border-radius:13px;background:{{ r.bg }};flex-wrap:wrap;">
+                <button onClick="{{ r.toggle }}" aria-label="Toggle rule" style="width:42px;height:24px;flex:none;padding:0;border:1px solid {{ r.swBorder }};border-radius:99px;background:{{ r.swBg }};cursor:pointer;position:relative;">
+                  <span style="position:absolute;top:2px;left:{{ r.knob }};width:18px;height:18px;border-radius:99px;background:{{ r.knobBg }};transition:left .2s;"></span>
+                </button>
+                <div style="flex:1;min-width:200px;">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-size:14px;font-weight:600;color:#DCD2D6;">{{ r.name }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:#8C8189;padding:3px 7px;border:1px solid rgba(255,255,255,.12);border-radius:4px;">{{ r.scope }}</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:6px;">{{ r.desc }}</div>
+                </div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;">{{ r.usage }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">CENTRALIZED CATALOG</div>
+              <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Only the platform team edits this catalog. Communities select from it; each raffle snapshots the selection at creation, so disabling a rule here never rewrites a finished draw.</p>
+            </div>
+            <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">PROPAGATION</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ propagation }}" as="p" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                    <span style="color:#6E646C;">{{ p.k }}</span><span style="color:#DCD2D6;">{{ p.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;">{{ toast }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ░ ADMIN RBAC ░ -->
+      <sc-if value="{{ isRbac }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:auto;">
+          <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15px;letter-spacing:.03em;">ADMIN SCOPE MATRIX</div>
+          <div style="min-width:720px;">
+            <div style="display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(4,minmax(96px,1fr));gap:10px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">MODULE</div>
+              <sc-for list="{{ rbacHead }}" as="h" hint-placeholder-count="4">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:#4E454C;text-align:center;">{{ h }}</div>
+              </sc-for>
+            </div>
+            <sc-for list="{{ rbacRows }}" as="r" hint-placeholder-count="16">
+              <div style="display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(4,minmax(96px,1fr));gap:10px;padding:11px 19px;border-bottom:1px solid rgba(255,255,255,.04);">
+                <div>
+                  <div style="font-size:13px;color:#DCD2D6;">{{ r.label }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;margin-top:4px;">{{ r.scope }}</div>
+                </div>
+                <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
+                  <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ c.ink }};">{{ c.v }}</div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);margin-top:18px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">ENFORCEMENT</div>
+          <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Scopes are checked in the Admin API on every call. 2FA is mandatory for all four admin roles, and every action in every module writes a non-deletable audit entry with actor, target, before and after values.</p>
+        </div>
+      </sc-if>
+
+      <!-- ░ SETTINGS / FLAGS ░ -->
+      <sc-if value="{{ isFlags }}" hint-placeholder-val="{{ false }}">
+        <div class="db-s">
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ flags }}" as="f" hint-placeholder-count="8">
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 17px;border:1px solid {{ f.border }};border-radius:13px;background:{{ f.bg }};flex-wrap:wrap;">
+                <button onClick="{{ f.toggle }}" aria-label="Toggle flag" style="width:42px;height:24px;flex:none;padding:0;border:1px solid {{ f.swBorder }};border-radius:99px;background:{{ f.swBg }};cursor:pointer;position:relative;">
+                  <span style="position:absolute;top:2px;left:{{ f.knob }};width:18px;height:18px;border-radius:99px;background:{{ f.knobBg }};transition:left .2s;"></span>
+                </button>
+                <div style="flex:1;min-width:210px;">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-size:14px;font-weight:600;color:#DCD2D6;">{{ f.name }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:{{ f.phaseInk }};padding:3px 7px;border:1px solid {{ f.phaseBorder }};border-radius:4px;">{{ f.phase }}</span>
+                  </div>
+                  <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:6px;">{{ f.desc }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">PLATFORM LIMITS</div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <sc-for list="{{ limits }}" as="l" hint-placeholder-count="5">
+                  <label style="display:block;">
+                    <span style="display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-bottom:7px;">{{ l.k }}<span style="color:#F4EDE6;">{{ l.v }}</span></span>
+                    <input value="{{ l.v }}" onInput="{{ l.set }}" style="width:100%;padding:10px 12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#F4EDE6;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+                  </label>
+                </sc-for>
+              </div>
+              <button onClick="{{ saveFlags }}" style="width:100%;min-height:44px;margin-top:15px;padding:12px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Apply configuration</button>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:13px;">{{ toast }}</div>
+            </div>
+            <div style="padding:19px;border:1px solid rgba(255,60,0,.26);border-radius:16px;background:rgba(255,60,0,.05);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF3C00;margin-bottom:12px;">MAINTENANCE MODE</div>
+              <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">Freezes new entries platform-wide while keeping public pages and fairness evidence readable. Active raffles are extended by the downtime.</p>
+              <button onClick="{{ maintenance }}" style="width:100%;min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:{{ maintInk }};background:{{ maintBg }};border:1px solid rgba(255,60,0,.4);border-radius:10px;cursor:pointer;">{{ maintLabel }}</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000}}">
+const MODULES = {
+  home: { title: 'Platform overview', scope: 'read_dashboard', kind: 'home', group: 'OPERATIONS',
+    sub: 'Real-time platform state: active users, live raffles, fraud signals and Premium revenue.' },
+  users: { title: 'Users', scope: 'manage_users', kind: 'table', group: 'OPERATIONS', badge: '42.1K',
+    sub: 'Every account with its verification state, linked providers, reputation and entry history.',
+    cols: ['USER', 'EMAIL', 'STATE', 'REPUTATION', 'ENTRIES', ''], grid: 'minmax(0,1.2fr) minmax(0,1.5fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Verified', 'Unverified', 'Suspended'], search: 'Search users by handle, email or wallet…',
+    rows: [
+      ['arc_director', 'director@arcforge.xyz', 'Verified', '84', '412', ['View', 'Suspend']],
+      ['maya_chen', 'maya@arcforge.xyz', 'Verified', '88', '286', ['View', 'Suspend']],
+      ['nine_lives', 'nine@mail.com', 'Unverified', '41', '18', ['View', 'Verify']],
+      ['veer.eth', 'veer@mail.com', 'Verified', '76', '203', ['View', 'Suspend']],
+      ['sybil_a91', 'a91@tempmail.io', 'Suspended', '3', '0', ['View', 'Restore']],
+      ['halcyon', 'hal@mail.com', 'Verified', '58', '34', ['View', 'Suspend']],
+      ['solvent', 'solvent@mail.com', 'Verified', '77', '61', ['View', 'Suspend']],
+      ['pyra', 'pyra@arcforge.xyz', 'Verified', '74', '155', ['View', 'Suspend']]
+    ] },
+  communities: { title: 'Communities', scope: 'manage_communities', kind: 'table', group: 'OPERATIONS', badge: '318',
+    sub: 'Community records, verification review, Premium state and team size.',
+    cols: ['COMMUNITY', 'OWNER', 'STATE', 'MEMBERS', 'RAFFLES', ''], grid: 'minmax(0,1.3fr) minmax(0,1.1fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Verified', 'Review', 'Archived'], search: 'Search communities…',
+    rows: [
+      ['ARCforge Community', 'arc_director', 'Verified', '12,417', '37', ['Open', 'Archive']],
+      ['Northwind Labs', 'dex_orr', 'Verified', '8,204', '22', ['Open', 'Archive']],
+      ['Cipher Collective', 'ciph_ops', 'Review', '1,902', '4', ['Approve', 'Reject']],
+      ['Halo Guild', 'halo_admin', 'Verified', '5,110', '16', ['Open', 'Archive']],
+      ['Ember Set DAO', 'ember_lead', 'Archived', '740', '9', ['Restore', 'Purge']],
+      ['Nova Syndicate', 'nova_ops', 'Review', '312', '1', ['Approve', 'Reject']]
+    ] },
+  projects: { title: 'Projects', scope: 'manage_projects', kind: 'table', group: 'OPERATIONS', badge: '1.2K',
+    sub: 'Collections attached to communities, with chain, supply and mint schedule.',
+    cols: ['PROJECT', 'COMMUNITY', 'CHAIN', 'SUPPLY', 'MINT', ''], grid: 'minmax(0,1.3fr) minmax(0,1.2fr) minmax(0,.8fr) minmax(0,.8fr) minmax(0,.9fr) auto',
+    chips: ['All', 'Live', 'Upcoming', 'Archived'], search: 'Search projects…',
+    rows: [
+      ['Arc Genesis', 'ARCforge', 'Ethereum', '8,888', '18 Sep', ['Open', 'Feature']],
+      ['Arc Relics', 'ARCforge', 'Ethereum', '2,400', '02 Oct', ['Open', 'Feature']],
+      ['Northwind', 'Northwind Labs', 'Base', '3,333', '11 Nov', ['Open', 'Feature']],
+      ['Halo Genesis', 'Halo Guild', 'Base', '6,000', '24 Oct', ['Open', 'Feature']],
+      ['Cipher Drop', 'Cipher', 'Solana', '4,200', 'Completed', ['Open', 'Archive']]
+    ] },
+  raffles: { title: 'Raffles', scope: 'manage_raffles', kind: 'table', group: 'OPERATIONS', badge: '87',
+    sub: 'Every raffle across the platform, its lifecycle state and fairness record.',
+    cols: ['RAFFLE', 'COMMUNITY', 'STATE', 'ENTRIES', 'WINNERS', ''], grid: 'minmax(0,1.4fr) minmax(0,1.1fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Active', 'Finalized', 'Disputed'], search: 'Search raffles…',
+    rows: [
+      ['Genesis Founders Pass', 'ARCforge', 'Active', '4,812', '250', ['Open', 'Freeze']],
+      ['Relics Early Access', 'ARCforge', 'Active', '1,240', '1,500', ['Open', 'Freeze']],
+      ['Northwind Whitelist', 'Northwind Labs', 'Ended', '3,318', '300', ['Open', 'Finalize']],
+      ['Ember Final Draw', 'ARCforge', 'Finalized', '9,004', '40', ['Evidence', 'Audit']],
+      ['Cipher Drop', 'Cipher', 'Disputed', '6,120', '80', ['Investigate', 'Audit']],
+      ['Halo Genesis', 'Halo Guild', 'Finalized', '7,440', '120', ['Evidence', 'Audit']]
+    ] },
+  entries: { title: 'Entries & anti-abuse', scope: 'manage_fraud', kind: 'table', group: 'INTEGRITY', badge: '14',
+    sub: 'Flagged entries, Sybil clusters and dedup decisions awaiting a human call.',
+    cols: ['ENTRY', 'USER', 'SIGNAL', 'CONFIDENCE', 'RAFFLE', ''], grid: 'minmax(0,.9fr) minmax(0,1.1fr) minmax(0,1.3fr) minmax(0,.9fr) minmax(0,1.1fr) auto',
+    chips: ['All', 'Open', 'Confirmed', 'Cleared'], search: 'Search entries, users or wallets…',
+    rows: [
+      ['#88214', 'sybil_a91', 'Wallet cluster · 14 accounts', 'High', 'Genesis Pass', ['Confirm', 'Clear']],
+      ['#88190', 'tempacc_71', 'Disposable email domain', 'Medium', 'Relics Access', ['Confirm', 'Clear']],
+      ['#88044', 'veer.eth', 'Same Discord identity twice', 'Low', 'Northwind WL', ['Confirm', 'Clear']],
+      ['#87901', 'proxy_user', 'Datacenter IP · rate spike', 'High', 'Cipher Drop', ['Confirm', 'Clear']],
+      ['#87880', 'halcyon', 'Account age under threshold', 'Low', 'Halo Genesis', ['Confirm', 'Clear']]
+    ] },
+  disputes: { title: 'Disputes', scope: 'manage_disputes', kind: 'table', group: 'INTEGRITY', badge: '3',
+    sub: 'Challenges to a draw result. Each requires a recomputation before any decision.',
+    cols: ['CASE', 'RAFFLE', 'CLAIM', 'STATE', 'OPENED', ''], grid: 'minmax(0,.8fr) minmax(0,1.2fr) minmax(0,1.5fr) minmax(0,.9fr) minmax(0,.9fr) auto',
+    chips: ['All', 'Open', 'Recomputed', 'Closed'], search: 'Search disputes…',
+    rows: [
+      ['D-118', 'Cipher Drop', 'Winner list does not match the published seed', 'Open', '2D AGO', ['Recompute', 'Close']],
+      ['D-117', 'Halo Genesis', 'Reroll performed without an expired claim', 'Recomputed', '5D AGO', ['Decide', 'Close']],
+      ['D-115', 'Northwind WL', 'Requirement recheck removed a valid entry', 'Closed', '2W AGO', ['View', 'Reopen']]
+    ] },
+  support: { title: 'Support queue', scope: 'manage_support', kind: 'table', group: 'INTEGRITY', badge: '26',
+    sub: 'All user support requests, their category and identity-verification state.',
+    cols: ['ID', 'SUBJECT', 'CATEGORY', 'STATE', 'WAITING', ''], grid: 'minmax(0,.7fr) minmax(0,1.8fr) minmax(0,.9fr) minmax(0,.9fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Open', 'Verifying', 'Resolved'], search: 'Search support requests…',
+    rows: [
+      ['#4821', 'Main wallet signature keeps failing', 'Wallets', 'Answered', '2H', ['Open', 'Assign']],
+      ['#4688', 'Community ownership transfer', 'Account', 'Verifying', '2W', ['Open', 'Verify']],
+      ['#4703', 'Discord role check fails after rejoin', 'Integrations', 'Open', '1W', ['Open', 'Assign']],
+      ['#4750', 'Reroll replaced my allocation', 'Fairness', 'Resolved', '—', ['Open', 'Reopen']],
+      ['#4610', 'Premium invoice company name', 'Billing', 'Resolved', '—', ['Open', 'Reopen']]
+    ] },
+  premium: { title: 'Premium & billing', scope: 'manage_billing', kind: 'table', group: 'COMMERCE', badge: '$182K',
+    sub: 'Subscriptions, entitlements and revenue. Premium never affects draw odds.',
+    cols: ['ACCOUNT', 'PLAN', 'STATE', 'MRR', 'RENEWS', ''], grid: 'minmax(0,1.2fr) minmax(0,.9fr) minmax(0,.9fr) minmax(0,.8fr) minmax(0,.9fr) auto',
+    chips: ['All', 'Active', 'Past due', 'Cancelled'], search: 'Search subscriptions…',
+    rows: [
+      ['arc_director', 'Premium', 'Active', '$29', '04 Oct', ['Invoice', 'Refund']],
+      ['dex_orr', 'Premium', 'Active', '$29', '11 Oct', ['Invoice', 'Refund']],
+      ['halo_admin', 'Premium Team', 'Active', '$99', '22 Sep', ['Invoice', 'Refund']],
+      ['nova_ops', 'Premium', 'Past due', '$29', 'Overdue 4d', ['Invoice', 'Retry']],
+      ['ember_lead', 'Premium', 'Cancelled', '$0', '—', ['Invoice', 'Reactivate']]
+    ] },
+  nft: { title: 'NFT holder benefits', scope: 'manage_benefits', kind: 'table', group: 'COMMERCE', badge: '4',
+    sub: 'Collections whose holders receive platform benefits, and the networks used to verify them.',
+    cols: ['COLLECTION', 'CHAIN', 'BENEFIT', 'HOLDERS', 'STATE', ''], grid: 'minmax(0,1.3fr) minmax(0,.8fr) minmax(0,1.3fr) minmax(0,.8fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Active', 'Paused'], search: 'Search collections…',
+    rows: [
+      ['Outlaws Founders', 'Ethereum', 'Premium included', '888', 'Active', ['Edit', 'Pause']],
+      ['Arc Genesis', 'Ethereum', '20% Premium discount', '6,204', 'Active', ['Edit', 'Pause']],
+      ['Northwind', 'Base', 'Early Discover access', '2,880', 'Active', ['Edit', 'Pause']],
+      ['Cipher Drop', 'Solana', 'None · verification only', '3,410', 'Paused', ['Edit', 'Activate']]
+    ] },
+  hiring: { title: 'Hiring · Phase 2', scope: 'manage_hiring_admin', kind: 'table', group: 'COMMERCE', badge: 'P2',
+    sub: 'Job openings across communities and the applications attached to them.',
+    cols: ['OPENING', 'COMMUNITY', 'STATE', 'APPLICANTS', 'POSTED', ''], grid: 'minmax(0,1.3fr) minmax(0,1.1fr) minmax(0,.9fr) minmax(0,.9fr) minmax(0,.9fr) auto',
+    chips: ['All', 'Open', 'Closed'], search: 'Search openings…',
+    rows: [
+      ['Collab Manager', 'ARCforge', 'Open', '24', '02 SEP', ['Open', 'Close']],
+      ['Community Moderator', 'ARCforge', 'Open', '61', '28 AUG', ['Open', 'Close']],
+      ['Discord Engineer', 'Northwind Labs', 'Closed', '18', '14 AUG', ['Open', 'Reopen']],
+      ['Content Lead', 'Halo Guild', 'Open', '9', '09 SEP', ['Open', 'Close']]
+    ] },
+  reputation: { title: 'Reputation engine', scope: 'manage_reputation', kind: 'table', group: 'CONFIGURATION', badge: null,
+    sub: 'Signal weights feeding the reputation score. Reputation never changes draw odds.',
+    cols: ['SIGNAL', 'SOURCE', 'WEIGHT', 'RANGE', 'STATE', ''], grid: 'minmax(0,1.2fr) minmax(0,1.2fr) minmax(0,.7fr) minmax(0,.8fr) minmax(0,.8fr) auto',
+    chips: ['All', 'Active', 'Draft'], search: 'Search signals…',
+    rows: [
+      ['Participation', 'Internal · entries', '0.30', '0–100', 'Active', ['Edit', 'Pause']],
+      ['Claim reliability', 'Internal · claims', '0.25', '0–100', 'Active', ['Edit', 'Pause']],
+      ['Account age', 'Internal · identity', '0.15', '0–100', 'Active', ['Edit', 'Pause']],
+      ['Community trust', 'Community vouches', '0.20', '0–100', 'Active', ['Edit', 'Pause']],
+      ['Money score', 'External · pending decision', '0.10', '0–100', 'Draft', ['Edit', 'Activate']],
+      ['Penalties', 'Anti-abuse decisions', '-0.20', '0–100', 'Active', ['Edit', 'Pause']]
+    ] },
+  providers: { title: 'Providers & integrations', scope: 'manage_providers', kind: 'table', group: 'CONFIGURATION', badge: '1',
+    sub: 'Provider adapters, their scopes, circuit-breaker state and error rates.',
+    cols: ['PROVIDER', 'SCOPES', 'BREAKER', 'ERROR RATE', 'P95', ''], grid: 'minmax(0,1.1fr) minmax(0,1.5fr) minmax(0,.9fr) minmax(0,.9fr) minmax(0,.7fr) auto',
+    chips: ['All', 'Healthy', 'Degraded'], search: 'Search providers…',
+    rows: [
+      ['Discord', 'guilds.read · members.read', 'Closed', '0.4%', '180ms', ['Configure', 'Trip']],
+      ['X', 'users.read · follows.read', 'Half-open', '4.1%', '740ms', ['Configure', 'Trip']],
+      ['Telegram', 'chat.member.read', 'Closed', '0.1%', '120ms', ['Configure', 'Trip']],
+      ['Ethereum RPC', 'read.ownership', 'Closed', '0.2%', '95ms', ['Configure', 'Trip']],
+      ['Solana RPC', 'read.ownership', 'Closed', '0.6%', '210ms', ['Configure', 'Trip']],
+      ['Whop', 'membership.read', 'Closed', '0.3%', '260ms', ['Configure', 'Trip']]
+    ] },
+  audit: { title: 'Audit log', scope: 'read_audit', kind: 'table', group: 'GOVERNANCE', badge: null,
+    sub: 'Append-only record of every sensitive admin action. Entries cannot be edited or deleted.',
+    cols: ['ACTION', 'ACTOR', 'TARGET', 'WHEN', 'IP', ''], grid: 'minmax(0,1.1fr) minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,.9fr) auto',
+    chips: ['All', 'Permissions', 'Raffles', 'Billing'], search: 'Search audit entries…',
+    rows: [
+      ['RULE DISABLED', 'platform_admin', 'rule:region_block', '14 SEP 18:42Z', '51.12.x.x', ['Detail', 'Export']],
+      ['COMMUNITY APPROVED', 'reviewer_02', 'community:Cipher Collective', '14 SEP 12:03Z', '51.12.x.x', ['Detail', 'Export']],
+      ['USER SUSPENDED', 'fraud_lead', 'user:sybil_a91', '13 SEP 22:19Z', '51.12.x.x', ['Detail', 'Export']],
+      ['REFUND ISSUED', 'billing_admin', 'subscription:nova_ops', '13 SEP 09:41Z', '51.12.x.x', ['Detail', 'Export']],
+      ['ADMIN ROLE GRANTED', 'platform_admin', 'admin:reviewer_02', '11 SEP 16:00Z', '51.12.x.x', ['Detail', 'Export']],
+      ['RAFFLE FROZEN', 'platform_admin', 'raffle:Cipher Drop', '10 SEP 14:22Z', '51.12.x.x', ['Detail', 'Export']]
+    ] },
+  rules: { title: 'Rule catalog', scope: 'manage_rules_catalog', kind: 'rules', group: 'CONFIGURATION', badge: null,
+    sub: 'The centralized rule set communities choose from. Raffles snapshot the selection at creation time.' },
+  rbac: { title: 'Admin roles & RBAC', scope: 'manage_admins', kind: 'rbac', group: 'GOVERNANCE', badge: null,
+    sub: 'Admin roles are granular and enforced server-side. 2FA is mandatory for every admin account.' },
+  flags: { title: 'Platform settings', scope: 'manage_platform', kind: 'flags', group: 'GOVERNANCE', badge: null,
+    sub: 'Feature flags by roadmap phase, platform limits and maintenance mode.' }
+};
+const ORDER = ['home', 'users', 'communities', 'projects', 'raffles', 'entries', 'disputes', 'support', 'premium', 'nft', 'hiring', 'reputation', 'providers', 'rules', 'audit', 'rbac', 'flags'];
+const ADMIN_ROLES = [
+  ['super', 'Super Admin', 'ALL'],
+  ['ops', 'Operations', '9'],
+  ['fraud', 'Integrity', '6'],
+  ['billing', 'Commerce', '5']
+];
+const ROLE_SCOPES = {
+  super: null,
+  ops: ['read_dashboard', 'manage_users', 'manage_communities', 'manage_projects', 'manage_raffles', 'manage_support', 'read_audit', 'manage_providers', 'manage_rules_catalog'],
+  fraud: ['read_dashboard', 'manage_users', 'manage_fraud', 'manage_disputes', 'manage_support', 'read_audit'],
+  billing: ['read_dashboard', 'manage_billing', 'manage_benefits', 'manage_hiring_admin', 'read_audit']
+};
+const CATALOG = [
+  ['one_entry_per_user', 'One entry per user', 'ENTRY', 'A verified account holds a single entry per raffle regardless of linked wallets.', 'USED BY 284 RAFFLES', true],
+  ['wallet_uniqueness', 'Wallet uniqueness', 'ENTRY', 'Each winning wallet may appear once in a single draw result.', 'USED BY 251 RAFFLES', true],
+  ['no_duplicate_socials', 'No duplicate socials', 'ANTI-ABUSE', 'The same Discord or X identity cannot back two entries in one raffle.', 'USED BY 240 RAFFLES', true],
+  ['recheck_before_draw', 'Recheck mutable requirements', 'FAIRNESS', 'Roles, follows and holdings are re-evaluated at finalization.', 'USED BY 198 RAFFLES', true],
+  ['min_account_age', 'Minimum account age', 'ANTI-ABUSE', 'Accounts younger than the threshold cannot enter.', 'USED BY 96 RAFFLES', true],
+  ['reputation_floor', 'Reputation floor', 'ELIGIBILITY', 'Entries below the floor are rejected. Never affects odds inside a draw.', 'USED BY 61 RAFFLES', false],
+  ['region_block', 'Restricted regions', 'COMPLIANCE', 'Blocks entry from jurisdictions on the restriction list.', 'USED BY 44 RAFFLES', false],
+  ['manual_review_winners', 'Manual winner review', 'FAIRNESS', 'Winners are held for team review before publication.', 'USED BY 72 RAFFLES', true]
+];
+const FLAGS = [
+  ['feed', 'VEXUS Feed & X project updates', 'PHASE 2', 'Public project update feed sourced from linked X accounts.', false],
+  ['telegram', 'Telegram notifications', 'PHASE 2', 'Premium notification delivery over Telegram channels.', true],
+  ['hiring', 'Hiring & job applications', 'PHASE 2', 'Community job openings, applications and candidate states.', true],
+  ['advanced_notifs', 'Advanced notification routing', 'PHASE 2', 'Per-community channel routing and digest scheduling.', false],
+  ['autoregister', 'Auto-Register', 'MVP', 'Premium automation that enters matching raffles at open time.', true],
+  ['whitelabel', 'White-label communities', 'PHASE 3', 'Custom domains and branding for large communities.', false],
+  ['mobile', 'Mobile app endpoints', 'PHASE 3', 'Enables the Flutter client against the same API surface.', false],
+  ['biometric', 'Biometric session unlock', 'PHASE 3', 'Face ID / fingerprint as an added session layer on mobile.', false]
+];
+
+class Component extends DCLogic {
+  state = {
+    mod: 'home', role: 'super', query: '', chip: 'All', toast: '',
+    rules: CATALOG.reduce((a, r) => (a[r[0]] = r[5], a), {}),
+    flags: FLAGS.reduce((a, f) => (a[f[0]] = f[4], a), {}),
+    limits: { 'MAX ENTRIES / MIN / RAFFLE': '5000', 'ENTRY P95 TARGET': '300ms', 'AUTO-REGISTER / DAY': '25', 'MAX WALLETS / ACCOUNT': '10', 'MAX X ACCOUNTS': '5' },
+    maint: false
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && MODULES[h]) this.setState({ mod: h });
+  }
+  can(scope) { const s = ROLE_SCOPES[this.state.role]; return !s || s.indexOf(scope) >= 0; }
+  go(m) { this.setState({ mod: m, query: '', chip: 'All', toast: '' }); try { history.replaceState(null, '', '#' + m); } catch (e) {} }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state, mod = MODULES[S.mod] || MODULES.home;
+    const allowed = this.can(mod.scope);
+    const roleLabel = (ADMIN_ROLES.find(r => r[0] === S.role) || ADMIN_ROLES[0])[1];
+    const groups = ['OPERATIONS', 'INTEGRITY', 'COMMERCE', 'CONFIGURATION', 'GOVERNANCE'];
+
+    const rows = mod.kind === 'table' && allowed ? (mod.rows || [])
+      .filter(r => !S.query || r.slice(0, 5).join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(r => S.chip === 'All' || r.slice(0, 5).join(' ').toLowerCase().indexOf(S.chip.toLowerCase()) >= 0) : [];
+
+    return {
+      roleLabel: roleLabel.toUpperCase(),
+      adminRoles: ADMIN_ROLES.map(r => ({
+        label: r[1], n: r[2] === 'ALL' ? 'ALL 17' : r[2] + ' MODULES',
+        ink: r[0] === S.role ? '#F4EDE6' : '#8C8189',
+        bg: r[0] === S.role ? 'rgba(255,106,0,.1)' : 'transparent',
+        border: r[0] === S.role ? 'rgba(255,106,0,.35)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ role: r[0], toast: '' })
+      })),
+      navGroups: groups.map(g => ({
+        title: g,
+        items: ORDER.filter(k => MODULES[k].group === g).map(k => {
+          const m = MODULES[k], ok = this.can(m.scope);
+          return {
+            label: m.title, badge: m.badge || '', pick: () => this.go(k),
+            weight: k === S.mod ? '700' : '500',
+            ink: k === S.mod ? '#F4EDE6' : ok ? '#C6BBC1' : '#4E454C',
+            bg: k === S.mod ? 'rgba(255,106,0,.09)' : 'transparent',
+            edge: k === S.mod ? '#FF6A00' : 'transparent',
+            badgeInk: ok ? '#6E646C' : '#3A333A'
+          };
+        })
+      })),
+
+      crumb: ('SUPER ADMIN / ' + mod.group + ' / ' + mod.title).toUpperCase(),
+      title: mod.title, sub: mod.sub,
+      headActions: (allowed ? [['Export CSV', 0], ['Refresh', 1]] : [['Switch role', 1]]).map(a => ({
+        label: a[0], weight: a[1] ? '600' : '700',
+        ink: a[1] ? '#DCD2D6' : '#08060a',
+        bg: a[1] ? 'transparent' : 'linear-gradient(180deg,#FFA047,#FF6A00)',
+        border: a[1] ? 'rgba(255,255,255,.14)' : 'transparent',
+        go: a[0] === 'Switch role' ? () => this.setState({ role: 'super' })
+          : a[0] === 'Refresh' ? () => this.flash('Refreshed · live counters update over the WebSocket gateway.')
+          : () => this.flash('Export queued · ' + mod.title + ' as CSV with the current filters applied.')
+      })),
+
+      denied: !allowed, neededScope: mod.scope,
+      asSuper: () => this.setState({ role: 'super' }),
+
+      isHome: allowed && mod.kind === 'home',
+      isTable: allowed && mod.kind === 'table',
+      isRuleCatalog: allowed && mod.kind === 'rules',
+      isRbac: allowed && mod.kind === 'rbac',
+      isFlags: allowed && mod.kind === 'flags',
+
+      kpis: [
+        { v: '3,912', l: 'ACTIVE USERS NOW', d: 'WEBSOCKET LIVE', dInk: '#00D6B4' },
+        { v: '87', l: 'RAFFLES RUNNING', d: '12 END IN 24H', dInk: '#FFB061' },
+        { v: '42,118', l: 'TOTAL ACCOUNTS', d: '+1,204 THIS WEEK', dInk: '#00D6B4' },
+        { v: '318', l: 'COMMUNITIES', d: '2 IN REVIEW', dInk: '#FFB061' },
+        { v: '0.31%', l: 'FRAUD RATE · 24H', d: 'WITHIN THRESHOLD', dInk: '#00D6B4' },
+        { v: '$182K', l: 'PREMIUM MRR', d: '+6.4% MOM', dInk: '#00D6B4' },
+        { v: '214ms', l: 'ENTRY P95', d: 'TARGET 300MS', dInk: '#00D6B4' },
+        { v: '3', l: 'OPEN DISPUTES', d: '1 AWAITING RECOMPUTE', dInk: '#FF6A6A' }
+      ],
+      queueCount: 6,
+      queue: [
+        { icon: '◈', title: 'Cipher Collective awaiting verification review', meta: 'COMMUNITY · SUBMITTED 2D AGO', cta: 'REVIEW', ink: '#FFB061', bg: 'rgba(255,106,0,.1)', go: () => this.go('communities') },
+        { icon: '!', title: 'Dispute D-118 needs a recomputation', meta: 'CIPHER DROP · CLAIMS SEED MISMATCH', cta: 'RECOMPUTE', ink: '#FF3C00', bg: 'rgba(255,60,0,.12)', go: () => this.go('disputes') },
+        { icon: '◉', title: 'Sybil cluster · 14 accounts, one wallet graph', meta: 'HIGH CONFIDENCE · GENESIS FOUNDERS PASS', cta: 'DECIDE', ink: '#FF3C00', bg: 'rgba(255,60,0,.12)', go: () => this.go('entries') },
+        { icon: '◵', title: 'X provider breaker is half-open', meta: 'ERROR RATE 4.1% · P95 740MS', cta: 'INSPECT', ink: '#FFB061', bg: 'rgba(255,106,0,.1)', go: () => this.go('providers') },
+        { icon: '◆', title: '2 ownership transfers pending identity checks', meta: 'SUPPORT · BOTH PARTIES MUST CONFIRM', cta: 'OPEN', ink: '#5ef2d6', bg: 'rgba(0,214,180,.1)', go: () => this.go('support') },
+        { icon: '◷', title: 'Nova Syndicate subscription past due 4 days', meta: 'BILLING · $29 MRR AT RISK', cta: 'RETRY', ink: '#FFB061', bg: 'rgba(255,106,0,.1)', go: () => this.go('premium') }
+      ],
+      bars: [420, 510, 380, 290, 240, 260, 340, 520, 760, 980, 1120, 940, 880, 910, 1040, 1180, 1320, 1240, 1080, 940, 820, 700, 580, 470].map((v, i) => ({
+        h: Math.round(v / 1320 * 100) + '%',
+        title: String(i).padStart(2, '0') + ':00Z · ' + (v * 8.5).toFixed(0) + ' entries',
+        bg: v > 1100 ? 'linear-gradient(180deg,#FFA047,#FF3C00)' : 'rgba(255,106,0,.32)'
+      })),
+      services: [
+        { name: 'Auth Service', state: 'OK', ink: '#00D6B4' },
+        { name: 'Core API', state: 'OK', ink: '#00D6B4' },
+        { name: 'Raffle Engine', state: 'OK', ink: '#00D6B4' },
+        { name: 'Requirement Engine', state: 'OK', ink: '#00D6B4' },
+        { name: 'Verification Workers', state: 'DEGRADED · X', ink: '#FFB061' },
+        { name: 'Notification Engine', state: 'OK', ink: '#00D6B4' },
+        { name: 'Reputation Engine', state: 'OK', ink: '#00D6B4' },
+        { name: 'WebSocket Gateway', state: 'OK', ink: '#00D6B4' }
+      ],
+      fraud: [
+        { k: 'SYBIL CLUSTERS DETECTED', v: '3', ink: '#FF6A6A' },
+        { k: 'ENTRIES BLOCKED BY DEDUP', v: '412', ink: '#FFB061' },
+        { k: 'CAPTCHA FAILURES', v: '1,806', ink: '#DCD2D6' },
+        { k: 'RATE-LIMITED IPS', v: '94', ink: '#DCD2D6' },
+        { k: 'ACCOUNTS SUSPENDED', v: '7', ink: '#FF6A6A' }
+      ],
+
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      searchHint: mod.search || 'Search…',
+      chips: (mod.chips || ['All']).map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      cols: mod.cols || [], gridCols: mod.grid || '1fr',
+      rows: rows.map(r => ({
+        cells: r.slice(0, 5).map((c, j) => ({
+          v: c,
+          font: j === 0 ? "'Space Grotesk',sans-serif" : "'JetBrains Mono',monospace",
+          weight: j === 0 ? '600' : '400',
+          ink: j === 0 ? '#F4EDE6'
+            : /active|verified|ok|closed|resolved|healthy/i.test(c) ? '#00D6B4'
+            : /review|verifying|pending|past due|half-open|open|ended|medium|draft/i.test(c) ? '#FFB061'
+            : /suspended|disputed|high|overdue|archived|cancelled/i.test(c) ? '#FF6A6A' : '#8C8189'
+        })),
+        actions: (r[5] || []).map((a, k) => ({
+          label: a.toUpperCase(),
+          ink: k === 0 ? '#FFB061' : '#8C8189',
+          border: k === 0 ? 'rgba(255,106,0,.3)' : 'rgba(255,255,255,.12)',
+          go: () => this.flash(a + ' · ' + r[0] + ' → action recorded in the audit log with actor platform_admin.')
+        }))
+      })),
+      tableEmpty: mod.kind === 'table' && allowed && rows.length === 0,
+      tableFoot: mod.kind === 'table' ? (rows.length + ' OF ' + (mod.rows || []).length + ' RECORDS · SCOPE ' + mod.scope).toUpperCase() : '',
+      exportCsv: () => this.flash('Export queued · CSV and Excel are both available for this table.'),
+
+      catalog: CATALOG.map(r => {
+        const on = !!S.rules[r[0]];
+        return {
+          name: r[1], scope: r[2], desc: r[3], usage: r[4],
+          border: on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.016)',
+          swBg: on ? 'rgba(0,214,180,.22)' : 'rgba(255,255,255,.05)',
+          swBorder: on ? 'rgba(0,214,180,.5)' : 'rgba(255,255,255,.14)',
+          knob: on ? '20px' : '2px', knobBg: on ? '#00D6B4' : '#6E646C',
+          toggle: () => this.setState(st => ({
+            rules: Object.assign({}, st.rules, { [r[0]]: !st.rules[r[0]] }),
+            toast: r[1] + (st.rules[r[0]] ? ' disabled' : ' enabled') + ' · existing raffle snapshots are unaffected.'
+          }))
+        };
+      }),
+      propagation: [
+        { k: 'NEW RAFFLES', v: 'IMMEDIATE' }, { k: 'ACTIVE RAFFLES', v: 'SNAPSHOT PRESERVED' },
+        { k: 'FINALIZED RAFFLES', v: 'NEVER CHANGED' }, { k: 'COMMUNITIES NOTIFIED', v: 'YES · IN-APP' }
+      ],
+
+      rbacHead: ADMIN_ROLES.map(r => r[1].toUpperCase()),
+      rbacRows: ORDER.map(k => ({
+        label: MODULES[k].title, scope: MODULES[k].scope,
+        cells: ADMIN_ROLES.map(r => {
+          const s = ROLE_SCOPES[r[0]];
+          const ok = !s || s.indexOf(MODULES[k].scope) >= 0;
+          return { v: ok ? '●' : '—', ink: ok ? '#00D6B4' : '#3A333A' };
+        })
+      })),
+
+      flags: FLAGS.map(f => {
+        const on = !!S.flags[f[0]];
+        return {
+          name: f[1], phase: f[2], desc: f[3],
+          phaseInk: f[2] === 'MVP' ? '#00D6B4' : f[2] === 'PHASE 2' ? '#FFB061' : '#8C8189',
+          phaseBorder: f[2] === 'MVP' ? 'rgba(0,214,180,.3)' : f[2] === 'PHASE 2' ? 'rgba(255,106,0,.3)' : 'rgba(255,255,255,.12)',
+          border: on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.016)',
+          swBg: on ? 'rgba(0,214,180,.22)' : 'rgba(255,255,255,.05)',
+          swBorder: on ? 'rgba(0,214,180,.5)' : 'rgba(255,255,255,.14)',
+          knob: on ? '20px' : '2px', knobBg: on ? '#00D6B4' : '#6E646C',
+          toggle: () => this.setState(st => ({
+            flags: Object.assign({}, st.flags, { [f[0]]: !st.flags[f[0]] }),
+            toast: f[1] + (st.flags[f[0]] ? ' disabled' : ' enabled') + ' platform-wide.'
+          }))
+        };
+      }),
+      limits: Object.keys(S.limits).map(k => ({
+        k: k, v: S.limits[k],
+        set: e => this.setState(st => ({ limits: Object.assign({}, st.limits, { [k]: e.target.value }) }))
+      })),
+      saveFlags: () => this.flash('Configuration applied · audit entry written, workers reload within 30s.'),
+      maintLabel: S.maint ? 'Maintenance mode ACTIVE · disable' : 'Enable maintenance mode',
+      maintInk: S.maint ? '#08060a' : '#FF6A6A',
+      maintBg: S.maint ? 'linear-gradient(180deg,#FF6A6A,#FF3C00)' : 'transparent',
+      maintenance: () => this.setState(st => ({
+        maint: !st.maint,
+        toast: st.maint ? 'Maintenance mode disabled · entries accepted again.' : 'Maintenance mode enabled · new entries frozen, public pages still readable.'
+      })),
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

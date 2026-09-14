@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .ca-k { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+  .ca-s { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .ca-c { display:grid; grid-template-columns:repeat(auto-fit,minmax(288px,1fr)); gap:16px; }
+  .ca-f { display:grid; grid-template-columns:repeat(auto-fit,minmax(238px,1fr)); gap:16px; }
+  @media (max-width:980px){ .ca-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="community-admin" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html" class="on">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <div style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:22px 34px 0;display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#6E646C;flex-wrap:wrap;">
+    <a href="index.html" style="color:#6E646C;">HOME</a><span>/</span><a href="communities.dc.html" style="color:#6E646C;">COMMUNITIES</a><span>/</span><a href="community.dc.html" style="color:#6E646C;">ARCFORGE</a><span>/</span><span style="color:#FF8A33;">{{ crumb }}</span>
+  </div>
+
+  <section style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;padding:24px 0 20px;">
+      <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+        <span style="width:56px;height:56px;flex:none;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#FFA047,#FF3C00);font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:19px;color:#08060a;">AC</span>
+        <div style="min-width:0;">
+          <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+            <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(23px,2.5vw,33px);letter-spacing:-.01em;margin:0;">ARCforge Community</h1>
+            <span title="Verified" style="color:#00D6B4;font-size:13px;">◈</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#FFB061;padding:4px 8px;border:1px solid rgba(255,106,0,.35);border-radius:5px;background:rgba(255,106,0,.07);">PREMIUM ACTIVE</span>
+          </div>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:#6E646C;">
+            <span>12,417 MEMBERS</span><span>6 PROJECTS</span><span>4 ACTIVE RAFFLES</span><span>9 TEAM</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a href="community.dc.html" style="min-height:42px;display:inline-flex;align-items:center;padding:11px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">View public page</a>
+        <a href="raffle-admin.dc.html#create" style="min-height:42px;display:inline-flex;align-items:center;padding:11px 18px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:10px;">+ Create raffle</a>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 17px;border:1px solid rgba(255,106,0,.26);border-radius:13px;background:rgba(255,106,0,.05);margin-bottom:18px;">
+      <div style="min-width:0;">
+        <div style="font-size:14px;font-weight:600;color:#F4EDE6;">Acting as {{ roleName }} · {{ capCount }} of 16 capabilities</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#8C8189;margin-top:5px;">{{ roleNote }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;">VIEW AS</span>
+        <sc-for list="{{ roleChips }}" as="r" hint-placeholder-count="6">
+          <button onClick="{{ r.pick }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ r.ink }};background:{{ r.bg }};border:1px solid {{ r.border }};border-radius:99px;cursor:pointer;">{{ r.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="13">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ blocked }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:46px 32px;border:1px solid rgba(255,60,0,.3);border-radius:18px;background:linear-gradient(160deg,rgba(255,60,0,.08),transparent 65%);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF3C00;margin-bottom:14px;">403 · CAPABILITY REQUIRED</div>
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:25px;margin:0 0 12px;">{{ roleName }} cannot open {{ blockedLabel }}</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:#9B8F96;max-width:520px;margin:0 auto 22px;text-wrap:pretty;">This section needs the <b style="color:#FFB061;">{{ blockedCap }}</b> scope. Permissions are enforced server-side per community, so the section is unreachable — not merely hidden — for roles without it.</p>
+        <div style="display:flex;gap:11px;justify-content:center;flex-wrap:wrap;">
+          <button onClick="{{ asFounder }}" style="min-height:44px;padding:12px 20px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">View as Founder</button>
+          <button onClick="{{ goRoles }}" style="min-height:44px;padding:12px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;">See capability matrix</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <div class="ca-k vx-stagger" style="margin-bottom:18px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+          <div class="vx-spot" style="background:#0b080d;padding:18px 16px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#F4EDE6;">{{ k.v }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;color:#6E646C;margin-top:7px;">{{ k.l }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:{{ k.dInk }};margin-top:6px;">{{ k.d }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div class="ca-s">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">NEEDS YOUR ATTENTION</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#FF8A33;">{{ attCount }} OPEN</span>
+            </div>
+            <sc-for list="{{ attention }}" as="a" hint-placeholder-count="4">
+              <button onClick="{{ a.go }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:14px;padding:15px 19px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:transparent;cursor:pointer;" style-hover="background:rgba(255,106,0,.05)">
+                <span style="width:28px;height:28px;flex:none;display:grid;place-items:center;border-radius:8px;background:{{ a.bg }};color:{{ a.ink }};font-size:12px;">{{ a.icon }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:14px;font-weight:600;color:#DCD2D6;">{{ a.title }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-top:5px;">{{ a.meta }}</span>
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:10px;color:{{ a.ink }};">{{ a.cta }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">RAFFLE LIFECYCLE NOW</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:1px;background:rgba(255,255,255,.06);">
+              <sc-for list="{{ lifecycle }}" as="s" hint-placeholder-count="6">
+                <div style="background:#0b080d;padding:16px 13px;">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:{{ s.ink }};">{{ s.v }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#6E646C;margin-top:7px;">{{ s.l }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:#6E646C;margin-bottom:14px;">QUICK ACTIONS</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:9px;">
+              <sc-for list="{{ quick }}" as="q" hint-placeholder-count="6">
+                <button onClick="{{ q.go }}" style="min-height:44px;display:flex;align-items:center;padding:12px;font-size:13px;font-weight:600;text-align:left;color:{{ q.ink }};background:{{ q.bg }};border:1px solid {{ q.border }};border-radius:10px;cursor:pointer;">{{ q.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.65;letter-spacing:.06em;color:#4E454C;margin-top:14px;">DIMMED ACTIONS SIT OUTSIDE THIS ROLE'S SCOPE.</div>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">LATEST AUDIT ENTRIES</span>
+              <button onClick="{{ goAudit }}" style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#6E646C;background:transparent;border:0;cursor:pointer;">ALL →</button>
+            </div>
+            <sc-for list="{{ auditPeek }}" as="a" hint-placeholder-count="5">
+              <div style="padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="font-size:13px;color:#C6BBC1;line-height:1.5;">{{ a.text }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;margin-top:5px;">{{ a.meta }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px;">
+        <div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">{{ tTitle }}</h2>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:620px;margin:0;text-wrap:pretty;">{{ tSub }}</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <sc-for list="{{ tActions }}" as="a" hint-placeholder-count="2">
+            <button onClick="{{ a.go }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:{{ a.ink }};background:{{ a.bg }};border:1px solid {{ a.border }};border-radius:10px;cursor:pointer;">{{ a.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="{{ searchHint }}" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+        <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <button onClick="{{ r.go }}" style="display:grid;width:100%;text-align:left;align-items:center;gap:14px;grid-template-columns:{{ gridCols }};padding:15px 19px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:transparent;cursor:pointer;" style-hover="background:rgba(255,106,0,.045)">
+            <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+              <span style="display:block;min-width:0;">
+                <span style="display:block;font-family:{{ c.font }};font-size:13.5px;font-weight:{{ c.weight }};color:{{ c.ink }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.v }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ c.sub }}</span>
+              </span>
+            </sc-for>
+          </button>
+        </sc-for>
+        <sc-if value="{{ tEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:42px 22px;text-align:center;">
+            <div style="font-size:15px;font-weight:600;color:#DCD2D6;margin-bottom:9px;">Nothing matches this filter</div>
+            <p style="font-size:13.5px;color:#8C8189;margin:0 0 18px;">Clear the search and filter to see every record in this directory.</p>
+            <button onClick="{{ clear }}" style="min-height:40px;padding:11px 18px;font-size:13.5px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.35);border-radius:9px;cursor:pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;margin-top:13px;">{{ tFoot }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isRoles }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Roles &amp; permissions</h2>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:640px;margin:0;text-wrap:pretty;">Capability scopes are granted per community and enforced server-side. Every grant or revoke appends an entry to the audit log.</p>
+        </div>
+        <button onClick="{{ newRole }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:{{ newRoleInk }};background:{{ newRoleBg }};border:1px solid {{ newRoleBorder }};border-radius:10px;cursor:pointer;">+ Create custom role</button>
+      </div>
+      <div class="ca-c vx-stagger" style="margin-bottom:24px;">
+        <sc-for list="{{ roleCards }}" as="r" hint-placeholder-count="6">
+          <div class="vx-spot" style="padding:19px;border:1px solid {{ r.border }};border-radius:15px;background:{{ r.bg }};">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:17px;color:#F4EDE6;">{{ r.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ r.tagInk }};padding:4px 8px;border:1px solid {{ r.tagBorder }};border-radius:5px;">{{ r.tag }}</span>
+            </div>
+            <p style="font-size:13px;line-height:1.55;color:#8C8189;margin:0 0 13px;min-height:58px;">{{ r.desc }}</p>
+            <div style="display:flex;gap:12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#6E646C;margin-bottom:14px;">
+              <span>{{ r.caps }} CAPABILITIES</span><span>{{ r.members }} MEMBERS</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button onClick="{{ r.open }}" style="flex:1;min-height:38px;padding:10px;font-size:13px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:9px;cursor:pointer;">Edit scopes</button>
+              <button onClick="{{ r.view }}" style="flex:1;min-height:38px;padding:10px;font-size:13px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.32);border-radius:9px;cursor:pointer;">View as</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:auto;">
+        <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">CAPABILITY MATRIX · 16 SCOPES</div>
+        <div style="min-width:780px;">
+          <div style="display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(6,minmax(82px,1fr));gap:10px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">CAPABILITY</div>
+            <sc-for list="{{ matrixHead }}" as="h" hint-placeholder-count="6">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.09em;color:#4E454C;text-align:center;">{{ h }}</div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ matrix }}" as="m" hint-placeholder-count="16">
+            <div style="display:grid;grid-template-columns:minmax(220px,1.6fr) repeat(6,minmax(82px,1fr));gap:10px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.04);">
+              <div>
+                <div style="font-size:13.5px;color:#DCD2D6;">{{ m.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;margin-top:4px;">{{ m.key }}</div>
+              </div>
+              <sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="6">
+                <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ c.ink }};">{{ c.v }}</div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRoleEditor }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ goRoles }}" style="display:inline-flex;align-items:center;gap:8px;min-height:36px;margin-bottom:18px;padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:8px;cursor:pointer;">← ROLES &amp; PERMISSIONS</button>
+      <div class="ca-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 7px;">{{ editorTitle }}</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#8C8189;margin:0 0 20px;">Name the role, then grant the exact capability scopes. Unchecked scopes are refused server-side, not just hidden in the UI.</p>
+          <label style="display:block;margin-bottom:20px;">
+            <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">ROLE NAME</span>
+            <input value="{{ roleForm }}" onInput="{{ onRoleName }}" placeholder="e.g. Collab Manager" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+          </label>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:11px;">CAPABILITY SCOPES · {{ grantedCount }} GRANTED</div>
+          <div style="display:flex;flex-direction:column;gap:7px;">
+            <sc-for list="{{ capList }}" as="c" hint-placeholder-count="16">
+              <button onClick="{{ c.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:12px 14px;border:1px solid {{ c.border }};border-radius:10px;background:{{ c.bg }};cursor:pointer;">
+                <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ c.dot }};color:{{ c.dot }};font-size:10px;font-weight:700;">{{ c.mark }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ c.label }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:4px;">{{ c.key }} · {{ c.risk }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;">
+            <button onClick="{{ saveRole }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Save role</button>
+            <button onClick="{{ goRoles }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:11px;cursor:pointer;">Cancel</button>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">AUDITED CHANGES</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Each grant records actor, target, before/after value and timestamp. Entries are append-only — never edited or deleted.</p>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">MEMBERS WITH THIS ROLE</div>
+            <sc-for list="{{ roleMembers }}" as="m" hint-placeholder-count="3">
+              <button onClick="{{ m.go }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:12px;padding:13px 19px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:transparent;cursor:pointer;">
+                <span style="width:30px;height:30px;flex:none;border-radius:99px;display:grid;place-items:center;background:{{ m.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:11px;color:#08060a;">{{ m.initials }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ m.name }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:4px;">{{ m.meta }}</span>
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:10px;color:#6E646C;">→</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMember }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ goTeam }}" style="display:inline-flex;align-items:center;gap:8px;min-height:36px;margin-bottom:18px;padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:8px;cursor:pointer;">← TEAM</button>
+      <div class="ca-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:20px;">
+            <span style="width:54px;height:54px;flex:none;border-radius:99px;display:grid;place-items:center;background:linear-gradient(135deg,#5ef2d6,#00806c);font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:18px;color:#08060a;">{{ mInitials }}</span>
+            <div style="min-width:0;">
+              <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:23px;margin:0 0 7px;">{{ mName }}</h2>
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:#6E646C;">
+                <span style="color:#FFB061;padding:4px 8px;border:1px solid rgba(255,106,0,.32);border-radius:5px;">{{ mRole }}</span><span>{{ mMeta }}</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:11px;">GRANTED CAPABILITIES</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
+            <sc-for list="{{ memberCaps }}" as="c" hint-placeholder-count="8">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:{{ c.ink }};padding:6px 10px;border:1px solid {{ c.border }};border-radius:6px;background:{{ c.bg }};">{{ c.label }}</span>
+            </sc-for>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:11px;">ACTIVITY IN THIS COMMUNITY</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ memberActivity }}" as="a" hint-placeholder-count="4">
+              <div style="padding:13px 15px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:rgba(255,255,255,.02);">
+                <div style="font-size:13.5px;line-height:1.5;color:#C6BBC1;">{{ a.text }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#4E454C;margin-top:5px;">{{ a.meta }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:14px;">MANAGEMENT ACTIONS</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ memberActions }}" as="a" hint-placeholder-count="5">
+                <button onClick="{{ a.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:46px;padding:13px 15px;font-size:13.5px;font-weight:600;text-align:left;color:{{ a.ink }};background:{{ a.bg }};border:1px solid {{ a.border }};border-radius:10px;cursor:pointer;">
+                  <span>{{ a.label }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;">{{ a.note }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">OWNERSHIP &amp; RECOVERY</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0;">Ownership transfer is explicit and audited, requires confirmation from both accounts, and recovery runs through support with identity verification.</p>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isInvite }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ goTeam }}" style="display:inline-flex;align-items:center;gap:8px;min-height:36px;margin-bottom:18px;padding:9px 13px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:8px;cursor:pointer;">← TEAM</button>
+      <div class="ca-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 7px;">Invite a team member</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#8C8189;margin:0 0 20px;">Invitations expire, can be cancelled and resent, and grant exactly the scopes of the selected role.</p>
+          <div class="ca-f" style="margin-bottom:18px;">
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">INVITEE · HANDLE, EMAIL OR DISCORD</span>
+              <input value="{{ inviteWho }}" onInput="{{ onInviteWho }}" placeholder="@handle / name@mail.com" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">EXPIRES IN</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <sc-for list="{{ inviteExpiry }}" as="e" hint-placeholder-count="3">
+                  <button onClick="{{ e.pick }}" style="flex:1;min-height:44px;padding:12px 10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:{{ e.ink }};background:{{ e.bg }};border:1px solid {{ e.border }};border-radius:10px;cursor:pointer;">{{ e.label }}</button>
+                </sc-for>
+              </div>
+            </label>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">ROLE</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:8px;margin-bottom:20px;">
+            <sc-for list="{{ inviteRoles }}" as="r" hint-placeholder-count="6">
+              <button onClick="{{ r.pick }}" style="text-align:left;min-height:62px;padding:13px;color:{{ r.ink }};background:{{ r.bg }};border:1px solid {{ r.border }};border-radius:11px;cursor:pointer;">
+                <span style="display:block;font-size:13.5px;font-weight:600;">{{ r.label }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:6px;">{{ r.caps }} CAPABILITIES</span>
+              </button>
+            </sc-for>
+          </div>
+          <button onClick="{{ sendInvite }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Send invitation</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;">
+            <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">PENDING INVITATIONS</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#FF8A33;">{{ pendingCount }}</span>
+          </div>
+          <sc-for list="{{ pending }}" as="p" hint-placeholder-count="3">
+            <div style="padding:15px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <div style="min-width:0;">
+                  <div style="font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ p.who }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ p.meta }}</div>
+                </div>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:{{ p.ink }};padding:4px 8px;border:1px solid {{ p.border }};border-radius:5px;">{{ p.state }}</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:12px;">
+                <button onClick="{{ p.resend }}" style="flex:1;min-height:36px;padding:9px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#FFB061;background:rgba(255,106,0,.07);border:1px solid rgba(255,106,0,.28);border-radius:8px;cursor:pointer;">RESEND</button>
+                <button onClick="{{ p.cancel }}" style="flex:1;min-height:36px;padding:9px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:8px;cursor:pointer;">CANCEL</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:20px;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Community rules</h2>
+        <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:700px;margin:0;text-wrap:pretty;">Rules come from the centralized platform Rule Catalog managed by the Outlaws team. A community selects which rules it operates under; every raffle stores a snapshot at creation time, so later rule changes never rewrite the history of a finished draw.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px;">
+        <sc-for list="{{ rules }}" as="r" hint-placeholder-count="8">
+          <div style="display:flex;align-items:center;gap:15px;padding:16px 18px;border:1px solid {{ r.border }};border-radius:13px;background:{{ r.bg }};flex-wrap:wrap;">
+            <button onClick="{{ r.toggle }}" aria-label="Toggle rule" style="width:42px;height:24px;flex:none;padding:0;border:1px solid {{ r.swBorder }};border-radius:99px;background:{{ r.swBg }};cursor:pointer;position:relative;">
+              <span style="position:absolute;top:2px;left:{{ r.knob }};width:18px;height:18px;border-radius:99px;background:{{ r.knobBg }};transition:left .2s;"></span>
+            </button>
+            <div style="flex:1;min-width:200px;">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                <span style="font-size:14.5px;font-weight:600;color:#DCD2D6;">{{ r.name }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:#8C8189;padding:3px 7px;border:1px solid rgba(255,255,255,.12);border-radius:4px;">{{ r.scope }}</span>
+              </div>
+              <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:6px;">{{ r.desc }}</div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;">{{ r.usage }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:15px;background:rgba(0,214,180,.04);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:11px;">SNAPSHOT BEHAVIOUR</div>
+        <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Raffle created 04 Sep 2026 → snapshot <b style="font-family:'JetBrains Mono',monospace;color:#5ef2d6;">rules@2026-09-04T18:22Z</b> · {{ activeRuleCount }} rules · hash 7c1f…a904. The snapshot attaches to the raffle record and publishes with its fairness evidence.</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTemplates }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Community templates</h2>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">Save a raffle configuration once, then publish new raffles by changing only the variables. Community templates and project templates stay distinct.</p>
+        </div>
+        <a href="raffle-admin.dc.html#templates" style="min-height:42px;display:inline-flex;align-items:center;padding:11px 17px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:10px;">Open template editor</a>
+      </div>
+      <div class="ca-c vx-stagger">
+        <sc-for list="{{ templates }}" as="t" hint-placeholder-count="4">
+          <div class="vx-spot" style="display:flex;flex-direction:column;padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:15px;background:rgba(255,255,255,.016);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16.5px;">{{ t.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ t.kindInk }};padding:4px 8px;border:1px solid {{ t.kindBorder }};border-radius:5px;">{{ t.kind }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
+              <sc-for list="{{ t.fields }}" as="f" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;">
+                  <span style="color:#6E646C;">{{ f.k }}</span><span style="color:#DCD2D6;">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;margin-bottom:14px;">{{ t.usage }}</div>
+            <div style="display:flex;gap:8px;margin-top:auto;">
+              <a href="raffle-admin.dc.html#create" style="flex:1;min-height:40px;display:flex;align-items:center;justify-content:center;padding:11px;font-size:13px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:9px;">Use template</a>
+              <a href="raffle-admin.dc.html#templates" style="flex:none;min-height:40px;display:flex;align-items:center;justify-content:center;padding:11px 14px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:9px;">Edit</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isIntegrations }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:20px;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Integrations</h2>
+        <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">Each provider connects with the narrowest scope that satisfies requirement checks. Scopes stay isolated per provider — nothing is requested that the community does not use.</p>
+      </div>
+      <div class="ca-c vx-stagger">
+        <sc-for list="{{ integrations }}" as="i" hint-placeholder-count="6">
+          <div class="vx-spot" style="display:flex;flex-direction:column;padding:19px;border:1px solid {{ i.border }};border-radius:15px;background:{{ i.bg }};">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:13px;">
+              <span style="width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ i.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13px;color:#08060a;">{{ i.tag }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:15px;font-weight:600;color:#F4EDE6;">{{ i.name }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:{{ i.stateInk }};margin-top:5px;">{{ i.state }}</div>
+              </div>
+            </div>
+            <div style="font-size:12.5px;line-height:1.55;color:#8C8189;margin-bottom:13px;">{{ i.desc }}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:15px;">
+              <sc-for list="{{ i.scopes }}" as="s" hint-placeholder-count="3">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#8C8189;padding:4px 8px;border:1px solid rgba(255,255,255,.11);border-radius:5px;">{{ s }}</span>
+              </sc-for>
+            </div>
+            <button onClick="{{ i.go }}" style="margin-top:auto;min-height:42px;padding:12px;font-size:13.5px;font-weight:600;color:{{ i.ctaInk }};background:{{ i.ctaBg }};border:1px solid {{ i.ctaBorder }};border-radius:10px;cursor:pointer;">{{ i.cta }}</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isNotif }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:20px;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Community notifications</h2>
+        <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">Which events this community broadcasts, and on which channels. Discord DM and Telegram require the matching integration and a Premium community.</p>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:auto;">
+        <div style="min-width:660px;">
+          <div style="display:grid;grid-template-columns:minmax(200px,1.5fr) repeat(4,minmax(86px,1fr));gap:10px;padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">EVENT</div>
+            <sc-for list="{{ channels }}" as="c" hint-placeholder-count="4">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;text-align:center;">{{ c }}</div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ notifRows }}" as="n" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:minmax(200px,1.5fr) repeat(4,minmax(86px,1fr));gap:10px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;">
+              <div>
+                <div style="font-size:13.5px;color:#DCD2D6;">{{ n.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;margin-top:4px;">{{ n.key }}</div>
+              </div>
+              <sc-for list="{{ n.cells }}" as="c" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:center;">
+                  <button onClick="{{ c.toggle }}" title="{{ c.title }}" style="width:34px;height:34px;display:grid;place-items:center;border:1px solid {{ c.border }};border-radius:9px;background:{{ c.bg }};color:{{ c.ink }};font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">{{ c.mark }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div class="ca-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 7px;">Community settings</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#8C8189;margin:0 0 20px;">Identity, description and visibility. Changes are audited and visible to everyone holding the manage-community scope.</p>
+          <div class="ca-f" style="margin-bottom:18px;">
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">COMMUNITY NAME</span>
+              <input value="{{ cName }}" onInput="{{ onCName }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">HANDLE</span>
+              <input value="{{ cHandle }}" onInput="{{ onCHandle }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+          </div>
+          <label style="display:block;margin-bottom:18px;">
+            <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">DESCRIPTION</span>
+            <textarea onInput="{{ onCDesc }}" style="width:100%;min-height:94px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;line-height:1.55;outline:none;resize:vertical;" style-focus="border-color:rgba(255,106,0,.55)">{{ cDesc }}</textarea>
+          </label>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">VISIBILITY</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+            <sc-for list="{{ visibility }}" as="v" hint-placeholder-count="3">
+              <button onClick="{{ v.pick }}" style="flex:1;min-width:148px;text-align:left;min-height:64px;padding:13px;color:{{ v.ink }};background:{{ v.bg }};border:1px solid {{ v.border }};border-radius:11px;cursor:pointer;">
+                <span style="display:block;font-size:13.5px;font-weight:600;">{{ v.label }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#6E646C;margin-top:6px;">{{ v.note }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <button onClick="{{ saveSettings }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Save changes</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">PREMIUM ENTITLEMENT</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 14px;">Community creation and team management require an active Premium subscription. Premium grants software capabilities only — it never changes winning odds.</p>
+            <a href="premium.dc.html" style="display:flex;align-items:center;justify-content:center;min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:#FFB061;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.32);border-radius:10px;">Manage subscription</a>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,60,0,.28);border-radius:16px;background:rgba(255,60,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF3C00;margin-bottom:12px;">DANGER ZONE</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">Archiving hides the community from discovery and freezes new entries. Raffle history, winners and fairness evidence are never deleted.</p>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <button onClick="{{ archive }}" style="min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:{{ dangerInk }};background:transparent;border:1px solid {{ dangerBorder }};border-radius:10px;cursor:pointer;">Archive community</button>
+              <button onClick="{{ archive }}" style="min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:{{ dangerInk }};background:transparent;border:1px solid {{ dangerBorder }};border-radius:10px;cursor:pointer;">Request deletion review</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isCreate }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:960px;">
+        <div style="margin-bottom:20px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF6A00;margin-bottom:12px;">CREATE COMMUNITY · STEP {{ stepNo }} OF 3</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(25px,3vw,36px);line-height:1.06;margin:0 0 12px;">{{ stepTitle }}</h2>
+          <p style="font-size:15px;line-height:1.6;color:#9B8F96;max-width:620px;margin:0;text-wrap:pretty;">{{ stepSub }}</p>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap;">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.pick }}" style="flex:1;min-width:168px;text-align:left;padding:13px 15px;border:1px solid {{ s.border }};border-radius:12px;background:{{ s.bg }};cursor:pointer;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:{{ s.numInk }};">{{ s.num }}</span>
+              <span style="display:block;font-size:13.5px;font-weight:600;color:{{ s.ink }};margin-top:7px;">{{ s.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ premiumGate }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap;padding:17px 19px;border:1px solid rgba(255,106,0,.32);border-radius:13px;background:rgba(255,106,0,.06);margin-bottom:18px;">
+            <div style="flex:1;min-width:210px;">
+              <div style="font-size:14px;font-weight:600;color:#F4EDE6;">Creating a community requires Premium</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#8C8189;margin-top:5px;">THE BUTTON IS VISIBLE TO EVERYONE · PUBLISHING IS GATED</div>
+            </div>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;">
+              <a href="premium.dc.html" style="min-height:40px;display:inline-flex;align-items:center;padding:11px 16px;font-size:13px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:9px;">Go Premium</a>
+              <button onClick="{{ fakePremium }}" style="min-height:40px;padding:11px 15px;font-size:13px;font-weight:600;color:#FFB061;background:transparent;border:1px solid rgba(255,106,0,.32);border-radius:9px;cursor:pointer;">Preview as Premium</button>
+            </div>
+          </div>
+        </sc-if>
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+            <div class="ca-f" style="margin-bottom:18px;">
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">COMMUNITY NAME</span>
+                <input value="{{ newName }}" onInput="{{ onNewName }}" placeholder="e.g. Northstar Collective" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">HANDLE</span>
+                <input value="{{ newHandle }}" onInput="{{ onNewHandle }}" placeholder="northstar" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">CATEGORY</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
+              <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.pick }}" style="min-height:44px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:1px solid {{ c.border }};border-radius:10px;cursor:pointer;">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">WHAT THIS COMMUNITY DOES</span>
+              <textarea onInput="{{ onNewDesc }}" placeholder="One or two sentences members read before joining…" style="width:100%;min-height:94px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;line-height:1.55;outline:none;resize:vertical;" style-focus="border-color:rgba(255,106,0,.55)">{{ newDesc }}</textarea>
+            </label>
+          </sc-if>
+          <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:11px;">PLATFORM RULES THIS COMMUNITY OPERATES UNDER</div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px;">
+              <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+                <button onClick="{{ r.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ r.border }};border-radius:11px;background:{{ r.bg }};cursor:pointer;">
+                  <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ r.swBorder }};color:{{ r.knobBg }};font-size:10px;font-weight:700;">{{ r.mark }}</span>
+                  <span style="flex:1;min-width:0;">
+                    <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ r.name }}</span>
+                    <span style="display:block;font-size:12px;color:#8C8189;margin-top:5px;line-height:1.5;">{{ r.desc }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">STARTING TEAM · OPTIONAL</div>
+            <input value="{{ inviteWho }}" onInput="{{ onInviteWho }}" placeholder="Invite handles, comma separated" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+          </sc-if>
+          <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+              <sc-for list="{{ review }}" as="r" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(255,255,255,.02);flex-wrap:wrap;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:#6E646C;">{{ r.k }}</span>
+                  <span style="font-size:13.5px;font-weight:600;color:{{ r.ink }};">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:17px;border:1px solid rgba(0,214,180,.24);border-radius:13px;background:rgba(0,214,180,.04);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#00D6B4;margin-bottom:10px;">ON PUBLISH</div>
+              <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">You become Founder with all 16 capabilities. A rule snapshot is written, the audit log opens, and the community appears in Discover once verification review completes.</p>
+            </div>
+          </sc-if>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;">
+            <button onClick="{{ stepNext }}" style="min-height:46px;padding:13px 24px;font-size:14px;font-weight:700;color:{{ nextInk }};background:{{ nextBg }};border:1px solid {{ nextBorder }};border-radius:11px;cursor:pointer;">{{ nextLabel }}</button>
+            <button onClick="{{ stepBack }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:11px;cursor:pointer;">{{ backLabel }}</button>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Web3 community raffle platform. Non-custodial, provably fair, recomputable by anyone.</p>
+      </div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="raffle-admin.dc.html#requirements">Requirements</a><a href="raffle-admin.dc.html#templates">Templates</a></div></div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="wins.dc.html">My Wins</a><a href="notifications.dc.html">Notifications</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="raffle-admin.dc.html#fairness">Fairness records</a><a href="verify.dc.html">Check eligibility</a><a href="support.dc.html">How it works</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="messages.dc.html">Messages</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const CAPS = [
+  ['manage_community', 'Edit community identity & settings', 'HIGH RISK'],
+  ['manage_team', 'Add, remove and invite team members', 'HIGH RISK'],
+  ['manage_roles', 'Create roles and grant capabilities', 'CRITICAL'],
+  ['transfer_ownership', 'Transfer founder ownership', 'CRITICAL'],
+  ['manage_projects', 'Create and edit community projects', 'MEDIUM'],
+  ['create_raffle', 'Create and schedule raffles', 'MEDIUM'],
+  ['manage_requirements', 'Build and edit requirement trees', 'MEDIUM'],
+  ['manage_templates', 'Create and reuse raffle templates', 'LOW'],
+  ['finalize_raffle', 'Freeze entries and run the draw', 'CRITICAL'],
+  ['reroll_winners', 'Reroll a completed selection', 'CRITICAL'],
+  ['manage_rules', 'Select platform rules for the community', 'HIGH RISK'],
+  ['manage_integrations', 'Connect providers and scopes', 'HIGH RISK'],
+  ['manage_notifications', 'Configure community broadcasts', 'LOW'],
+  ['manage_hiring', 'Post jobs and review applicants', 'MEDIUM'],
+  ['moderate_feed', 'Moderate posts and members', 'LOW'],
+  ['view_audit', 'Read the community audit log', 'MEDIUM']
+];
+const ALL = CAPS.map(c => c[0]);
+const ROLES = [
+  { key: 'founder', name: 'Founder', tag: 'OWNER', members: 1, caps: ALL,
+    desc: 'Community creator. Full scope, including ownership transfer and role definition.' },
+  { key: 'manager', name: 'Community Manager', tag: 'ADMIN', members: 2,
+    caps: ['manage_community', 'manage_team', 'manage_projects', 'create_raffle', 'manage_requirements', 'manage_templates', 'finalize_raffle', 'manage_rules', 'manage_integrations', 'manage_notifications', 'moderate_feed', 'view_audit'],
+    desc: 'Runs day-to-day operations: raffles, team, rules and integrations. Cannot define roles or transfer ownership.' },
+  { key: 'head_collab', name: 'Head of Collab', tag: 'RAFFLES', members: 1,
+    caps: ['manage_projects', 'create_raffle', 'manage_requirements', 'manage_templates', 'finalize_raffle', 'manage_notifications', 'view_audit'],
+    desc: 'Owns the raffle pipeline end to end, including finalization and the draw.' },
+  { key: 'collab', name: 'Collab Manager', tag: 'RAFFLES', members: 3,
+    caps: ['create_raffle', 'manage_requirements', 'manage_templates'],
+    desc: 'Prepares raffles and requirement trees. Cannot run the draw or touch settings.' },
+  { key: 'mod', name: 'Moderator', tag: 'COMMUNITY', members: 2,
+    caps: ['moderate_feed'],
+    desc: 'Moderates the feed and member reports. No raffle, team or settings access.' },
+  { key: 'hiring', name: 'Hiring Manager', tag: 'PHASE 2', members: 1,
+    caps: ['manage_hiring'],
+    desc: 'Independent hiring scope: job openings and applicants only.' }
+];
+const RULES = [
+  ['one_entry_per_user', 'One entry per user', 'ENTRY', 'A verified account may hold a single entry per raffle regardless of linked wallets.', 'USED BY 38 RAFFLES', true],
+  ['wallet_uniqueness', 'Wallet uniqueness', 'ENTRY', 'Each winning wallet may appear once in a single draw result.', 'USED BY 31 RAFFLES', true],
+  ['no_duplicate_socials', 'No duplicate socials', 'ANTI-ABUSE', 'The same Discord or X identity cannot back two entries in one raffle.', 'USED BY 29 RAFFLES', true],
+  ['recheck_before_draw', 'Recheck mutable requirements', 'FAIRNESS', 'Roles, follows and holdings are re-evaluated at finalization before the draw.', 'USED BY 24 RAFFLES', true],
+  ['min_account_age', 'Minimum account age · 7 days', 'ANTI-ABUSE', 'Accounts younger than the threshold are excluded from entry.', 'USED BY 12 RAFFLES', false],
+  ['reputation_floor', 'Reputation floor · 40', 'ELIGIBILITY', 'Entries below the reputation floor are rejected. Never affects odds inside a draw.', 'USED BY 7 RAFFLES', false],
+  ['region_block', 'Restricted regions', 'COMPLIANCE', 'Blocks entry from jurisdictions on the platform restriction list.', 'USED BY 4 RAFFLES', false],
+  ['manual_review_winners', 'Manual winner review', 'FAIRNESS', 'Winners are held for review before the announcement is published.', 'USED BY 9 RAFFLES', false]
+];
+const EVENTS = [
+  ['raffle_opened', 'Raffle opened'], ['raffle_ending', 'Raffle ending soon'],
+  ['entry_result', 'Entry success / failed'], ['winner_announced', 'Winner / reroll announced'],
+  ['mint_reminder', 'Mint reminder'], ['autoreg_result', 'Auto-Register result'],
+  ['oauth_expired', 'OAuth link expired'], ['community_post', 'Community announcement']
+];
+const CHAN = ['IN-APP', 'EMAIL', 'DISCORD DM', 'TELEGRAM'];
+const TABS = [
+  ['overview', 'Overview', null], ['projects', 'Projects', 'manage_projects'],
+  ['raffles', 'Raffles', 'create_raffle'], ['rules', 'Rules', 'manage_rules'],
+  ['templates', 'Templates', 'manage_templates'], ['members', 'Members', null],
+  ['team', 'Team', 'manage_team'], ['roles', 'Roles & permissions', 'manage_roles'],
+  ['hiring', 'Hiring', 'manage_hiring'], ['integrations', 'Integrations', 'manage_integrations'],
+  ['notifs', 'Notifications', 'manage_notifications'], ['audit', 'Audit log', 'view_audit'],
+  ['settings', 'Settings', 'manage_community'], ['create', 'Create community', null]
+];
+const PROJECTS = [
+  ['Arc Genesis', 'ETHEREUM · 8,888 SUPPLY', 'Live', '4 raffles', '18 Sep mint'],
+  ['Arc Relics', 'ETHEREUM · 2,400 SUPPLY', 'Live', '2 raffles', '02 Oct mint'],
+  ['Forge Pass', 'BASE · 12,000 SUPPLY', 'Upcoming', '1 raffle', '24 Oct mint'],
+  ['Arc Cores', 'SOLANA · 5,000 SUPPLY', 'Draft', 'No raffles', 'Unscheduled'],
+  ['Ember Set', 'ETHEREUM · 900 SUPPLY', 'Archived', '6 raffles', 'Completed'],
+  ['Northwind', 'BASE · 3,333 SUPPLY', 'Live', '3 raffles', '11 Nov mint']
+];
+const RAFFLES = [
+  ['Genesis Founders Pass', 'ARC GENESIS · WEIGHTED', 'Active', '4,812 entries', 'Ends in 14h'],
+  ['Relics Early Access', 'ARC RELICS · FCFS', 'Active', '1,240 / 1,500', 'Ends in 2d'],
+  ['Forge Pass Allowlist', 'FORGE PASS · APPLICATION', 'Scheduled', '0 entries', 'Opens 22 Sep'],
+  ['Core Holder Collection', 'ARC CORES · WALLET COLLECT', 'Draft', 'Not published', 'No schedule'],
+  ['Ember Final Draw', 'EMBER SET · WEIGHTED', 'Finalized', '9,004 entries', '40 winners'],
+  ['Northwind Whitelist', 'NORTHWIND · WEIGHTED', 'Ended', '3,318 entries', 'Awaiting finalize']
+];
+const MEMBERS = [
+  ['maya_chen', 'JOINED 12 FEB 2026', 'Community Manager', 'REP 88', '412 entries'],
+  ['dex_orr', 'JOINED 03 MAR 2026', 'Head of Collab', 'REP 81', '286 entries'],
+  ['pyra', 'JOINED 19 APR 2026', 'Collab Manager', 'REP 74', '155 entries'],
+  ['nine_lives', 'JOINED 02 MAY 2026', 'Member', 'REP 69', '97 entries'],
+  ['solvent', 'JOINED 21 JUN 2026', 'Moderator', 'REP 77', '61 entries'],
+  ['halcyon', 'JOINED 04 JUL 2026', 'Member', 'REP 58', '34 entries']
+];
+const TEAM = [
+  ['Maya Chen', '@maya_chen · SINCE FEB 2026', 'Community Manager', '12 scopes', 'Active'],
+  ['Dex Orr', '@dex_orr · SINCE MAR 2026', 'Head of Collab', '7 scopes', 'Active'],
+  ['Pyra', '@pyra · SINCE APR 2026', 'Collab Manager', '3 scopes', 'Active'],
+  ['Solvent', '@solvent · SINCE JUN 2026', 'Moderator', '1 scope', 'Active'],
+  ['Ilo Vance', '@ilo · INVITED 09 SEP', 'Hiring Manager', '1 scope', 'Invite pending'],
+  ['Arc Director', '@arc_director · FOUNDER', 'Founder', '16 scopes', 'Owner']
+];
+const HIRING = [
+  ['Collab Manager', 'FULL TIME · REMOTE', 'Open', '24 applicants', '3 shortlisted'],
+  ['Community Moderator', 'PART TIME · REMOTE', 'Open', '61 applicants', '8 shortlisted'],
+  ['Discord Engineer', 'CONTRACT · REMOTE', 'Closed', '18 applicants', '1 accepted']
+];
+const AUDIT = [
+  ['ROLE GRANTED', 'arc_director granted manage_rules to maya_chen', '14 SEP 2026 · 18:42Z · IP 51.12.x.x'],
+  ['RAFFLE FINALIZED', 'dex_orr finalized Ember Final Draw · 40 winners · seed revealed', '13 SEP 2026 · 21:10Z'],
+  ['RULE ENABLED', 'arc_director enabled recheck_before_draw for the community', '12 SEP 2026 · 09:55Z'],
+  ['INTEGRATION', 'maya_chen connected Telegram with scope send_message', '11 SEP 2026 · 16:03Z'],
+  ['INVITE SENT', 'maya_chen invited @ilo as Hiring Manager · expires in 7d', '09 SEP 2026 · 12:20Z'],
+  ['SETTINGS', 'arc_director changed visibility from private to public', '05 SEP 2026 · 08:14Z']
+];
+
+class Component extends DCLogic {
+  state = {
+    role: 'founder', tab: 'overview', query: '', chip: 'All', toast: '',
+    editing: null, draft: [], roleForm: '', member: 5,
+    rules: RULES.reduce((a, r) => (a[r[0]] = r[5], a), {}),
+    notif: EVENTS.reduce((a, e) => (a[e[1]] = [true, true, false, false], a), {}),
+    invRole: 'collab', invExp: '7 DAYS', invWho: '',
+    cName: 'ARCforge Community', cHandle: 'arcforge', cDesc: 'A builder-first Web3 community running provably fair allowlist raffles for the Arc collections.', vis: 'Public',
+    step: 1, premium: false, newName: '', newHandle: '', newDesc: '', cat: 'NFT', pending: [0, 1]
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && TABS.some(t => t[0] === h)) this.setState({ tab: h });
+  }
+
+  can(cap) { return !cap || (ROLES.find(r => r.key === this.state.role) || ROLES[0]).caps.indexOf(cap) >= 0; }
+  go(tab) { this.setState({ tab, query: '', chip: 'All', toast: '' }); try { history.replaceState(null, '', '#' + tab); } catch (e) {} }
+  flash(m) { this.setState({ toast: m }); }
+
+  chipRow(list, key) {
+    return list.map(l => ({
+      label: l.toUpperCase(), ink: this.state[key] === l ? '#08060a' : '#8C8189',
+      bg: this.state[key] === l ? '#FF6A00' : 'transparent',
+      pick: () => this.setState({ [key]: l })
+    }));
+  }
+
+  table() {
+    const t = this.state.tab, q = this.state.query.toLowerCase(), chip = this.state.chip;
+    const defs = {
+      projects: { title: 'Projects', sub: 'Collections this community runs raffles for. A project holds supply, chain, mint date and its own raffle history.',
+        rows: PROJECTS, cols: '2fr 1.2fr 1fr 1fr', chips: ['All', 'Live', 'Upcoming', 'Draft'], search: 'Search projects…',
+        actions: [['+ New project', 'manage_projects']], go: () => location.href = 'project.dc.html' },
+      raffles: { title: 'Raffles', sub: 'Every raffle in this community across the draft → scheduled → active → ended → finalizing → finalized lifecycle.',
+        rows: RAFFLES, cols: '2fr 1.2fr 1.1fr 1fr', chips: ['All', 'Active', 'Scheduled', 'Draft', 'Finalized'], search: 'Search raffles…',
+        actions: [['+ Create raffle', 'create_raffle'], ['Open raffle manager', null]], go: () => location.href = 'raffle-admin.dc.html' },
+      members: { title: 'Members', sub: 'Everyone who follows or participates in this community. Team roles are managed separately under Team.',
+        rows: MEMBERS, cols: '1.6fr 1.3fr 1fr 1fr', chips: ['All', 'Team', 'Member'], search: 'Search members…',
+        actions: [['Invite to team', 'manage_team']], go: () => location.href = 'profile.dc.html' },
+      team: { title: 'Team', sub: 'Team members hold capability scopes through a role. Invitations expire and can be cancelled or resent.',
+        rows: TEAM, cols: '1.6fr 1.3fr 1fr 1fr', chips: ['All', 'Active', 'Invite pending'], search: 'Search team…',
+        actions: [['+ Invite member', 'manage_team'], ['Manage roles', 'manage_roles']], go: i => this.setState({ tab: 'member', member: i }) },
+      hiring: { title: 'Hiring · Phase 2', sub: 'Job openings inside this community. Hiring permissions are independent of raffle scopes.',
+        rows: HIRING, cols: '1.6fr 1.3fr 1fr 1fr', chips: ['All', 'Open', 'Closed'], search: 'Search openings…',
+        actions: [['+ Post opening', 'manage_hiring'], ['Open talent page', null]], go: () => location.href = 'hiring.dc.html' },
+      audit: { title: 'Audit log', sub: 'Append-only record of every material team, permission, raffle, rule and integration action. Entries cannot be edited or deleted.',
+        rows: AUDIT.map(a => [a[0], a[1], a[2]]), cols: '1fr 2.4fr 1.4fr', chips: ['All', 'Permissions', 'Raffles', 'Settings'], search: 'Search audit entries…',
+        actions: [['Export CSV', 'view_audit']], go: () => this.flash('Audit entries are immutable — export only.') }
+    };
+    return defs[t];
+  }
+
+  renderVals() {
+    const S = this.state, role = ROLES.find(r => r.key === S.role) || ROLES[0];
+    const tab = S.tab, def = this.table();
+    const tabDef = TABS.find(t => t[0] === tab);
+    const blockedCap = tabDef && tabDef[2] && !this.can(tabDef[2]) ? tabDef[2] : null;
+    const ok = !blockedCap;
+    const label = tabDef ? tabDef[1] : 'Overview';
+    const dim = cap => this.can(cap);
+
+    const rows = def && ok ? def.rows
+      .filter(r => !S.query || r.join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(r => S.chip === 'All' || r.join(' ').toLowerCase().indexOf(S.chip.toLowerCase()) >= 0)
+      : [];
+
+    const capList = CAPS.map(c => {
+      const on = S.draft.indexOf(c[0]) >= 0;
+      return {
+        key: c[0], label: c[1], risk: c[2], mark: on ? '✓' : '',
+        dot: on ? '#00D6B4' : '#4E454C', border: on ? 'rgba(0,214,180,.32)' : 'rgba(255,255,255,.08)',
+        bg: on ? 'rgba(0,214,180,.05)' : 'rgba(255,255,255,.02)',
+        toggle: () => this.setState(st => ({ draft: on ? st.draft.filter(k => k !== c[0]) : st.draft.concat([c[0]]) }))
+      };
+    });
+
+    const member = TEAM[S.member] || TEAM[0];
+    const memberRole = ROLES.find(r => r.name === member[2]) || ROLES[5];
+
+    return {
+      crumb: (tab === 'create' ? 'CREATE COMMUNITY' : label).toUpperCase(),
+      roleName: role.name, capCount: role.caps.length,
+      roleNote: role.key === 'founder'
+        ? 'FULL SCOPE · OWNERSHIP TRANSFER AND ROLE DEFINITION INCLUDED'
+        : 'SECTIONS OUTSIDE THIS ROLE ARE REFUSED SERVER-SIDE, NOT JUST HIDDEN',
+      roleChips: ROLES.map(r => ({
+        label: r.name.toUpperCase(), ink: r.key === S.role ? '#08060a' : '#8C8189',
+        bg: r.key === S.role ? '#FF6A00' : 'transparent',
+        border: r.key === S.role ? '#FF6A00' : 'rgba(255,255,255,.14)',
+        pick: () => this.setState({ role: r.key, toast: '' })
+      })),
+      tabs: TABS.map(t => {
+        const allowed = this.can(t[2]);
+        return {
+          label: t[1], pick: () => this.go(t[0]),
+          ink: t[0] === tab ? '#F4EDE6' : (allowed ? '#8C8189' : '#4E454C'),
+          bg: t[0] === tab ? 'rgba(255,106,0,.12)' : 'transparent',
+          border: t[0] === tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+        };
+      }),
+
+      blocked: !!blockedCap, blockedLabel: label, blockedCap: blockedCap || '',
+      asFounder: () => this.setState({ role: 'founder' }),
+      goRoles: () => this.go('roles'), goAudit: () => this.go('audit'), goTeam: () => this.go('team'),
+
+      isOverview: ok && tab === 'overview',
+      isTable: ok && !!def,
+      isRoles: ok && tab === 'roles',
+      isRoleEditor: ok && tab === 'roleedit',
+      isMember: ok && tab === 'member',
+      isInvite: ok && tab === 'invite',
+      isRules: ok && tab === 'rules',
+      isTemplates: ok && tab === 'templates',
+      isIntegrations: ok && tab === 'integrations',
+      isNotif: ok && tab === 'notifs',
+      isSettings: ok && tab === 'settings',
+      isCreate: tab === 'create',
+
+      kpis: [
+        { v: '12,417', l: 'MEMBERS', d: '+412 THIS WEEK', dInk: '#00D6B4' },
+        { v: '4', l: 'ACTIVE RAFFLES', d: '1 ENDS IN 14H', dInk: '#FF8A33' },
+        { v: '18,376', l: 'ENTRIES · 30D', d: '+22% VS PRIOR', dInk: '#00D6B4' },
+        { v: '96.2%', l: 'ELIGIBILITY PASS', d: 'RECHECK ENABLED', dInk: '#00D6B4' },
+        { v: '9', l: 'TEAM MEMBERS', d: '2 INVITES PENDING', dInk: '#FF8A33' },
+        { v: '0', l: 'OPEN DISPUTES', d: 'ALL RESOLVED', dInk: '#6E646C' }
+      ],
+      attCount: 4,
+      attention: [
+        { icon: '◈', title: 'Northwind Whitelist ended — finalize the draw', meta: '3,318 VALID ENTRIES · FREEZE THEN REVEAL SEED', cta: 'FINALIZE', ink: '#FF8A33', bg: 'rgba(255,106,0,.12)', go: () => location.href = 'raffle-admin.dc.html#winners' },
+        { icon: '◵', title: 'Discord OAuth scope expires in 6 days', meta: 'GUILD.MEMBERS.READ · REQUIREMENT CHECKS WILL FAIL', cta: 'RECONNECT', ink: '#FF3C00', bg: 'rgba(255,60,0,.12)', go: () => this.go('integrations') },
+        { icon: '◷', title: '2 team invitations still pending', meta: '@ILO EXPIRES IN 7D · @VEER EXPIRES IN 2D', cta: 'REVIEW', ink: '#FFB061', bg: 'rgba(255,106,0,.1)', go: () => this.setState({ tab: 'invite' }) },
+        { icon: '◉', title: 'Forge Pass Allowlist has no requirement tree', meta: 'APPLICATION MODE · OPENS 22 SEP', cta: 'BUILD', ink: '#00D6B4', bg: 'rgba(0,214,180,.1)', go: () => location.href = 'raffle-admin.dc.html#requirements' }
+      ],
+      lifecycle: [
+        { v: '2', l: 'DRAFT', ink: '#6E646C' }, { v: '1', l: 'SCHEDULED', ink: '#FFB061' },
+        { v: '4', l: 'ACTIVE', ink: '#00D6B4' }, { v: '1', l: 'ENDED', ink: '#FF8A33' },
+        { v: '0', l: 'FINALIZING', ink: '#6E646C' }, { v: '31', l: 'FINALIZED', ink: '#F4EDE6' }
+      ],
+      quick: [
+        ['Create raffle', 'create_raffle', () => location.href = 'raffle-admin.dc.html#create'],
+        ['Invite member', 'manage_team', () => this.setState({ tab: 'invite' })],
+        ['Edit rules', 'manage_rules', () => this.go('rules')],
+        ['New template', 'manage_templates', () => this.go('templates')],
+        ['Connect provider', 'manage_integrations', () => this.go('integrations')],
+        ['Post job', 'manage_hiring', () => this.go('hiring')]
+      ].map(q => ({
+        label: q[0], go: dim(q[1]) ? q[2] : () => this.flash('Blocked: ' + role.name + ' lacks ' + q[1] + '.'),
+        ink: dim(q[1]) ? '#DCD2D6' : '#4E454C',
+        bg: dim(q[1]) ? 'rgba(255,255,255,.03)' : 'transparent',
+        border: dim(q[1]) ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.05)'
+      })),
+      auditPeek: AUDIT.slice(0, 5).map(a => ({ text: a[1], meta: a[0] + ' · ' + a[2] })),
+
+      tTitle: def ? def.title : '', tSub: def ? def.sub : '',
+      gridCols: def ? def.cols : '1fr', searchHint: def ? def.search : 'Search…',
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: def ? this.chipRow(def.chips, 'chip') : [],
+      tActions: def ? def.actions.map(a => ({
+        label: a[0],
+        ink: dim(a[1]) ? '#08060a' : '#4E454C',
+        bg: dim(a[1]) ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+        border: dim(a[1]) ? 'transparent' : 'rgba(255,255,255,.08)',
+        go: !dim(a[1]) ? () => this.flash('Blocked: this action needs ' + a[1] + '.')
+          : a[0].indexOf('Invite') >= 0 ? () => this.setState({ tab: 'invite' })
+          : a[0].indexOf('roles') >= 0 ? () => this.go('roles')
+          : a[0].indexOf('raffle') >= 0 ? () => location.href = 'raffle-admin.dc.html#create'
+          : () => this.flash(a[0] + ' — prototype action recorded in the audit log.')
+      })) : [],
+      rows: rows.map((r, i) => ({
+        go: () => def.go(def.rows.indexOf(r)),
+        cells: r.map((c, j) => ({
+          v: c, sub: j === 0 ? '' : '',
+          font: j === 0 ? "'Space Grotesk',sans-serif" : "'JetBrains Mono',monospace",
+          weight: j === 0 ? '600' : '400',
+          ink: j === 0 ? '#F4EDE6' : (/active|live|open|owner/i.test(c) ? '#00D6B4' : /pending|scheduled|upcoming|awaiting/i.test(c) ? '#FFB061' : '#8C8189')
+        }))
+      })),
+      tEmpty: !!def && rows.length === 0,
+      clear: () => this.setState({ query: '', chip: 'All' }),
+      tFoot: def ? (rows.length + ' OF ' + def.rows.length + ' RECORDS · SCOPE ' + (tabDef[2] || 'PUBLIC')).toUpperCase() : '',
+
+      newRole: () => this.setState({ tab: 'roleedit', editing: null, draft: [], roleForm: '' }),
+      newRoleInk: this.can('manage_roles') ? '#08060a' : '#4E454C',
+      newRoleBg: this.can('manage_roles') ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+      newRoleBorder: this.can('manage_roles') ? 'transparent' : 'rgba(255,255,255,.08)',
+      roleCards: ROLES.map(r => ({
+        name: r.name, tag: r.tag, desc: r.desc, caps: r.caps.length, members: r.members,
+        border: r.key === S.role ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.09)',
+        bg: r.key === S.role ? 'rgba(255,106,0,.05)' : 'rgba(255,255,255,.016)',
+        tagInk: r.tag === 'OWNER' ? '#FF8A33' : r.tag === 'PHASE 2' ? '#6E646C' : '#00D6B4',
+        tagBorder: r.tag === 'OWNER' ? 'rgba(255,106,0,.35)' : r.tag === 'PHASE 2' ? 'rgba(255,255,255,.12)' : 'rgba(0,214,180,.3)',
+        open: () => this.setState({ tab: 'roleedit', editing: r.key, draft: r.caps.slice(), roleForm: r.name }),
+        view: () => this.setState({ role: r.key, tab: 'overview' })
+      })),
+      matrixHead: ROLES.map(r => r.name.toUpperCase().replace('COMMUNITY ', '').replace(' MANAGER', ' MGR')),
+      matrix: CAPS.map(c => ({
+        label: c[1], key: c[0],
+        cells: ROLES.map(r => ({ v: r.caps.indexOf(c[0]) >= 0 ? '●' : '—', ink: r.caps.indexOf(c[0]) >= 0 ? '#00D6B4' : '#3A333A' }))
+      })),
+
+      editorTitle: S.editing ? 'Edit ' + (ROLES.find(r => r.key === S.editing) || {}).name : 'Create a custom role',
+      roleForm: S.roleForm, onRoleName: e => this.setState({ roleForm: e.target.value }),
+      grantedCount: S.draft.length, capList,
+      saveRole: () => this.flash('Saved · ' + (S.roleForm || 'Untitled role') + ' with ' + S.draft.length + ' scopes. Audit entry written.'),
+      roleMembers: TEAM.filter(t => t[2] === (S.editing ? (ROLES.find(r => r.key === S.editing) || {}).name : 'Collab Manager')).map((t, i) => ({
+        name: t[0], initials: t[0].split(' ').map(w => w[0]).join('').slice(0, 2), meta: t[1] + ' · ' + t[3],
+        art: 'linear-gradient(135deg,#FFA047,#FF3C00)', go: () => this.setState({ tab: 'member', member: TEAM.indexOf(t) })
+      })),
+
+      mName: member[0], mInitials: member[0].split(' ').map(w => w[0]).join('').slice(0, 2),
+      mRole: member[2].toUpperCase(), mMeta: member[1] + ' · ' + member[4].toUpperCase(),
+      memberCaps: memberRole.caps.map(k => ({
+        label: k, ink: '#5ef2d6', border: 'rgba(0,214,180,.28)', bg: 'rgba(0,214,180,.05)'
+      })),
+      memberActivity: [
+        { text: 'Finalized Ember Final Draw · 40 winners · seed revealed publicly', meta: '13 SEP 2026 · 21:10Z' },
+        { text: 'Created raffle Relics Early Access from template Standard FCFS', meta: '08 SEP 2026 · 11:02Z' },
+        { text: 'Connected Telegram integration with scope send_message', meta: '11 SEP 2026 · 16:03Z' },
+        { text: 'Edited requirement tree of Genesis Founders Pass · 3 blocks', meta: '02 SEP 2026 · 19:47Z' }
+      ],
+      memberActions: [
+        ['Change role', 'manage_roles', 'AUDITED'], ['Adjust scopes', 'manage_roles', 'AUDITED'],
+        ['Resend invitation', 'manage_team', 'EXPIRES IN 7D'], ['Remove from team', 'manage_team', 'REVOKES ALL SCOPES'],
+        ['Transfer ownership', 'transfer_ownership', 'BOTH MUST CONFIRM']
+      ].map(a => ({
+        label: a[0], note: a[2],
+        ink: dim(a[1]) ? (a[0].indexOf('Remove') >= 0 ? '#FF6A6A' : '#DCD2D6') : '#4E454C',
+        bg: dim(a[1]) ? 'rgba(255,255,255,.03)' : 'transparent',
+        border: dim(a[1]) ? 'rgba(255,255,255,.1)' : 'rgba(255,255,255,.05)',
+        go: dim(a[1]) ? () => this.flash(a[0] + ' → audit entry written for ' + member[0] + '.') : () => this.flash('Blocked: needs ' + a[1] + '.')
+      })),
+
+      inviteWho: S.invWho, onInviteWho: e => this.setState({ invWho: e.target.value }),
+      inviteExpiry: ['24 HOURS', '7 DAYS', '30 DAYS'].map(l => ({
+        label: l, ink: S.invExp === l ? '#08060a' : '#8C8189',
+        bg: S.invExp === l ? '#FF6A00' : 'transparent',
+        border: S.invExp === l ? '#FF6A00' : 'rgba(255,255,255,.12)',
+        pick: () => this.setState({ invExp: l })
+      })),
+      inviteRoles: ROLES.map(r => ({
+        label: r.name, caps: r.caps.length,
+        ink: S.invRole === r.key ? '#F4EDE6' : '#C6BBC1',
+        bg: S.invRole === r.key ? 'rgba(255,106,0,.09)' : 'rgba(255,255,255,.02)',
+        border: S.invRole === r.key ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ invRole: r.key })
+      })),
+      sendInvite: () => this.flash(S.invWho
+        ? 'Invitation sent to ' + S.invWho + ' as ' + (ROLES.find(r => r.key === S.invRole) || {}).name + ' · expires in ' + S.invExp + '.'
+        : 'Add a handle, email or Discord identity first.'),
+      pendingCount: S.pending.length,
+      pending: S.pending.map(i => {
+        const p = [['@ilo', 'HIRING MANAGER · SENT 09 SEP · EXPIRES IN 7D', 'PENDING', '#FFB061', 'rgba(255,106,0,.3)'],
+          ['@veer', 'COLLAB MANAGER · SENT 12 SEP · EXPIRES IN 2D', 'EXPIRING', '#FF3C00', 'rgba(255,60,0,.3)']][i];
+        return {
+          who: p[0], meta: p[1], state: p[2], ink: p[3], border: p[4],
+          resend: () => this.flash('Invitation to ' + p[0] + ' resent · new expiry ' + S.invExp + '.'),
+          cancel: () => this.setState(st => ({ pending: st.pending.filter(x => x !== i), toast: 'Invitation to ' + p[0] + ' cancelled.' }))
+        };
+      }),
+
+      rules: RULES.map(r => {
+        const on = !!S.rules[r[0]];
+        return {
+          name: r[1], scope: r[2], desc: r[3], usage: r[4], mark: on ? '✓' : '',
+          border: on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.016)',
+          swBg: on ? 'rgba(0,214,180,.22)' : 'rgba(255,255,255,.05)',
+          swBorder: on ? 'rgba(0,214,180,.5)' : 'rgba(255,255,255,.14)',
+          knob: on ? '20px' : '2px', knobBg: on ? '#00D6B4' : '#6E646C',
+          toggle: () => this.can('manage_rules') || S.tab === 'create'
+            ? this.setState(st => ({ rules: Object.assign({}, st.rules, { [r[0]]: !st.rules[r[0]] }) }))
+            : this.flash('Blocked: needs manage_rules.')
+        };
+      }),
+      activeRuleCount: Object.keys(S.rules).filter(k => S.rules[k]).length,
+
+      templates: [
+        { name: 'Standard Weighted', kind: 'COMMUNITY', kindInk: '#FFB061', kindBorder: 'rgba(255,106,0,.3)', usage: 'USED 14 TIMES · LAST 08 SEP',
+          fields: [{ k: 'TYPE', v: 'Weighted' }, { k: 'WINNERS', v: '40' }, { k: 'DURATION', v: '72h' }, { k: 'REQUIREMENTS', v: '3 blocks' }, { k: 'VISIBILITY', v: 'Public' }] },
+        { name: 'FCFS Quick Drop', kind: 'COMMUNITY', kindInk: '#FFB061', kindBorder: 'rgba(255,106,0,.3)', usage: 'USED 9 TIMES · LAST 02 SEP',
+          fields: [{ k: 'TYPE', v: 'FCFS' }, { k: 'SPOTS', v: '1,500' }, { k: 'DURATION', v: '24h' }, { k: 'REQUIREMENTS', v: '2 blocks' }, { k: 'VISIBILITY', v: 'Public' }] },
+        { name: 'Arc Genesis Allowlist', kind: 'PROJECT', kindInk: '#5ef2d6', kindBorder: 'rgba(0,214,180,.3)', usage: 'USED 6 TIMES · LAST 12 SEP',
+          fields: [{ k: 'TYPE', v: 'Weighted' }, { k: 'WINNERS', v: '250' }, { k: 'PROJECT', v: 'Arc Genesis' }, { k: 'REQUIREMENTS', v: '4 blocks' }, { k: 'NOTIFY', v: 'All channels' }] },
+        { name: 'Application Review', kind: 'COMMUNITY', kindInk: '#FFB061', kindBorder: 'rgba(255,106,0,.3)', usage: 'USED 3 TIMES · LAST 24 AUG',
+          fields: [{ k: 'TYPE', v: 'Application' }, { k: 'SEATS', v: '30' }, { k: 'DURATION', v: '7d' }, { k: 'REVIEW', v: 'Manual' }, { k: 'VISIBILITY', v: 'Members' }] }
+      ],
+
+      integrations: [
+        ['DC', 'Discord', 'CONNECTED · EXPIRES IN 6 DAYS', 'Role checks, server membership and announcement posting for raffle requirements.', ['guilds.read', 'guild.members.read', 'webhook.incoming'], 'Reconnect', 1],
+        ['X', 'X (Twitter)', 'CONNECTED · 3 ACCOUNTS', 'Follow, repost and quote checks. Members may link multiple X accounts and switch per raffle.', ['users.read', 'tweet.read', 'follows.read'], 'Manage accounts', 0],
+        ['TG', 'Telegram', 'CONNECTED', 'Channel membership checks and Premium notification delivery.', ['send_message', 'chat.member.read'], 'Configure', 0],
+        ['CH', 'Blockchain RPC', 'CONNECTED · 3 CHAINS', 'NFT and token holding verification on Ethereum, Base and Solana.', ['read.balances', 'read.ownership'], 'Configure', 0],
+        ['WP', 'Whop', 'NOT CONNECTED', 'Paid membership verification as a raffle requirement source.', ['membership.read'], 'Connect', 2],
+        ['GO', 'Google', 'NOT CONNECTED', 'Additional login method and email verification for community staff.', ['openid', 'email'], 'Connect', 2]
+      ].map(i => ({
+        tag: i[0], name: i[1], state: i[2], desc: i[3], scopes: i[4], cta: i[5],
+        art: i[6] === 2 ? 'linear-gradient(135deg,#6E646C,#3A333A)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+        stateInk: i[6] === 1 ? '#FF3C00' : i[6] === 2 ? '#6E646C' : '#00D6B4',
+        border: i[6] === 1 ? 'rgba(255,60,0,.28)' : 'rgba(255,255,255,.09)',
+        bg: i[6] === 1 ? 'rgba(255,60,0,.04)' : 'rgba(255,255,255,.016)',
+        ctaInk: i[6] === 1 ? '#08060a' : '#DCD2D6',
+        ctaBg: i[6] === 1 ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+        ctaBorder: i[6] === 1 ? 'transparent' : 'rgba(255,255,255,.14)',
+        go: () => this.flash(i[5] + ' ' + i[1] + ' → OAuth consent with only the scopes listed above.')
+      })),
+
+      channels: CHAN,
+      notifRows: EVENTS.map(e => ({
+        label: e[1], key: e[0],
+        cells: CHAN.map((c, ci) => {
+          const on = (S.notif[e[1]] || [])[ci];
+          const premium = ci > 1;
+          return {
+            mark: on ? '✓' : '·', title: c + (premium ? ' · premium channel' : ''),
+            ink: on ? '#00D6B4' : '#4E454C',
+            bg: on ? 'rgba(0,214,180,.08)' : 'rgba(255,255,255,.02)',
+            border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+            toggle: () => this.setState(st => {
+              const row = (st.notif[e[1]] || []).slice();
+              row[ci] = !row[ci];
+              return { notif: Object.assign({}, st.notif, { [e[1]]: row }), toast: '' };
+            })
+          };
+        })
+      })),
+
+      cName: S.cName, cHandle: S.cHandle, cDesc: S.cDesc,
+      onCName: e => this.setState({ cName: e.target.value }),
+      onCHandle: e => this.setState({ cHandle: e.target.value }),
+      onCDesc: e => this.setState({ cDesc: e.target.value }),
+      visibility: [['Public', 'LISTED IN DISCOVER'], ['Members only', 'HIDDEN FROM DISCOVER'], ['Unlisted', 'DIRECT LINK ONLY']].map(v => ({
+        label: v[0], note: v[1],
+        ink: S.vis === v[0] ? '#F4EDE6' : '#C6BBC1',
+        bg: S.vis === v[0] ? 'rgba(255,106,0,.09)' : 'rgba(255,255,255,.02)',
+        border: S.vis === v[0] ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ vis: v[0] })
+      })),
+      saveSettings: () => this.flash('Settings saved · audit entry written · visibility ' + S.vis.toLowerCase() + '.'),
+      dangerInk: this.can('manage_community') ? '#FF6A6A' : '#4E454C',
+      dangerBorder: this.can('manage_community') ? 'rgba(255,60,0,.4)' : 'rgba(255,255,255,.07)',
+      archive: () => this.can('manage_community')
+        ? this.flash('Archive requested · raffle history, winners and fairness evidence are preserved.')
+        : this.flash('Blocked: needs manage_community.'),
+
+      stepNo: S.step,
+      stepTitle: ['Name your community', 'Pick the rules you operate under', 'Review and publish'][S.step - 1],
+      stepSub: [
+        'Identity is public once the community is listed. Handle and name can change later; every change is audited.',
+        'Rules come from the centralized platform catalog. Each raffle you publish snapshots this selection at creation time.',
+        'Publishing makes you Founder with all 16 capabilities and opens the community audit log.'
+      ][S.step - 1],
+      steps: [1, 2, 3].map(n => ({
+        num: 'STEP ' + n, label: ['Identity', 'Rules & team', 'Review'][n - 1],
+        pick: () => this.setState({ step: n }),
+        ink: n === S.step ? '#F4EDE6' : '#8C8189',
+        numInk: n === S.step ? '#FF8A33' : '#4E454C',
+        bg: n === S.step ? 'rgba(255,106,0,.07)' : 'rgba(255,255,255,.02)',
+        border: n === S.step ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      step1: S.step === 1, step2: S.step === 2, step3: S.step === 3,
+      premiumGate: !S.premium,
+      fakePremium: () => this.setState({ premium: true, toast: 'Previewing as a Premium account — publishing is now enabled.' }),
+      newName: S.newName, newHandle: S.newHandle, newDesc: S.newDesc,
+      onNewName: e => this.setState({ newName: e.target.value }),
+      onNewHandle: e => this.setState({ newHandle: e.target.value }),
+      onNewDesc: e => this.setState({ newDesc: e.target.value }),
+      cats: ['NFT', 'GAMING', 'DEFI', 'DAO'].map(c => ({
+        label: c, ink: S.cat === c ? '#08060a' : '#8C8189',
+        bg: S.cat === c ? '#FF6A00' : 'transparent',
+        border: S.cat === c ? '#FF6A00' : 'rgba(255,255,255,.12)',
+        pick: () => this.setState({ cat: c })
+      })),
+      review: [
+        { k: 'NAME', v: S.newName || 'Not set', ink: S.newName ? '#F4EDE6' : '#FF6A6A' },
+        { k: 'HANDLE', v: S.newHandle ? '@' + S.newHandle : 'Not set', ink: S.newHandle ? '#F4EDE6' : '#FF6A6A' },
+        { k: 'CATEGORY', v: S.cat, ink: '#F4EDE6' },
+        { k: 'RULES SELECTED', v: Object.keys(S.rules).filter(k => S.rules[k]).length + ' of 8', ink: '#F4EDE6' },
+        { k: 'STARTING TEAM', v: S.invWho || 'Just you', ink: '#F4EDE6' },
+        { k: 'PREMIUM', v: S.premium ? 'Active' : 'Required to publish', ink: S.premium ? '#00D6B4' : '#FF6A6A' }
+      ],
+      nextLabel: S.step < 3 ? 'Continue' : 'Publish community',
+      nextInk: S.step < 3 || S.premium ? '#08060a' : '#4E454C',
+      nextBg: S.step < 3 || S.premium ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+      nextBorder: S.step < 3 || S.premium ? 'transparent' : 'rgba(255,255,255,.08)',
+      stepNext: () => {
+        if (S.step < 3) return this.setState({ step: S.step + 1, toast: '' });
+        if (!S.premium) return this.flash('Publishing requires Premium. Everything else is already saved as a draft.');
+        if (!S.newName || !S.newHandle) return this.flash('Name and handle are required before publishing.');
+        this.flash('Published · ' + S.newName + ' created. You are Founder with all 16 capabilities.');
+      },
+      backLabel: S.step > 1 ? 'Back' : 'Cancel',
+      stepBack: () => S.step > 1 ? this.setState({ step: S.step - 1, toast: '' }) : this.go('overview'),
+
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

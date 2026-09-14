@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .st-s { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .st-f { display:grid; grid-template-columns:repeat(auto-fit,minmax(236px,1fr)); gap:16px; }
+  @media (max-width:980px){ .st-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="settings" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#6E646C;margin-bottom:20px;">
+      <a href="profile.dc.html" style="color:#6E646C;">PROFILE</a><span>/</span><span style="color:#FF8A33;">ACCOUNT SETTINGS</span>
+    </div>
+    <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 11px;">Account settings</h1>
+    <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0 0 22px;text-wrap:pretty;">One identity across the platform: profile, linked providers, wallets, security and subscription. No private key or seed phrase is ever stored.</p>
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ true }}">
+      <div class="st-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 18px;">Public profile</h2>
+          <div class="st-f" style="margin-bottom:18px;">
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">DISPLAY NAME</span>
+              <input value="{{ name }}" onInput="{{ onName }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">USERNAME</span>
+              <input value="{{ handle }}" onInput="{{ onHandle }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">EMAIL · VERIFIED</span>
+              <input value="{{ email }}" onInput="{{ onEmail }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(0,214,180,.3);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+          </div>
+          <label style="display:block;margin-bottom:18px;">
+            <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">BIO</span>
+            <textarea onInput="{{ onBio }}" style="width:100%;min-height:92px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;line-height:1.55;outline:none;resize:vertical;" style-focus="border-color:rgba(255,106,0,.55)">{{ bio }}</textarea>
+          </label>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">PROFILE VISIBILITY</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+            <sc-for list="{{ visibility }}" as="v" hint-placeholder-count="3">
+              <button onClick="{{ v.pick }}" style="flex:1;min-width:148px;text-align:left;min-height:64px;padding:13px;color:{{ v.ink }};background:{{ v.bg }};border:1px solid {{ v.border }};border-radius:11px;cursor:pointer;">
+                <span style="display:block;font-size:13.5px;font-weight:600;">{{ v.label }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#6E646C;margin-top:6px;">{{ v.note }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <button onClick="{{ save }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Save profile</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:14px;">REPUTATION SIGNALS</div>
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:700;color:#FF8A33;">84</span>
+              <div style="font-size:13px;line-height:1.55;color:#8C8189;">Reputation never changes your odds. It gates access to some community requirements.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ repSignals }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                  <span style="color:#6E646C;">{{ r.k }}</span><span style="color:#DCD2D6;">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">SUBSCRIPTION</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 14px;">Premium · renews 04 Oct 2026. Includes Auto-Register, community creation and premium notification channels.</p>
+            <a href="premium.dc.html" style="display:flex;align-items:center;justify-content:center;min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:#FFB061;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.32);border-radius:10px;">Manage subscription</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isConnections }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:18px;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Linked providers</h2>
+        <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:680px;margin:0;text-wrap:pretty;">Providers are used for requirement checks only. You can link multiple X accounts and choose which one performs a raffle's X requirements. Tokens are encrypted and never shared with communities.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:22px;">
+        <sc-for list="{{ providers }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:15px;padding:16px 18px;border:1px solid {{ p.border }};border-radius:14px;background:{{ p.bg }};flex-wrap:wrap;">
+            <span style="width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:{{ p.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:13px;color:#08060a;">{{ p.tag }}</span>
+            <div style="flex:1;min-width:190px;">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                <span style="font-size:15px;font-weight:600;color:#F4EDE6;">{{ p.name }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ p.stateInk }};padding:4px 8px;border:1px solid {{ p.stateBorder }};border-radius:5px;">{{ p.state }}</span>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-top:6px;">{{ p.scope }}</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button onClick="{{ p.primary }}" style="min-height:40px;padding:11px 16px;font-size:13px;font-weight:700;color:{{ p.ctaInk }};background:{{ p.ctaBg }};border:1px solid {{ p.ctaBorder }};border-radius:9px;cursor:pointer;">{{ p.cta }}</button>
+              <sc-if value="{{ p.canUnlink }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ p.unlink }}" style="min-height:40px;padding:11px 14px;font-size:13px;font-weight:600;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.3);border-radius:9px;cursor:pointer;">Unlink</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">SCOPE ISOLATION</div>
+        <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Reading your X feed and performing X eligibility actions are separate scopes. A community can never act on your behalf — it only receives a pass or fail result for the requirement it defined.</p>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isWallets }}" hint-placeholder-val="{{ false }}">
+      <div class="st-s">
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:18px;">
+            <div>
+              <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Wallets</h2>
+              <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:540px;margin:0;text-wrap:pretty;">Add wallets to prove holdings. One wallet is your verified main wallet — the only one allowed to satisfy NFT-holder requirements and receive allocations.</p>
+            </div>
+            <button onClick="{{ addWallet }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">+ Add wallet</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ wallets }}" as="w" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:15px;padding:16px 18px;border:1px solid {{ w.border }};border-radius:14px;background:{{ w.bg }};flex-wrap:wrap;">
+                <span style="width:38px;height:38px;flex:none;border-radius:11px;display:grid;place-items:center;background:{{ w.art }};font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:#08060a;">{{ w.chain }}</span>
+                <div style="flex:1;min-width:190px;">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#F4EDE6;">{{ w.addr }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ w.tagInk }};padding:4px 8px;border:1px solid {{ w.tagBorder }};border-radius:5px;">{{ w.tag }}</span>
+                  </div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;color:#6E646C;margin-top:6px;">{{ w.meta }}</div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button onClick="{{ w.makeMain }}" style="min-height:40px;padding:11px 15px;font-size:13px;font-weight:600;color:{{ w.mainInk }};background:{{ w.mainBg }};border:1px solid {{ w.mainBorder }};border-radius:9px;cursor:pointer;">{{ w.mainLabel }}</button>
+                  <button onClick="{{ w.remove }}" style="min-height:40px;padding:11px 14px;font-size:13px;font-weight:600;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.3);border-radius:9px;cursor:pointer;">Remove</button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">MAIN WALLET VERIFICATION</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">A one-time signature proves you control the main wallet. The signature is never a login and gives the platform no spending ability.</p>
+            <button onClick="{{ verifyMain }}" style="width:100%;min-height:44px;padding:12px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Sign verification message</button>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">NON-CUSTODIAL BY DESIGN</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ walletFacts }}" as="f" hint-placeholder-count="4">
+                <div style="display:flex;gap:11px;">
+                  <span style="flex:none;color:#00D6B4;font-size:12px;">✓</span>
+                  <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ f }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isSecurity }}" hint-placeholder-val="{{ false }}">
+      <div class="st-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 18px;">Security</h2>
+          <div class="st-f" style="margin-bottom:20px;">
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">CURRENT PASSWORD</span>
+              <input type="password" value="{{ pw1 }}" onInput="{{ onPw1 }}" placeholder="••••••••••" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">NEW PASSWORD</span>
+              <input type="password" value="{{ pw2 }}" onInput="{{ onPw2 }}" placeholder="12+ characters" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+          </div>
+          <div style="height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:9px;">
+            <div style="height:100%;width:{{ pwWidth }};background:{{ pwColor }};transition:width .25s;"></div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ pwColor }};margin-bottom:22px;">{{ pwLabel }}</div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:22px;">
+            <sc-for list="{{ security }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:15px;padding:15px 17px;border:1px solid {{ s.border }};border-radius:12px;background:{{ s.bg }};flex-wrap:wrap;">
+                <button onClick="{{ s.toggle }}" aria-label="Toggle" style="width:42px;height:24px;flex:none;padding:0;border:1px solid {{ s.swBorder }};border-radius:99px;background:{{ s.swBg }};cursor:pointer;position:relative;">
+                  <span style="position:absolute;top:2px;left:{{ s.knob }};width:18px;height:18px;border-radius:99px;background:{{ s.knobBg }};transition:left .2s;"></span>
+                </button>
+                <div style="flex:1;min-width:190px;">
+                  <div style="font-size:14px;font-weight:600;color:#DCD2D6;">{{ s.label }}</div>
+                  <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:5px;">{{ s.note }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ saveSecurity }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Update security</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">ACTIVE SESSIONS</span>
+              <button onClick="{{ revokeAll }}" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#FF6A6A;background:transparent;border:0;cursor:pointer;">REVOKE ALL</button>
+            </div>
+            <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;">
+                <div style="min-width:0;">
+                  <div style="font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ s.device }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ s.meta }}</div>
+                </div>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:{{ s.ink }};">{{ s.state }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,60,0,.28);border-radius:16px;background:rgba(255,60,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF3C00;margin-bottom:12px;">DELETE ACCOUNT</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">Deletion removes your profile, links and wallets. Published winner records stay intact so past draws remain verifiable, with your identity anonymised.</p>
+            <button onClick="{{ del }}" style="width:100%;min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.4);border-radius:10px;cursor:pointer;">Request account deletion</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Wallet signatures prove ownership. They are never used as a login.</p>
+      </div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="profile.dc.html">Profile</a><a href="notifications.dc.html">Notifications</a><a href="wins.dc.html">My Wins</a><a href="autoregister.dc.html">Auto-Register</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="premium.dc.html">Premium</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const TABS = [['profile', 'Profile'], ['connections', 'Linked providers'], ['wallets', 'Wallets'], ['security', 'Security']];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'profile', toast: '',
+    name: 'Arc Director', handle: 'arc_director', email: 'director@arcforge.xyz',
+    bio: 'Founder of ARCforge. Running provably fair allowlist raffles for the Arc collections.',
+    vis: 'Public', pw1: '', pw2: '',
+    sec: ['twofa', 'rotate'],
+    main: 0,
+    wallets: [
+      ['ETH', '0x71C4…9f04', 'MAIN · VERIFIED', 'ETHEREUM · SIGNED 04 SEP 2026 · 12 NFTS'],
+      ['ETH', '0x9A2B…c118', 'LINKED', 'ETHEREUM · ADDED 21 JUN 2026 · 3 NFTS'],
+      ['BASE', '0x44B9…7e6d', 'LINKED', 'BASE · ADDED 02 JUL 2026 · 1 NFT'],
+      ['SOL', 'Hx7v…9Kq2', 'LINKED', 'SOLANA · ADDED 18 AUG 2026 · 0 NFTS']
+    ],
+    unlinked: []
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && TABS.some(t => t[0] === h)) this.setState({ tab: h });
+  }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state;
+    const pwLen = S.pw2.length;
+    const strength = pwLen === 0 ? 0 : pwLen < 8 ? 1 : pwLen < 12 ? 2 : 3;
+
+    return {
+      tabs: TABS.map(t => ({
+        label: t[1],
+        pick: () => { this.setState({ tab: t[0], toast: '' }); try { history.replaceState(null, '', '#' + t[0]); } catch (e) {} },
+        ink: t[0] === S.tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === S.tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === S.tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isProfile: S.tab === 'profile', isConnections: S.tab === 'connections',
+      isWallets: S.tab === 'wallets', isSecurity: S.tab === 'security',
+
+      name: S.name, onName: e => this.setState({ name: e.target.value }),
+      handle: S.handle, onHandle: e => this.setState({ handle: e.target.value }),
+      email: S.email, onEmail: e => this.setState({ email: e.target.value }),
+      bio: S.bio, onBio: e => this.setState({ bio: e.target.value }),
+      visibility: [['Public', 'WINS AND REPUTATION VISIBLE'], ['Members only', 'VISIBLE TO COMMUNITIES YOU JOIN'], ['Private', 'ONLY YOUR HANDLE IS SHOWN']].map(v => ({
+        label: v[0], note: v[1],
+        ink: S.vis === v[0] ? '#F4EDE6' : '#C6BBC1',
+        bg: S.vis === v[0] ? 'rgba(255,106,0,.09)' : 'rgba(255,255,255,.02)',
+        border: S.vis === v[0] ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ vis: v[0] })
+      })),
+      save: () => this.flash('Profile saved · visibility ' + S.vis.toLowerCase() + '.'),
+      repSignals: [
+        { k: 'PARTICIPATION', v: '31 pts' }, { k: 'CLAIM RELIABILITY', v: '24 pts' },
+        { k: 'ACCOUNT AGE', v: '14 pts' }, { k: 'COMMUNITY TRUST', v: '15 pts' },
+        { k: 'PENALTIES', v: '0 pts' }, { k: 'EFFECT ON ODDS', v: 'NONE' }
+      ],
+
+      providers: [
+        ['DC', 'Discord', 'arc_director#4417', 'GUILDS.READ · GUILD.MEMBERS.READ · EXPIRES IN 6 DAYS', 1, 'Reconnect', true],
+        ['X', 'X · @arc_director', 'PRIMARY ACCOUNT FOR REQUIREMENT ACTIONS', 'USERS.READ · FOLLOWS.READ · TWEET.READ', 0, 'Set as primary', true],
+        ['X', 'X · @arc_alt', 'SECONDARY ACCOUNT', 'USERS.READ · FOLLOWS.READ', 0, 'Set as primary', true],
+        ['TG', 'Telegram', '@arcdirector', 'CHAT.MEMBER.READ · PREMIUM CHANNEL DELIVERY', 0, 'Configure', true],
+        ['WP', 'Whop', 'NOT CONNECTED', 'MEMBERSHIP.READ — USED BY SOME PAID-MEMBER REQUIREMENTS', 2, 'Connect', false],
+        ['GO', 'Google', 'NOT CONNECTED', 'OPENID · EMAIL — ADDITIONAL LOGIN METHOD', 2, 'Connect', false]
+      ].map(p => ({
+        tag: p[0], name: p[1], state: (typeof p[2] === 'string' ? p[2] : '').toUpperCase(), scope: p[3], cta: p[5],
+        canUnlink: p[6],
+        art: p[4] === 2 ? 'linear-gradient(135deg,#6E646C,#3A333A)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+        stateInk: p[4] === 1 ? '#FF3C00' : p[4] === 2 ? '#6E646C' : '#00D6B4',
+        stateBorder: p[4] === 1 ? 'rgba(255,60,0,.3)' : p[4] === 2 ? 'rgba(255,255,255,.12)' : 'rgba(0,214,180,.3)',
+        border: p[4] === 1 ? 'rgba(255,60,0,.28)' : 'rgba(255,255,255,.08)',
+        bg: p[4] === 1 ? 'rgba(255,60,0,.04)' : 'rgba(255,255,255,.016)',
+        ctaInk: p[4] === 1 ? '#08060a' : '#DCD2D6',
+        ctaBg: p[4] === 1 ? 'linear-gradient(180deg,#FFA047,#FF6A00)' : 'transparent',
+        ctaBorder: p[4] === 1 ? 'transparent' : 'rgba(255,255,255,.14)',
+        primary: () => this.flash(p[5] + ' ' + p[1] + ' · consent screen requests only the scopes listed.'),
+        unlink: () => this.flash(p[1] + ' unlinked · requirements depending on it will now fail until relinked.')
+      })),
+
+      addWallet: () => this.flash('Add wallet · connect through the extension or WalletConnect QR. A signature is requested only for main-wallet verification.'),
+      wallets: S.wallets.map((w, i) => {
+        const isMain = i === S.main;
+        return {
+          chain: w[0], addr: w[1], meta: w[3],
+          tag: isMain ? 'MAIN · VERIFIED' : 'LINKED',
+          tagInk: isMain ? '#00D6B4' : '#8C8189',
+          tagBorder: isMain ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.12)',
+          border: isMain ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: isMain ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.016)',
+          art: isMain ? 'linear-gradient(135deg,#5ef2d6,#00806c)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+          mainLabel: isMain ? 'Main wallet' : 'Make main',
+          mainInk: isMain ? '#5ef2d6' : '#DCD2D6',
+          mainBg: isMain ? 'rgba(0,214,180,.07)' : 'transparent',
+          mainBorder: isMain ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.14)',
+          makeMain: () => isMain
+            ? this.flash('Already your main wallet · verified by signature 04 Sep 2026.')
+            : this.setState({ main: i, toast: 'Main wallet changed to ' + w[1] + ' · a new signature is required before NFT-holder requirements pass.' }),
+          remove: () => isMain
+            ? this.flash('Set another wallet as main before removing this one.')
+            : this.setState(st => ({ wallets: st.wallets.filter((x, j) => j !== i), main: st.main > i ? st.main - 1 : st.main, toast: w[1] + ' removed.' }))
+        };
+      }),
+      verifyMain: () => this.flash('Signature requested · sign the message in your wallet. No transaction and no spending approval.'),
+      walletFacts: [
+        'No private key or seed phrase is ever stored, encrypted or otherwise.',
+        'The verification signature carries no approval and cannot move assets.',
+        'Only the main wallet satisfies NFT-holder requirements and receives allocations.',
+        'Entering a raffle never costs gas — gas applies only when minting from a project contract.'
+      ],
+
+      pw1: S.pw1, onPw1: e => this.setState({ pw1: e.target.value }),
+      pw2: S.pw2, onPw2: e => this.setState({ pw2: e.target.value }),
+      pwWidth: (strength * 33.3) + '%',
+      pwColor: strength >= 3 ? '#00D6B4' : strength === 2 ? '#FFB061' : '#FF6A6A',
+      pwLabel: strength === 0 ? 'ENTER A NEW PASSWORD · 12+ CHARACTERS REQUIRED'
+        : strength === 1 ? 'TOO SHORT · 12+ CHARACTERS REQUIRED'
+        : strength === 2 ? 'ACCEPTABLE · 12+ CHARACTERS RECOMMENDED'
+        : 'STRONG · MEETS THE PLATFORM POLICY',
+      security: [
+        ['twofa', 'Two-factor authentication', 'Required for any account with community team scopes and for all admin accounts.'],
+        ['otp', 'Email OTP on new device', 'A one-time code is required the first time a device signs in.'],
+        ['rotate', 'Session rotation', 'Session tokens are rotated automatically and revoked on password change.'],
+        ['reauth', 'Re-authenticate for sensitive actions', 'Role changes, ownership transfer and wallet changes ask for your password again.']
+      ].map(s => {
+        const on = S.sec.indexOf(s[0]) >= 0;
+        return {
+          label: s[1], note: s[2],
+          border: on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.016)',
+          swBg: on ? 'rgba(0,214,180,.22)' : 'rgba(255,255,255,.05)',
+          swBorder: on ? 'rgba(0,214,180,.5)' : 'rgba(255,255,255,.14)',
+          knob: on ? '20px' : '2px', knobBg: on ? '#00D6B4' : '#6E646C',
+          toggle: () => s[0] === 'twofa' && on
+            ? this.flash('2FA cannot be disabled while you hold community team scopes.')
+            : this.setState(st => ({ sec: on ? st.sec.filter(k => k !== s[0]) : st.sec.concat([s[0]]) }))
+        };
+      }),
+      saveSecurity: () => this.flash(S.pw2 && S.pw2.length >= 12
+        ? 'Security updated · password changed, all other sessions revoked.'
+        : 'Security settings saved. Password unchanged.'),
+      sessions: [
+        { device: 'Chrome · macOS', meta: 'CURRENT SESSION · CAIRO · 51.12.X.X', state: 'ACTIVE', ink: '#00D6B4' },
+        { device: 'Safari · iPhone', meta: 'LAST SEEN 2D AGO · CAIRO', state: 'IDLE', ink: '#FFB061' },
+        { device: 'Firefox · Windows', meta: 'LAST SEEN 11D AGO · UNKNOWN LOCATION', state: 'REVOKE', ink: '#FF6A6A' }
+      ],
+      revokeAll: () => this.flash('All other sessions revoked · you stay signed in on this device only.'),
+      del: () => this.flash('Deletion requested · support will verify your identity. Published winner records remain verifiable, anonymised.'),
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

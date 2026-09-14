@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .ra-s { display:grid; grid-template-columns:minmax(0,1.32fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .ra-k { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:1px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+  .ra-f { display:grid; grid-template-columns:repeat(auto-fit,minmax(236px,1fr)); gap:16px; }
+  .ra-c { display:grid; grid-template-columns:repeat(auto-fit,minmax(286px,1fr)); gap:16px; }
+  @media (max-width:980px){ .ra-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="raffle-admin" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <div style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:22px 34px 0;display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#6E646C;flex-wrap:wrap;">
+    <a href="index.html" style="color:#6E646C;">HOME</a><span>/</span><a href="community-admin.dc.html" style="color:#6E646C;">ARCFORGE CONSOLE</a><span>/</span><span style="color:#FF8A33;">RAFFLE MANAGER · {{ crumb }}</span>
+  </div>
+
+  <section style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:22px;flex-wrap:wrap;padding:24px 0 18px;">
+      <div style="min-width:0;">
+        <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(24px,2.6vw,34px);letter-spacing:-.01em;margin:0 0 10px;">Raffle manager</h1>
+        <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">The full lifecycle: draft → scheduled → active → ended → finalizing → finalized, with requirement trees, provably fair draws and audited rerolls.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <a href="community-admin.dc.html" style="min-height:42px;display:inline-flex;align-items:center;padding:11px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Community console</a>
+        <button onClick="{{ goCreate }}" style="min-height:42px;padding:11px 18px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">+ Create raffle</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:13px 17px;border:1px solid rgba(255,106,0,.26);border-radius:13px;background:rgba(255,106,0,.05);margin-bottom:18px;">
+      <div style="font-size:13.5px;color:#DCD2D6;min-width:0;">Working raffle · <b style="color:#F4EDE6;">{{ current }}</b> <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ stateInk }};margin-left:8px;padding:4px 8px;border:1px solid {{ stateBorder }};border-radius:5px;">{{ stateLabel }}</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <sc-for list="{{ picker }}" as="p" hint-placeholder-count="4">
+          <button onClick="{{ p.pick }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ p.ink }};background:{{ p.bg }};border:1px solid {{ p.border }};border-radius:99px;cursor:pointer;">{{ p.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="9">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(2040px,94vw);margin:0 auto;padding:0 34px 44px;">
+
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+      <div class="ra-k vx-stagger" style="margin-bottom:18px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+          <div class="vx-spot" style="background:#0b080d;padding:18px 16px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:#F4EDE6;">{{ k.v }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;color:#6E646C;margin-top:7px;">{{ k.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search raffles, projects, modes…" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+        <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+            <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <sc-for list="{{ list }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+            <div style="min-width:0;">
+              <div style="font-size:14.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.name }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;margin-top:5px;">{{ r.meta }}</div>
+            </div>
+            <div><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ r.ink }};padding:5px 9px;border:1px solid {{ r.border }};border-radius:5px;">{{ r.state }}</span></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#DCD2D6;">{{ r.entries }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:#8C8189;">{{ r.timing }}</div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;">
+              <button onClick="{{ r.open }}" style="min-height:36px;padding:9px 13px;font-size:12.5px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;">Manage</button>
+              <button onClick="{{ r.primary }}" style="min-height:36px;padding:9px 13px;font-size:12.5px;font-weight:700;color:{{ r.ctaInk }};background:{{ r.ctaBg }};border:1px solid {{ r.ctaBorder }};border-radius:8px;cursor:pointer;">{{ r.cta }}</button>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ listEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:42px 22px;text-align:center;">
+            <div style="font-size:15px;font-weight:600;color:#DCD2D6;margin-bottom:9px;">No raffles match this filter</div>
+            <button onClick="{{ clear }}" style="min-height:40px;padding:11px 18px;font-size:13.5px;font-weight:600;color:#FF6A00;background:rgba(255,106,0,.08);border:1px solid rgba(255,106,0,.35);border-radius:9px;cursor:pointer;">Clear filters</button>
+          </div>
+        </sc-if>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isCreate }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:1000px;">
+        <div style="margin-bottom:20px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF6A00;margin-bottom:12px;">CREATE RAFFLE · STEP {{ stepNo }} OF 5</div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(25px,3vw,36px);line-height:1.06;margin:0 0 12px;">{{ stepTitle }}</h2>
+          <p style="font-size:15px;line-height:1.6;color:#9B8F96;max-width:640px;margin:0;text-wrap:pretty;">{{ stepSub }}</p>
+        </div>
+        <div style="display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap;">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+            <button onClick="{{ s.pick }}" style="flex:1;min-width:140px;text-align:left;padding:12px 14px;border:1px solid {{ s.border }};border-radius:11px;background:{{ s.bg }};cursor:pointer;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:{{ s.numInk }};">{{ s.num }}</span>
+              <span style="display:block;font-size:13px;font-weight:600;color:{{ s.ink }};margin-top:6px;">{{ s.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <sc-if value="{{ cStep1 }}" hint-placeholder-val="{{ true }}">
+            <div class="ra-f" style="margin-bottom:18px;">
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">RAFFLE TITLE</span>
+                <input value="{{ fTitle }}" onInput="{{ onTitle }}" placeholder="e.g. Genesis Founders Pass" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">PROJECT</span>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <sc-for list="{{ projectPick }}" as="p" hint-placeholder-count="3">
+                    <button onClick="{{ p.pick }}" style="min-height:44px;padding:12px 13px;font-size:13px;font-weight:600;color:{{ p.ink }};background:{{ p.bg }};border:1px solid {{ p.border }};border-radius:10px;cursor:pointer;">{{ p.label }}</button>
+                  </sc-for>
+                </div>
+              </label>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">RAFFLE MODE</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(198px,1fr));gap:8px;">
+              <sc-for list="{{ modes }}" as="m" hint-placeholder-count="4">
+                <button onClick="{{ m.pick }}" style="text-align:left;min-height:88px;padding:14px;color:{{ m.ink }};background:{{ m.bg }};border:1px solid {{ m.border }};border-radius:12px;cursor:pointer;">
+                  <span style="display:block;font-size:14px;font-weight:600;">{{ m.label }}</span>
+                  <span style="display:block;font-size:12px;line-height:1.5;color:#8C8189;margin-top:7px;">{{ m.note }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ cStep2 }}" hint-placeholder-val="{{ false }}">
+            <div class="ra-f">
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">WINNERS / SPOTS</span>
+                <input value="{{ fWinners }}" onInput="{{ onWinners }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">OPENS</span>
+                <input value="{{ fOpen }}" onInput="{{ onOpen }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">CLOSES</span>
+                <input value="{{ fClose }}" onInput="{{ onClose }}" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin:18px 0 10px;">DRAW OPTIONS</div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <sc-for list="{{ drawOpts }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ o.border }};border-radius:11px;background:{{ o.bg }};cursor:pointer;">
+                  <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ o.dot }};color:{{ o.dot }};font-size:10px;font-weight:700;">{{ o.mark }}</span>
+                  <span style="flex:1;min-width:0;">
+                    <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ o.label }}</span>
+                    <span style="display:block;font-size:12px;color:#8C8189;margin-top:5px;line-height:1.5;">{{ o.note }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ cStep3 }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:14px;line-height:1.6;color:#9B8F96;margin:0 0 18px;max-width:620px;text-wrap:pretty;">Requirements are a tree: blocks combine with AND, values inside a block combine with OR. Mutable requirements are re-evaluated at finalization.</p>
+            <button onClick="{{ goReq }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Open requirements builder</button>
+            <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ reqSummary }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(255,255,255,.02);flex-wrap:wrap;">
+                  <span style="font-size:13.5px;color:#DCD2D6;">{{ r.label }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ r.ink }};">{{ r.meta }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ cStep4 }}" hint-placeholder-val="{{ false }}">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">ANNOUNCE ON</div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:18px;">
+              <sc-for list="{{ announce }}" as="a" hint-placeholder-count="4">
+                <button onClick="{{ a.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ a.border }};border-radius:11px;background:{{ a.bg }};cursor:pointer;">
+                  <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ a.dot }};color:{{ a.dot }};font-size:10px;font-weight:700;">{{ a.mark }}</span>
+                  <span style="flex:1;min-width:0;">
+                    <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ a.label }}</span>
+                    <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ a.note }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            <label style="display:block;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">SAVE AS TEMPLATE · OPTIONAL</span>
+              <input value="{{ fTemplate }}" onInput="{{ onTemplate }}" placeholder="Template name" style="width:100%;max-width:420px;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+          </sc-if>
+
+          <sc-if value="{{ cStep5 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+              <sc-for list="{{ review }}" as="r" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(255,255,255,.02);flex-wrap:wrap;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:#6E646C;">{{ r.k }}</span>
+                  <span style="font-size:13.5px;font-weight:600;color:{{ r.ink }};">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:17px;border:1px solid rgba(0,214,180,.24);border-radius:13px;background:rgba(0,214,180,.04);">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;color:#00D6B4;margin-bottom:10px;">ON PUBLISH</div>
+              <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">A rule snapshot and requirement snapshot are attached to the raffle, the seed commitment is generated and published, and the raffle enters the scheduled state until it opens.</p>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;">
+            <button onClick="{{ next }}" style="min-height:46px;padding:13px 24px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">{{ nextLabel }}</button>
+            <button onClick="{{ back }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:11px;cursor:pointer;">{{ backLabel }}</button>
+            <button onClick="{{ saveDraft }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#FFB061;background:rgba(255,106,0,.07);border:1px solid rgba(255,106,0,.3);border-radius:11px;cursor:pointer;">Save draft</button>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isReq }}" hint-placeholder-val="{{ false }}">
+      <div class="ra-s">
+        <div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px;">
+            <div>
+              <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Requirements builder</h2>
+              <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:560px;margin:0;text-wrap:pretty;">Blocks are ANDed. Values inside a block are ORed. Every block declares whether it is mutable and re-checked at finalization.</p>
+            </div>
+            <button onClick="{{ addBlock }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">+ Add block</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
+              <div style="border:1px solid {{ b.border }};border-radius:15px;background:{{ b.bg }};overflow:hidden;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap;">
+                  <div style="display:flex;align-items:center;gap:11px;min-width:0;">
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#08060a;background:#FF6A00;padding:4px 8px;border-radius:5px;">AND</span>
+                    <span style="font-size:14.5px;font-weight:600;color:#F4EDE6;">{{ b.title }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:{{ b.mutInk }};padding:4px 8px;border:1px solid {{ b.mutBorder }};border-radius:5px;">{{ b.mutable }}</span>
+                  </div>
+                  <div style="display:flex;gap:7px;">
+                    <button onClick="{{ b.toggle }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#8C8189;background:transparent;border:1px solid rgba(255,255,255,.12);border-radius:7px;cursor:pointer;">{{ b.toggleLabel }}</button>
+                    <button onClick="{{ b.remove }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.3);border-radius:7px;cursor:pointer;">REMOVE</button>
+                  </div>
+                </div>
+                <div style="padding:15px 17px;">
+                  <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center;">
+                    <sc-for list="{{ b.values }}" as="v" hint-placeholder-count="3">
+                      <span style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;color:#DCD2D6;padding:8px 11px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(255,255,255,.03);">{{ v.label }}<button onClick="{{ v.drop }}" style="background:transparent;border:0;color:#6E646C;cursor:pointer;font-size:11px;">✕</button></span>
+                    </sc-for>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#4E454C;">OR</span>
+                    <button onClick="{{ b.addValue }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#FFB061;background:rgba(255,106,0,.07);border:1px dashed rgba(255,106,0,.35);border-radius:8px;cursor:pointer;">+ VALUE</button>
+                  </div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:12px;">{{ b.note }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">BLOCK LIBRARY</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;">
+              <sc-for list="{{ library }}" as="l" hint-placeholder-count="8">
+                <button onClick="{{ l.add }}" style="min-height:44px;padding:11px;font-size:12.5px;font-weight:600;color:#DCD2D6;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:9px;cursor:pointer;">{{ l.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">EVALUATION PREVIEW</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 13px;">{{ evalText }}</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;letter-spacing:.05em;color:#5ef2d6;">{{ evalExpr }}</div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">MUTABLE REQUIREMENTS</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">{{ mutableCount }} of {{ blockCount }} blocks are mutable — Discord roles, X follows and holdings are re-evaluated when the raffle is finalized, so a member who leaves before the draw is removed from the valid pool.</p>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEntries }}" hint-placeholder-val="{{ false }}">
+      <div class="ra-k vx-stagger" style="margin-bottom:18px;">
+        <sc-for list="{{ entryKpis }}" as="k" hint-placeholder-count="5">
+          <div class="vx-spot" style="background:#0b080d;padding:18px 16px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:{{ k.ink }};">{{ k.v }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;color:#6E646C;margin-top:7px;">{{ k.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search entries by handle or wallet…" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+        <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+          <sc-for list="{{ entryChips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{ exportCsv }}" style="min-height:42px;padding:12px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;cursor:pointer;">Export CSV</button>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr);gap:12px;padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+          <sc-for list="{{ entryCols }}" as="c" hint-placeholder-count="5">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">{{ c }}</div>
+          </sc-for>
+        </div>
+        <sc-for list="{{ entries }}" as="e" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,.8fr);gap:12px;align-items:center;padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+            <div style="font-size:13.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ e.who }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8C8189;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ e.wallet }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#DCD2D6;">{{ e.weight }}</div>
+            <div><span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ e.ink }};padding:4px 8px;border:1px solid {{ e.border }};border-radius:5px;">{{ e.state }}</span></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6E646C;">{{ e.when }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isWinners }}" hint-placeholder-val="{{ false }}">
+      <div class="ra-s">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:22px;border:1px solid rgba(255,106,0,.3);border-radius:16px;background:linear-gradient(160deg,rgba(255,106,0,.08),transparent 70%);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#FF8A33;margin-bottom:12px;">WINNER SELECTION · {{ drawStage }}</div>
+            <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:26px;margin:0 0 12px;">{{ drawTitle }}</h2>
+            <p style="font-size:14.5px;line-height:1.6;color:#C6BBC1;margin:0 0 20px;max-width:560px;text-wrap:pretty;">{{ drawBody }}</p>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;">
+              <button onClick="{{ drawNext }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">{{ drawCta }}</button>
+              <button onClick="{{ drawReset }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:11px;cursor:pointer;">Reset walkthrough</button>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ drawSteps }}" as="s" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 17px;border:1px solid {{ s.border }};border-radius:12px;background:{{ s.bg }};">
+                <span style="width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:8px;border:1px solid {{ s.dotBorder }};color:{{ s.dotInk }};font-family:'JetBrains Mono',monospace;font-size:10px;">{{ s.num }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:14px;font-weight:600;color:{{ s.ink }};">{{ s.label }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ s.note }}</div>
+                </div>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:{{ s.stateInk }};">{{ s.state }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">SELECTED WINNERS</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#00D6B4;">{{ winnerCount }} · SEED {{ seedShort }}</span>
+            </div>
+            <sc-for list="{{ winners }}" as="w" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:auto minmax(0,1.2fr) minmax(0,1.4fr) auto;gap:13px;align-items:center;padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#6E646C;">{{ w.rank }}</span>
+                <span style="font-size:13.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ w.who }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8C8189;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ w.wallet }}</span>
+                <button onClick="{{ w.reroll }}" style="min-height:34px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:{{ w.rerollInk }};background:transparent;border:1px solid {{ w.rerollBorder }};border-radius:7px;cursor:pointer;">{{ w.rerollLabel }}</button>
+              </div>
+            </sc-for>
+            <sc-if value="{{ noWinners }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:40px 22px;text-align:center;font-size:13.5px;color:#8C8189;">Winners appear after the entry pool is frozen and the seed is revealed.</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:14px;">DRAW PARAMETERS</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ drawParams }}" as="p" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                  <span style="color:#6E646C;">{{ p.k }}</span><span style="color:#DCD2D6;">{{ p.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,60,0,.28);border-radius:16px;background:rgba(255,60,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF3C00;margin-bottom:12px;">REROLL POLICY</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">A reroll replaces a single winner and preserves the old result in history. The new selection continues from the same published seed with the replaced index excluded.</p>
+            <button onClick="{{ rerollAll }}" style="width:100%;min-height:44px;padding:12px;font-size:13.5px;font-weight:600;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.4);border-radius:10px;cursor:pointer;">Reroll unclaimed after deadline</button>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">ANNOUNCEMENT</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 14px;">Publishing notifies winners in-app, by email and on the community's connected channels, and opens the claim window.</p>
+            <button onClick="{{ publish }}" style="width:100%;min-height:44px;padding:12px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Publish results</button>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:13px;">{{ toast }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFair }}" hint-placeholder-val="{{ false }}">
+      <div class="ra-s">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:22px;border:1px solid rgba(0,214,180,.26);border-radius:16px;background:rgba(0,214,180,.04);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#00D6B4;margin-bottom:12px;">PROVABLY FAIR RECORD</div>
+            <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 12px;">Anyone can recompute this draw</h2>
+            <p style="font-size:14.5px;line-height:1.6;color:#C6BBC1;margin:0;max-width:580px;text-wrap:pretty;">The commitment is published before entries close; the seed, the frozen entry ledger and the algorithm are published after. Re-running the algorithm on the ledger must produce the same winners — no trust in the server required.</p>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">EVIDENCE</div>
+            <sc-for list="{{ evidence }}" as="e" hint-placeholder-count="6">
+              <div style="padding:15px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:#6E646C;">{{ e.k }}</span>
+                  <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#5ef2d6;overflow-wrap:anywhere;">{{ e.v }}</span>
+                </div>
+                <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:7px;">{{ e.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">VERIFY LOCALLY</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.8;letter-spacing:.03em;color:#C6BBC1;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:#0b080d;overflow-x:auto;">{{ verifySnippet }}</div>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px;">
+              <button onClick="{{ downloadLedger }}" style="flex:1;min-height:42px;padding:12px;font-size:13px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;cursor:pointer;">Download ledger</button>
+              <button onClick="{{ recompute }}" style="flex:1;min-height:42px;padding:12px;font-size:13px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#5ef2d6,#00A88F);border:none;border-radius:10px;cursor:pointer;">Recompute now</button>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:13px;">{{ toast }}</div>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:16px 19px;border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;">SELECTION HISTORY · IMMUTABLE</div>
+            <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+              <div style="padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="font-size:13.5px;color:#C6BBC1;line-height:1.5;">{{ h.text }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;margin-top:5px;">{{ h.meta }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTemplates }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Template editor</h2>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:640px;margin:0;text-wrap:pretty;">A template stores mode, winners, duration, requirement tree and announcement channels. Publishing from a template only asks for the variables.</p>
+        </div>
+        <button onClick="{{ newTemplate }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">+ New template</button>
+      </div>
+      <div class="ra-c vx-stagger">
+        <sc-for list="{{ templates }}" as="t" hint-placeholder-count="4">
+          <div class="vx-spot" style="display:flex;flex-direction:column;padding:19px;border:1px solid {{ t.border }};border-radius:15px;background:{{ t.bg }};">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16.5px;">{{ t.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:{{ t.kindInk }};padding:4px 8px;border:1px solid {{ t.kindBorder }};border-radius:5px;">{{ t.kind }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
+              <sc-for list="{{ t.fields }}" as="f" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.06em;">
+                  <span style="color:#6E646C;">{{ f.k }}</span><span style="color:#DCD2D6;">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:auto;">
+              <button onClick="{{ t.use }}" style="flex:1;min-height:40px;padding:11px;font-size:13px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:9px;cursor:pointer;">Use</button>
+              <button onClick="{{ t.dup }}" style="flex:none;min-height:40px;padding:11px 14px;font-size:13px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:9px;cursor:pointer;">Duplicate</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Every draw is committed before entries close and recomputable after.</p>
+      </div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="raffle-admin.dc.html#requirements">Requirements</a><a href="raffle-admin.dc.html#templates">Templates</a></div></div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="wins.dc.html">My Wins</a><a href="autoregister.dc.html">Auto-Register</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="raffle-admin.dc.html#fairness">Fairness records</a><a href="verify.dc.html">Check eligibility</a><a href="support.dc.html">How it works</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="messages.dc.html">Messages</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const TABS = [
+  ['list', 'All raffles'], ['create', 'Create raffle'], ['requirements', 'Requirements'],
+  ['entries', 'Entries'], ['winners', 'Winner selection'], ['fairness', 'Provably fair'], ['templates', 'Templates']
+];
+const RAFFLES = [
+  ['Genesis Founders Pass', 'ARC GENESIS · WEIGHTED · 250 WINNERS', 'Active', '4,812', 'Ends in 14h'],
+  ['Relics Early Access', 'ARC RELICS · FCFS · 1,500 SPOTS', 'Active', '1,240', 'Ends in 2d'],
+  ['Northwind Whitelist', 'NORTHWIND · WEIGHTED · 300 WINNERS', 'Ended', '3,318', 'Awaiting finalize'],
+  ['Forge Pass Allowlist', 'FORGE PASS · APPLICATION · 30 SEATS', 'Scheduled', '0', 'Opens 22 Sep'],
+  ['Core Holder Collection', 'ARC CORES · WALLET COLLECT', 'Draft', '—', 'No schedule'],
+  ['Ember Final Draw', 'EMBER SET · WEIGHTED · 40 WINNERS', 'Finalized', '9,004', '40 winners · 13 Sep']
+];
+const LIB = ['Discord role', 'Discord server', 'X follow', 'X repost', 'NFT holding', 'Token balance', 'Wallet age', 'Reputation', 'Whop membership', 'Telegram channel', 'CAPTCHA', 'Account age'];
+const ENTRIES = [
+  ['maya_chen', '0x71C…9f04', '3.0×', 'Valid', '2h ago'],
+  ['dex_orr', '0x9A2…c118', '1.0×', 'Valid', '3h ago'],
+  ['pyra', '0x44B…7e6d', '2.0×', 'Valid', '5h ago'],
+  ['nine_lives', '0xB03…22aa', '1.0×', 'Failed', '5h ago'],
+  ['solvent', '0x17F…8c31', '1.0×', 'Valid', '7h ago'],
+  ['halcyon', '0xEE8…4b90', '1.0×', 'Pending', '8h ago'],
+  ['veer.eth', '0x2D1…6f77', '3.0×', 'Valid', '9h ago'],
+  ['ilo', '0x8C5…10de', '1.0×', 'Removed', '11h ago']
+];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'list', query: '', chip: 'All', eChip: 'All', toast: '', raffle: 0,
+    step: 1, title: '', project: 'Arc Genesis', mode: 'Weighted', winners: '250',
+    open: '18 Sep 2026 18:00Z', close: '21 Sep 2026 18:00Z', tpl: '',
+    draw: ['recheck', 'unique_wallet'], announce: ['inapp', 'email', 'discord'],
+    stage: 0, rerolled: [],
+    blocks: [
+      { t: 'Discord role', mutable: true, values: ['ARCforge · Holder', 'ARCforge · OG'] },
+      { t: 'X follow', mutable: true, values: ['@arcforge', '@arcgenesis'] },
+      { t: 'NFT holding', mutable: true, values: ['Arc Genesis ≥ 1'] },
+      { t: 'CAPTCHA', mutable: false, values: ['Required'] }
+    ]
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && TABS.some(t => t[0] === h)) this.setState({ tab: h });
+  }
+  go(tab) { this.setState({ tab, toast: '' }); try { history.replaceState(null, '', '#' + tab); } catch (e) {} }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state, tab = S.tab;
+    const cur = RAFFLES[S.raffle];
+    const stateColor = s => /active|finalized|valid/i.test(s) ? ['#00D6B4', 'rgba(0,214,180,.3)']
+      : /ended|scheduled|pending|awaiting/i.test(s) ? ['#FFB061', 'rgba(255,106,0,.3)']
+      : /failed|removed/i.test(s) ? ['#FF6A6A', 'rgba(255,60,0,.3)'] : ['#8C8189', 'rgba(255,255,255,.12)'];
+    const sc = stateColor(cur[2]);
+
+    const list = RAFFLES
+      .filter(r => !S.query || r.join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(r => S.chip === 'All' || r[2] === S.chip);
+
+    const ent = ENTRIES
+      .filter(e => !S.query || e.join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(e => S.eChip === 'All' || e[3] === S.eChip);
+
+    const STAGES = ['Entries open', 'Freeze entry pool', 'Recheck mutable requirements', 'Reveal seed', 'Select winners', 'Publish results'];
+    const winners = S.stage >= 5 ? [
+      ['01', 'maya_chen', '0x71C…9f04'], ['02', 'veer.eth', '0x2D1…6f77'], ['03', 'pyra', '0x44B…7e6d'],
+      ['04', 'dex_orr', '0x9A2…c118'], ['05', 'solvent', '0x17F…8c31'], ['06', 'halcyon', '0xEE8…4b90']
+    ] : [];
+
+    return {
+      crumb: (TABS.find(t => t[0] === tab) || TABS[0])[1].toUpperCase(),
+      current: cur[0], stateLabel: cur[2].toUpperCase(), stateInk: sc[0], stateBorder: sc[1],
+      picker: RAFFLES.slice(0, 4).map((r, i) => ({
+        label: r[0].split(' ')[0].toUpperCase(),
+        ink: i === S.raffle ? '#08060a' : '#8C8189',
+        bg: i === S.raffle ? '#FF6A00' : 'transparent',
+        border: i === S.raffle ? '#FF6A00' : 'rgba(255,255,255,.14)',
+        pick: () => this.setState({ raffle: i, stage: 0, rerolled: [] })
+      })),
+      tabs: TABS.map(t => ({
+        label: t[1], pick: () => this.go(t[0]),
+        ink: t[0] === tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      goCreate: () => this.go('create'), goReq: () => this.go('requirements'),
+
+      isList: tab === 'list', isCreate: tab === 'create', isReq: tab === 'requirements',
+      isEntries: tab === 'entries', isWinners: tab === 'winners', isFair: tab === 'fairness', isTemplates: tab === 'templates',
+
+      kpis: [
+        { v: '6', l: 'TOTAL RAFFLES' }, { v: '2', l: 'ACTIVE' }, { v: '1', l: 'AWAITING FINALIZE' },
+        { v: '18,376', l: 'ENTRIES · 30D' }, { v: '96.2%', l: 'ELIGIBILITY PASS' }, { v: '0', l: 'DISPUTES' }
+      ],
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: ['All', 'Active', 'Scheduled', 'Ended', 'Draft', 'Finalized'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      list: list.map(r => {
+        const c = stateColor(r[2]);
+        const cta = r[2] === 'Ended' ? 'Finalize' : r[2] === 'Draft' ? 'Publish' : r[2] === 'Finalized' ? 'Evidence' : 'Entries';
+        return {
+          name: r[0], meta: r[1], state: r[2].toUpperCase(), ink: c[0], border: c[1],
+          entries: r[3], timing: r[4].toUpperCase(), cta: cta,
+          ctaInk: '#08060a', ctaBg: 'linear-gradient(180deg,#FFA047,#FF6A00)', ctaBorder: 'transparent',
+          open: () => this.setState({ raffle: RAFFLES.indexOf(r), tab: 'entries' }),
+          primary: () => this.setState({
+            raffle: RAFFLES.indexOf(r),
+            tab: cta === 'Finalize' ? 'winners' : cta === 'Evidence' ? 'fairness' : cta === 'Publish' ? 'create' : 'entries'
+          })
+        };
+      }),
+      listEmpty: list.length === 0,
+      clear: () => this.setState({ query: '', chip: 'All' }),
+
+      stepNo: S.step,
+      stepTitle: ['Raffle basics', 'Schedule and draw', 'Requirements', 'Announcements', 'Review and publish'][S.step - 1],
+      stepSub: [
+        'Title, project and mode. The mode determines how winners are chosen and cannot change after entries open.',
+        'Opening and closing times plus the options that govern the draw itself.',
+        'Build the requirement tree. Blocks are ANDed, values inside a block are ORed.',
+        'Where the raffle and its results are announced, and whether this configuration becomes a template.',
+        'A rule snapshot and a seed commitment are attached at publish time.'
+      ][S.step - 1],
+      steps: [1, 2, 3, 4, 5].map(n => ({
+        num: 'STEP ' + n, label: ['Basics', 'Schedule', 'Requirements', 'Announce', 'Review'][n - 1],
+        pick: () => this.setState({ step: n }),
+        ink: n === S.step ? '#F4EDE6' : '#8C8189', numInk: n === S.step ? '#FF8A33' : '#4E454C',
+        bg: n === S.step ? 'rgba(255,106,0,.07)' : 'rgba(255,255,255,.02)',
+        border: n === S.step ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      cStep1: S.step === 1, cStep2: S.step === 2, cStep3: S.step === 3, cStep4: S.step === 4, cStep5: S.step === 5,
+      fTitle: S.title, onTitle: e => this.setState({ title: e.target.value }),
+      projectPick: ['Arc Genesis', 'Arc Relics', 'Forge Pass'].map(p => ({
+        label: p, ink: S.project === p ? '#F4EDE6' : '#C6BBC1',
+        bg: S.project === p ? 'rgba(255,106,0,.09)' : 'rgba(255,255,255,.02)',
+        border: S.project === p ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ project: p })
+      })),
+      modes: [
+        ['Weighted', 'Entries carry weights from reputation, holdings or roles. Weights never come from payment.'],
+        ['FCFS', 'First come, first served until the spots run out. No draw is performed.'],
+        ['Application', 'Members apply and the team reviews before granting seats.'],
+        ['Wallet collect', 'Collects verified wallets without selecting winners.']
+      ].map(m => ({
+        label: m[0], note: m[1],
+        ink: S.mode === m[0] ? '#F4EDE6' : '#C6BBC1',
+        bg: S.mode === m[0] ? 'rgba(255,106,0,.08)' : 'rgba(255,255,255,.02)',
+        border: S.mode === m[0] ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ mode: m[0] })
+      })),
+      fWinners: S.winners, onWinners: e => this.setState({ winners: e.target.value }),
+      fOpen: S.open, onOpen: e => this.setState({ open: e.target.value }),
+      fClose: S.close, onClose: e => this.setState({ close: e.target.value }),
+      drawOpts: [
+        ['recheck', 'Recheck mutable requirements at finalization', 'Roles, follows and holdings are re-evaluated before the seed is used.'],
+        ['unique_wallet', 'One winning wallet per draw', 'A wallet can appear only once in the result set.'],
+        ['manual_review', 'Hold winners for manual review', 'Results are staged for the team before publication.'],
+        ['auto_reroll', 'Auto-reroll unclaimed after 48h', 'Unclaimed allocations are rerolled from the same published seed.']
+      ].map(o => {
+        const on = S.draw.indexOf(o[0]) >= 0;
+        return {
+          label: o[1], note: o[2], mark: on ? '✓' : '', dot: on ? '#00D6B4' : '#4E454C',
+          border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.02)',
+          toggle: () => this.setState(st => ({ draw: on ? st.draw.filter(k => k !== o[0]) : st.draw.concat([o[0]]) }))
+        };
+      }),
+      reqSummary: S.blocks.map(b => ({
+        label: b.t + ' · ' + b.values.length + (b.values.length > 1 ? ' values (OR)' : ' value'),
+        meta: b.mutable ? 'MUTABLE · RECHECKED' : 'STATIC',
+        ink: b.mutable ? '#FF8A33' : '#00D6B4'
+      })),
+      announce: [
+        ['inapp', 'In-app notification', 'ALL MEMBERS'], ['email', 'Email', 'OPTED-IN MEMBERS'],
+        ['discord', 'Discord announcement channel', 'REQUIRES WEBHOOK SCOPE'], ['telegram', 'Telegram channel', 'PREMIUM COMMUNITY']
+      ].map(a => {
+        const on = S.announce.indexOf(a[0]) >= 0;
+        return {
+          label: a[1], note: a[2], mark: on ? '✓' : '', dot: on ? '#00D6B4' : '#4E454C',
+          border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.02)',
+          toggle: () => this.setState(st => ({ announce: on ? st.announce.filter(k => k !== a[0]) : st.announce.concat([a[0]]) }))
+        };
+      }),
+      fTemplate: S.tpl, onTemplate: e => this.setState({ tpl: e.target.value }),
+      review: [
+        { k: 'TITLE', v: S.title || 'Not set', ink: S.title ? '#F4EDE6' : '#FF6A6A' },
+        { k: 'PROJECT', v: S.project, ink: '#F4EDE6' },
+        { k: 'MODE', v: S.mode, ink: '#F4EDE6' },
+        { k: 'WINNERS / SPOTS', v: S.winners, ink: '#F4EDE6' },
+        { k: 'WINDOW', v: S.open + ' → ' + S.close, ink: '#F4EDE6' },
+        { k: 'REQUIREMENTS', v: S.blocks.length + ' blocks · ' + S.blocks.filter(b => b.mutable).length + ' mutable', ink: '#F4EDE6' },
+        { k: 'ANNOUNCE ON', v: S.announce.length + ' channels', ink: '#F4EDE6' }
+      ],
+      nextLabel: S.step < 5 ? 'Continue' : 'Publish raffle',
+      next: () => S.step < 5
+        ? this.setState({ step: S.step + 1, toast: '' })
+        : this.flash(S.title ? 'Published · ' + S.title + ' scheduled. Seed commitment and rule snapshot attached.' : 'A title is required before publishing.'),
+      backLabel: S.step > 1 ? 'Back' : 'Cancel',
+      back: () => S.step > 1 ? this.setState({ step: S.step - 1, toast: '' }) : this.go('list'),
+      saveDraft: () => this.flash('Draft saved · visible to the team, not listed publicly.'),
+
+      addBlock: () => this.setState(st => ({ blocks: st.blocks.concat([{ t: 'New block', mutable: true, values: ['Any value'] }]) })),
+      blockCount: S.blocks.length,
+      mutableCount: S.blocks.filter(b => b.mutable).length,
+      blocks: S.blocks.map((b, i) => ({
+        title: b.t, mutable: b.mutable ? 'MUTABLE' : 'STATIC',
+        mutInk: b.mutable ? '#FF8A33' : '#00D6B4',
+        mutBorder: b.mutable ? 'rgba(255,106,0,.3)' : 'rgba(0,214,180,.3)',
+        border: 'rgba(255,255,255,.09)', bg: 'rgba(255,255,255,.016)',
+        toggleLabel: b.mutable ? 'MAKE STATIC' : 'MAKE MUTABLE',
+        note: b.mutable ? 'RE-EVALUATED AT FINALIZATION BEFORE THE DRAW' : 'EVALUATED ONCE AT ENTRY TIME',
+        toggle: () => this.setState(st => {
+          const bl = st.blocks.slice(); bl[i] = Object.assign({}, bl[i], { mutable: !bl[i].mutable }); return { blocks: bl };
+        }),
+        remove: () => this.setState(st => ({ blocks: st.blocks.filter((x, j) => j !== i) })),
+        addValue: () => this.setState(st => {
+          const bl = st.blocks.slice();
+          bl[i] = Object.assign({}, bl[i], { values: bl[i].values.concat(['Value ' + (bl[i].values.length + 1)]) });
+          return { blocks: bl };
+        }),
+        values: b.values.map((v, j) => ({
+          label: v,
+          drop: () => this.setState(st => {
+            const bl = st.blocks.slice();
+            bl[i] = Object.assign({}, bl[i], { values: bl[i].values.filter((x, k) => k !== j) });
+            return { blocks: bl };
+          })
+        }))
+      })),
+      library: LIB.map(l => ({
+        label: l,
+        add: () => this.setState(st => ({ blocks: st.blocks.concat([{ t: l, mutable: !/captcha|wallet age|account age/i.test(l), values: ['Any'] }]) }))
+      })),
+      evalText: 'An entry is valid only when every block passes. Inside a block, satisfying any one value is enough.',
+      evalExpr: S.blocks.map(b => '(' + b.values.join(' OR ') + ')').join('\n  AND '),
+
+      entryKpis: [
+        { v: '4,812', l: 'TOTAL ENTRIES', ink: '#F4EDE6' }, { v: '4,631', l: 'VALID', ink: '#00D6B4' },
+        { v: '138', l: 'FAILED CHECKS', ink: '#FF6A6A' }, { v: '43', l: 'PENDING VERIFY', ink: '#FFB061' },
+        { v: '12', l: 'REMOVED · DEDUP', ink: '#8C8189' }, { v: '1.6×', l: 'AVG WEIGHT', ink: '#F4EDE6' }
+      ],
+      entryChips: ['All', 'Valid', 'Failed', 'Pending', 'Removed'].map(c => ({
+        label: c.toUpperCase(), ink: S.eChip === c ? '#08060a' : '#8C8189',
+        bg: S.eChip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ eChip: c })
+      })),
+      entryCols: ['MEMBER', 'MAIN WALLET', 'WEIGHT', 'STATE', 'ENTERED'],
+      entries: ent.map(e => {
+        const c = stateColor(e[3]);
+        return { who: e[0], wallet: e[1], weight: e[2], state: e[3].toUpperCase(), ink: c[0], border: c[1], when: e[4].toUpperCase() };
+      }),
+      exportCsv: () => this.flash('Export queued · CSV includes entry id, member, wallet, weight, check results and timestamps.'),
+
+      drawStage: STAGES[Math.min(S.stage, 5)].toUpperCase(),
+      drawTitle: S.stage === 0 ? 'Entries are still open'
+        : S.stage === 1 ? 'Entry pool frozen'
+        : S.stage === 2 ? 'Mutable requirements rechecked'
+        : S.stage === 3 ? 'Seed revealed'
+        : S.stage === 4 ? 'Winners selected'
+        : 'Results published',
+      drawBody: [
+        'Freezing the pool stops new entries and snapshots every entry with its weight. The commitment hash was published when the raffle opened.',
+        '4,631 entries frozen. Next, mutable requirements are re-evaluated so members who left a server or sold a holding are removed.',
+        '42 entries removed on recheck. The seed can now be revealed; it was committed before entries closed.',
+        'Seed 9f3c…b17a revealed and published. Selecting winners now runs the documented algorithm over the frozen ledger.',
+        '250 winners selected deterministically. Review the list, reroll individual winners if a policy requires it, then publish.',
+        'Winners notified across the configured channels, claim window open, and the evidence bundle is public.'
+      ][Math.min(S.stage, 5)],
+      drawCta: ['Freeze entry pool', 'Recheck requirements', 'Reveal seed', 'Select winners', 'Publish results', 'View evidence'][Math.min(S.stage, 5)],
+      drawNext: () => S.stage >= 5 ? this.go('fairness') : this.setState({ stage: S.stage + 1, toast: '' }),
+      drawReset: () => this.setState({ stage: 0, rerolled: [], toast: '' }),
+      drawSteps: STAGES.map((s, i) => ({
+        num: i + 1, label: s,
+        note: ['NO NEW ENTRIES AFTER THIS POINT', 'ROLES · FOLLOWS · HOLDINGS', 'COMMITTED BEFORE CLOSE', 'DETERMINISTIC OVER FROZEN LEDGER', 'NOTIFY + CLAIM WINDOW', 'IMMUTABLE RECORD'][i],
+        state: i < S.stage ? 'DONE' : i === S.stage ? 'CURRENT' : 'WAITING',
+        stateInk: i < S.stage ? '#00D6B4' : i === S.stage ? '#FF8A33' : '#4E454C',
+        ink: i <= S.stage ? '#F4EDE6' : '#8C8189',
+        dotInk: i < S.stage ? '#00D6B4' : i === S.stage ? '#FF8A33' : '#4E454C',
+        dotBorder: i < S.stage ? 'rgba(0,214,180,.4)' : i === S.stage ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.1)',
+        border: i === S.stage ? 'rgba(255,106,0,.3)' : 'rgba(255,255,255,.07)',
+        bg: i === S.stage ? 'rgba(255,106,0,.05)' : 'rgba(255,255,255,.016)'
+      })),
+      winnerCount: winners.length ? winners.length + ' OF 250 SHOWN' : '0',
+      seedShort: S.stage >= 3 ? '9F3C…B17A' : 'COMMITTED',
+      noWinners: winners.length === 0,
+      winners: winners.map(w => {
+        const done = S.rerolled.indexOf(w[0]) >= 0;
+        return {
+          rank: w[0], who: done ? 'nine_lives' : w[1], wallet: done ? '0xB03…22aa' : w[2],
+          rerollLabel: done ? 'REROLLED' : 'REROLL',
+          rerollInk: done ? '#00D6B4' : '#FF6A6A',
+          rerollBorder: done ? 'rgba(0,214,180,.3)' : 'rgba(255,60,0,.3)',
+          reroll: () => this.setState(st => ({
+            rerolled: st.rerolled.indexOf(w[0]) >= 0 ? st.rerolled : st.rerolled.concat([w[0]]),
+            toast: 'Winner ' + w[0] + ' rerolled · previous result preserved in history · audit entry written.'
+          }))
+        };
+      }),
+      drawParams: [
+        { k: 'MODE', v: 'Weighted' }, { k: 'WINNERS', v: '250' },
+        { k: 'ALGORITHM', v: 'HMAC-SHA256 ladder' }, { k: 'COMMITMENT', v: '7c1f…a904' },
+        { k: 'SEED', v: S.stage >= 3 ? '9f3c…b17a' : 'sealed' },
+        { k: 'RULE SNAPSHOT', v: 'rules@2026-09-04' }, { k: 'UNIQUE WALLETS', v: 'Enforced' }
+      ],
+      rerollAll: () => this.flash('Scheduled · unclaimed allocations reroll 48h after publication, from the same seed.'),
+      publish: () => S.stage >= 4
+        ? this.flash('Published · winners notified in-app, by email and on Discord. Claim window open for 48h.')
+        : this.flash('Complete the draw steps before publishing.'),
+
+      evidence: [
+        { k: 'COMMITMENT HASH', v: '7c1f9b20e4a6…a904', note: 'Published when entries opened, before any entry existed.' },
+        { k: 'REVEALED SEED', v: '9f3c5d81ba27…b17a', note: 'Revealed after the pool was frozen. Hashing it reproduces the commitment.' },
+        { k: 'ENTRY LEDGER', v: 'ledger_4631.csv · sha256 2ad8…91ce', note: 'Every frozen entry with its weight, in canonical order.' },
+        { k: 'ALGORITHM', v: 'hmac_sha256_weighted_ladder@v2', note: 'Documented and versioned. Same input always yields the same winners.' },
+        { k: 'RULE SNAPSHOT', v: 'rules@2026-09-04T18:22Z', note: 'The rule configuration in force when the raffle was created.' },
+        { k: 'RESULT HASH', v: 'd41a…77b2', note: 'Hash of the published winner list, including any reroll history.' }
+      ],
+      verifySnippet: 'sha256(seed) == commitment\nfor i in 0..winners:\n  idx = hmac(seed, i) % total_weight\n  winner[i] = ladder_lookup(ledger, idx)',
+      downloadLedger: () => this.flash('ledger_4631.csv download started · sha256 2ad8…91ce.'),
+      recompute: () => this.flash('Recomputed in-browser · 250 of 250 winners match the published result.'),
+      history: [
+        { text: 'Initial selection · 250 winners from seed 9f3c…b17a', meta: '13 SEP 2026 · 21:10Z · RESULT HASH D41A…77B2' },
+        { text: 'Reroll · position 04 replaced (unclaimed after 48h)', meta: '15 SEP 2026 · 21:11Z · OLD RESULT PRESERVED' },
+        { text: 'Recheck removed 42 entries before the draw', meta: '13 SEP 2026 · 20:58Z · ROLE AND HOLDING CHECKS' },
+        { text: 'Entry pool frozen at 4,631 valid entries', meta: '13 SEP 2026 · 20:45Z' }
+      ],
+
+      templates: [
+        { name: 'Standard Weighted', kind: 'COMMUNITY', fields: [{ k: 'MODE', v: 'Weighted' }, { k: 'WINNERS', v: '40' }, { k: 'DURATION', v: '72h' }, { k: 'BLOCKS', v: '3' }, { k: 'USED', v: '14×' }] },
+        { name: 'FCFS Quick Drop', kind: 'COMMUNITY', fields: [{ k: 'MODE', v: 'FCFS' }, { k: 'SPOTS', v: '1,500' }, { k: 'DURATION', v: '24h' }, { k: 'BLOCKS', v: '2' }, { k: 'USED', v: '9×' }] },
+        { name: 'Arc Genesis Allowlist', kind: 'PROJECT', fields: [{ k: 'MODE', v: 'Weighted' }, { k: 'WINNERS', v: '250' }, { k: 'PROJECT', v: 'Arc Genesis' }, { k: 'BLOCKS', v: '4' }, { k: 'USED', v: '6×' }] },
+        { name: 'Application Review', kind: 'COMMUNITY', fields: [{ k: 'MODE', v: 'Application' }, { k: 'SEATS', v: '30' }, { k: 'REVIEW', v: 'Manual' }, { k: 'BLOCKS', v: '2' }, { k: 'USED', v: '3×' }] }
+      ].map(t => Object.assign({}, t, {
+        kindInk: t.kind === 'PROJECT' ? '#5ef2d6' : '#FFB061',
+        kindBorder: t.kind === 'PROJECT' ? 'rgba(0,214,180,.3)' : 'rgba(255,106,0,.3)',
+        border: 'rgba(255,255,255,.09)', bg: 'rgba(255,255,255,.016)',
+        use: () => this.setState({ tab: 'create', step: 1, toast: 'Loaded ' + t.name + ' — only the variables are left to fill.' }),
+        dup: () => this.flash('Duplicated ' + t.name + ' · new template is editable and private to the team.')
+      })),
+      newTemplate: () => this.flash('New template started from the current create-raffle configuration.'),
+
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

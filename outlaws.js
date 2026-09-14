@@ -179,6 +179,18 @@
     '[data-page] button:not(:empty):not(:has(> span[style*="position:absolute"])):not(:has(> span[style*="position: absolute"])){min-height:40px!important}',
     '[data-page] button:not(:empty):not([style*="display"]):not(:has(> span[style*="position:absolute"])):not(:has(> span[style*="position: absolute"])){display:inline-flex!important;align-items:center!important;justify-content:center!important}',
     '}',
+    /* ── header "More" menu: every non-primary destination ── */
+    '.ol-more{position:relative;flex:none}',
+    '.ol-more-b{display:flex;align-items:center;gap:7px;padding:9px 15px;font-size:14.5px;font-weight:500;color:#8C8189;background:transparent;border:0;border-radius:8px;cursor:pointer;white-space:nowrap;transition:color .22s,background .22s}',
+    '.ol-more-b:hover,.ol-more[data-open] .ol-more-b{color:#F4EDE6;background:rgba(255,255,255,.05)}',
+    '.ol-more-p{position:absolute;top:calc(100% + 14px);left:0;z-index:50;display:none;grid-template-columns:repeat(3,minmax(168px,1fr));gap:2px 20px;padding:16px 18px 18px;border:1px solid rgba(255,106,0,.28);border-radius:14px;background:#0e0a10;box-shadow:0 26px 70px rgba(0,0,0,.72)}',
+    '.ol-more[data-open] .ol-more-p{display:grid}',
+    ".ol-more-p .t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:#4E454C;padding:0 8px 9px}",
+    '.ol-more-p a{display:block;padding:9px 8px;font-size:13.5px;color:#C6BBC1;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s}',
+    '.ol-more-p a:hover{color:#FF9040;background:rgba(255,106,0,.09)}',
+    '.ol-more-p a[data-on]{color:#F4EDE6;background:rgba(255,106,0,.1)}',
+    '@media(max-width:1120px){.ol-more{display:none!important}}',
+
     /* ── decorative field + mobile drawer ── */
     '.ol-field{position:fixed;inset:0;pointer-events:none;z-index:0}',
     '.ol-grid{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.32;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:76px 76px;-webkit-mask-image:radial-gradient(1000px 700px at 50% 0%,#000 20%,transparent 78%);mask-image:radial-gradient(1000px 700px at 50% 0%,#000 20%,transparent 78%)}',
@@ -250,7 +262,7 @@
       sweepQueued = false;
       sweep();
       /* a page re-render can replace the header: rewire any fresh search box */
-      if (started) globalSearch();
+      if (started) { globalSearch(); moreMenu(); }
     });
   }
 
@@ -344,7 +356,22 @@
     ['Calendar', 'PAGE', 'calendar.dc.html', 'UPCOMING AND CLOSING DRAWS', 'CA'],
     ['Discover', 'PAGE', 'discover.dc.html', 'EVERY OPEN ALLOCATION', 'DI'],
     ['Premium', 'PAGE', 'premium.dc.html', 'AUTO-REGISTER AND ALERTS', 'PR'],
-    ['Support', 'PAGE', 'support.dc.html', 'HELP CENTER AND DOCS', 'SP']
+    ['Support', 'PAGE', 'support.dc.html', 'HELP CENTER AND DOCS', 'SP'],
+    ['My Wins', 'PAGE', 'wins.dc.html', 'ALLOCATIONS YOU WON', 'WI'],
+    ['Auto-Register', 'PAGE', 'autoregister.dc.html', 'PREMIUM AUTOMATION', 'AR'],
+    ['Notifications', 'PAGE', 'notifications.dc.html', 'EVENTS AND PREFERENCES', 'NO'],
+    ['Messages', 'PAGE', 'messages.dc.html', 'INTERNAL CONVERSATIONS', 'ME'],
+    ['Account settings', 'PAGE', 'settings.dc.html', 'IDENTITY · WALLETS · SECURITY', 'AS'],
+    ['Support requests', 'PAGE', 'requests.dc.html', 'TICKETS AND REPLIES', 'SR'],
+    ['Community manager', 'PAGE', 'community-admin.dc.html', 'TEAM · ROLES · RULES', 'CM'],
+    ['Raffle manager', 'PAGE', 'raffle-admin.dc.html', 'ENTRIES · WINNERS · AUDIT', 'RM'],
+    ['Requirements builder', 'PAGE', 'raffle-admin.dc.html#requirements', 'AND BLOCKS · OR VALUES', 'RQ'],
+    ['Templates', 'PAGE', 'raffle-admin.dc.html#templates', 'REUSABLE RAFFLE CONFIGS', 'TE'],
+    ['Winner selection', 'PAGE', 'raffle-admin.dc.html#winners', 'DRAW PREPARATION', 'WS'],
+    ['Provably fair records', 'PAGE', 'raffle-admin.dc.html#fairness', 'PUBLISHED EVIDENCE', 'PF'],
+    ['Admin dashboard', 'PAGE', 'dashboard.dc.html', 'SUPER ADMIN CONSOLE', 'AD'],
+    ['Talent and hiring', 'PAGE', 'hiring.dc.html', 'JOBS AND APPLICATIONS', 'HR'],
+    ['Page map', 'PAGE', 'sitemap.dc.html', 'EVERY SCREEN AND STATE', 'PM']
   ];
   var SPREF = { sort: 'RELEVANCE', eligible: false, ended: false, verified: false };
   try {
@@ -592,10 +619,50 @@
   /* decorative background field — injected once, never authored per page */
   var NAV = [
     ['BROWSE', [['Home', 'index.html'], ['Discover', 'discover.dc.html'], ['Projects', 'projects.dc.html'], ['Communities', 'communities.dc.html'], ['Calendar', 'calendar.dc.html']]],
-    ['YOUR ACTIVITY', [['My Raffles', 'myraffles.dc.html'], ['Notifications', 'profile.dc.html#notifications'], ['Premium', 'premium.dc.html']]],
-    ['VERIFICATION', [['Check eligibility', 'verify.dc.html'], ['Verify a draw', 'raffle.dc.html#fairness'], ['How it works', 'support.dc.html#verification']]],
-    ['MORE', [['Search', 'search.dc.html'], ['Support', 'support.dc.html'], ['Sign in', 'auth.dc.html']]]
+    ['YOUR ACTIVITY', [['My Raffles', 'myraffles.dc.html'], ['My Wins', 'wins.dc.html'], ['Notifications', 'notifications.dc.html'], ['Messages', 'messages.dc.html'], ['Auto-Register', 'autoregister.dc.html'], ['Premium', 'premium.dc.html']]],
+    ['MANAGE', [['Community manager', 'community-admin.dc.html'], ['Raffle manager', 'raffle-admin.dc.html'], ['Requirements builder', 'raffle-admin.dc.html#requirements'], ['Templates', 'raffle-admin.dc.html#templates'], ['Winner selection', 'raffle-admin.dc.html#winners']]],
+    ['VERIFICATION', [['Check eligibility', 'verify.dc.html'], ['Provably fair records', 'raffle-admin.dc.html#fairness'], ['How it works', 'support.dc.html#verification']]],
+    ['MORE', [['Search', 'search.dc.html'], ['Account settings', 'settings.dc.html'], ['Support requests', 'requests.dc.html'], ['Talent and hiring', 'hiring.dc.html'], ['Admin dashboard', 'dashboard.dc.html'], ['Page map', 'sitemap.dc.html'], ['Sign in', 'auth.dc.html']]]
   ];
+
+  /* header "More" menu — the non-primary destinations, one source of truth */
+  var MORE = [
+    ['MANAGE', [['Community manager', 'community-admin.dc.html'], ['Create community', 'community-admin.dc.html#create'], ['Raffle manager', 'raffle-admin.dc.html'], ['Create raffle', 'raffle-admin.dc.html#create'], ['Requirements builder', 'raffle-admin.dc.html#requirements'], ['Templates', 'raffle-admin.dc.html#templates']]],
+    ['YOUR ACCOUNT', [['My wins', 'wins.dc.html'], ['Auto-Register', 'autoregister.dc.html'], ['Notifications', 'notifications.dc.html'], ['Messages', 'messages.dc.html'], ['Support requests', 'requests.dc.html'], ['Account settings', 'settings.dc.html']]],
+    ['PLATFORM', [['Winner selection', 'raffle-admin.dc.html#winners'], ['Provably fair records', 'raffle-admin.dc.html#fairness'], ['Admin dashboard', 'dashboard.dc.html'], ['Talent and hiring', 'hiring.dc.html'], ['Page map', 'sitemap.dc.html'], ['System states', 'states.dc.html']]]
+  ];
+
+  function moreMenu() {
+    var navs = document.querySelectorAll('.ol-nav');
+    var here = (location.pathname.split('/').pop() || 'index.html');
+    for (var i = 0; i < navs.length; i++) {
+      var nav = navs[i];
+      if (nav.__more) continue;
+      nav.__more = 1;
+      var wrap = document.createElement('div');
+      wrap.className = 'ol-more';
+      var html = '<button type="button" class="ol-more-b" aria-haspopup="true" aria-expanded="false">More <span aria-hidden="true" style="font-size:10px">▾</span></button><div class="ol-more-p">';
+      for (var g = 0; g < MORE.length; g++) {
+        html += '<div><div class="t">' + MORE[g][0] + '</div>';
+        var items = MORE[g][1];
+        for (var j = 0; j < items.length; j++) {
+          var on = items[j][1].split('#')[0] === here ? ' data-on=""' : '';
+          html += '<a href="' + items[j][1] + '"' + on + '>' + items[j][0] + '</a>';
+        }
+        html += '</div>';
+      }
+      wrap.innerHTML = html + '</div>';
+      nav.appendChild(wrap);
+    }
+  }
+  function closeMore() {
+    var list = document.querySelectorAll('.ol-more[data-open]');
+    for (var i = 0; i < list.length; i++) {
+      list[i].removeAttribute('data-open');
+      var b = list[i].querySelector('.ol-more-b');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    }
+  }
 
   function field() {
     if (document.getElementById('vx-aura') || !document.body) return;
@@ -720,6 +787,19 @@
       started = true;
       field();
       globalSearch();
+      moreMenu();
+
+      document.addEventListener('click', function (e) {
+        var b = e.target.closest && e.target.closest('.ol-more-b');
+        if (b) {
+          var wrap = b.parentNode, open = wrap.hasAttribute('data-open');
+          closeMore();
+          if (!open) { wrap.setAttribute('data-open', ''); b.setAttribute('aria-expanded', 'true'); }
+          e.preventDefault();
+          return;
+        }
+        if (!(e.target.closest && e.target.closest('.ol-more-p'))) closeMore();
+      });
 
       document.addEventListener('click', function (e) {
         var b = e.target.closest && e.target.closest('.ol-burger, .vx-burger');
@@ -744,7 +824,7 @@
       document.addEventListener('click', function (e) {
         var bell = e.target.closest && e.target.closest('button[aria-label="Notifications"]');
         if (!bell) return;
-        location.href = 'profile.dc.html#notifications';
+        location.href = 'notifications.dc.html';
       });
       document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape') return;

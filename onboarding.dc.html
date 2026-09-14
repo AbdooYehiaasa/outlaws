@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .ob-s { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,380px); gap:20px; align-items:start; }
+  .ob-f { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; }
+  @media (max-width:940px){ .ob-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="onboarding" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="communities.dc.html">Communities</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <a href="auth.dc.html" class="ol-sub">Sign in</a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1400px,94vw);margin:0 auto;padding:34px 34px 44px;">
+    <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#6E646C;margin-bottom:22px;">
+      <a href="auth.dc.html" style="color:#6E646C;">SIGN IN</a><span>/</span><span style="color:#FF8A33;">{{ crumb }}</span>
+    </div>
+
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:26px;overflow-x:auto;">
+      <sc-for list="{{ flows }}" as="f" hint-placeholder-count="4">
+        <button onClick="{{ f.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ f.ink }};background:{{ f.bg }};border:1px solid {{ f.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ f.label }}</button>
+      </sc-for>
+    </div>
+
+    <div class="ob-s">
+      <div>
+        <div style="margin-bottom:22px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#FF6A00;margin-bottom:12px;">{{ eyebrow }}</div>
+          <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(27px,3.2vw,40px);line-height:1.04;letter-spacing:-.01em;margin:0 0 13px;">{{ title }}</h1>
+          <p style="font-size:15px;line-height:1.6;color:#9B8F96;max-width:600px;margin:0;text-wrap:pretty;">{{ sub }}</p>
+        </div>
+
+        <sc-if value="{{ showSteps }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap;">
+            <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+              <button onClick="{{ s.pick }}" style="flex:1;min-width:150px;text-align:left;padding:12px 14px;border:1px solid {{ s.border }};border-radius:11px;background:{{ s.bg }};cursor:pointer;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:{{ s.numInk }};">{{ s.num }}</span>
+                <span style="display:block;font-size:13px;font-weight:600;color:{{ s.ink }};margin-top:6px;">{{ s.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <div style="padding:24px;border:1px solid rgba(255,255,255,.09);border-radius:17px;background:rgba(255,255,255,.016);">
+
+          <!-- ░ SIGN UP ░ -->
+          <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ false }}">
+            <div class="ob-f" style="margin-bottom:18px;">
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">EMAIL</span>
+                <input value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@mail.com" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid {{ emailBorder }};border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">USERNAME</span>
+                <input value="{{ handle }}" onInput="{{ onHandle }}" placeholder="outlaw_handle" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+            </div>
+            <label style="display:block;margin-bottom:12px;">
+              <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">PASSWORD · 12+ CHARACTERS</span>
+              <input type="password" value="{{ pw }}" onInput="{{ onPw }}" placeholder="••••••••••••" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+            </label>
+            <div style="height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:9px;">
+              <div style="height:100%;width:{{ pwWidth }};background:{{ pwColor }};transition:width .25s;"></div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ pwColor }};margin-bottom:20px;">{{ pwLabel }}</div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px;">
+              <sc-for list="{{ consents }}" as="c" hint-placeholder-count="2">
+                <button onClick="{{ c.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ c.border }};border-radius:11px;background:{{ c.bg }};cursor:pointer;">
+                  <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ c.dot }};color:{{ c.dot }};font-size:10px;font-weight:700;">{{ c.mark }}</span>
+                  <span style="flex:1;min-width:0;font-size:13px;line-height:1.55;color:#C6BBC1;">{{ c.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button onClick="{{ primary }}" style="min-height:48px;padding:14px 24px;font-size:14.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Create account</button>
+              <a href="auth.dc.html" style="min-height:48px;display:inline-flex;align-items:center;padding:14px 20px;font-size:14px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.15);border-radius:11px;">I already have one</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:13px;margin:22px 0 16px;">
+              <span style="flex:1;height:1px;background:rgba(255,255,255,.08);"></span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">OR CONTINUE WITH</span>
+              <span style="flex:1;height:1px;background:rgba(255,255,255,.08);"></span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:9px;">
+              <sc-for list="{{ oauth }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.go }}" style="min-height:46px;padding:13px;font-size:13px;font-weight:600;color:#DCD2D6;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.11);border-radius:10px;cursor:pointer;">{{ o.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.7;letter-spacing:.07em;color:#4E454C;margin-top:16px;">WALLET CONNECTION IS NEVER A LOGIN METHOD. IT IS USED ONLY TO PROVE OWNERSHIP FOR HOLDER REQUIREMENTS.</div>
+          </sc-if>
+
+          <!-- ░ EMAIL VERIFICATION / OTP ░ -->
+          <sc-if value="{{ isVerify }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:15px 17px;border:1px solid rgba(255,106,0,.28);border-radius:12px;background:rgba(255,106,0,.05);margin-bottom:22px;">
+              <span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;background:rgba(255,106,0,.14);color:#FF8A33;">◵</span>
+              <div style="flex:1;min-width:200px;font-size:13.5px;line-height:1.55;color:#C6BBC1;">We sent a 6-digit code to <b style="color:#F4EDE6;">{{ emailShown }}</b>. The code expires in {{ codeTtl }}.</div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">ENTER THE CODE</div>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px;">
+              <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="6">
+                <div style="width:52px;height:60px;display:grid;place-items:center;border:1px solid {{ b.border }};border-radius:11px;background:{{ b.bg }};font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#F4EDE6;">{{ b.v }}</div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;">
+              <sc-for list="{{ keypad }}" as="k" hint-placeholder-count="11">
+                <button onClick="{{ k.press }}" style="min-width:52px;min-height:48px;padding:13px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:#DCD2D6;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;">{{ k.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button onClick="{{ primary }}" style="min-height:48px;padding:14px 24px;font-size:14.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Verify email</button>
+              <button onClick="{{ resend }}" style="min-height:48px;padding:14px 20px;font-size:14px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.15);border-radius:11px;cursor:pointer;">Resend code</button>
+            </div>
+          </sc-if>
+
+          <!-- ░ COMPLETE PROFILE ░ -->
+          <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+            <div class="ob-f" style="margin-bottom:18px;">
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">DISPLAY NAME</span>
+                <input value="{{ name }}" onInput="{{ onName }}" placeholder="How communities see you" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <label style="display:block;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">USERNAME</span>
+                <input value="{{ handle }}" onInput="{{ onHandle }}" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">LINK THE PROVIDERS COMMUNITIES CHECK</div>
+            <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:20px;">
+              <sc-for list="{{ links }}" as="l" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid {{ l.border }};border-radius:12px;background:{{ l.bg }};flex-wrap:wrap;">
+                  <span style="width:34px;height:34px;flex:none;border-radius:10px;display:grid;place-items:center;background:{{ l.art }};font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:12px;color:#08060a;">{{ l.tag }}</span>
+                  <div style="flex:1;min-width:170px;">
+                    <div style="font-size:14px;font-weight:600;color:#DCD2D6;">{{ l.name }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ l.note }}</div>
+                  </div>
+                  <button onClick="{{ l.go }}" style="min-height:40px;padding:11px 16px;font-size:13px;font-weight:700;color:{{ l.ctaInk }};background:{{ l.ctaBg }};border:1px solid {{ l.ctaBorder }};border-radius:9px;cursor:pointer;">{{ l.cta }}</button>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button onClick="{{ primary }}" style="min-height:48px;padding:14px 24px;font-size:14.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Finish setup</button>
+              <a href="discover.dc.html" style="min-height:48px;display:inline-flex;align-items:center;padding:14px 20px;font-size:14px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.15);border-radius:11px;">Skip for now</a>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.7;letter-spacing:.07em;color:#4E454C;margin-top:16px;">YOU CAN ENTER RAFFLES WITHOUT LINKING ANYTHING — BUT EACH UNLINKED PROVIDER MEANS REQUIREMENTS THAT WILL FAIL.</div>
+          </sc-if>
+
+          <!-- ░ PASSWORD RESET ░ -->
+          <sc-if value="{{ isReset }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;">
+              <sc-for list="{{ resetStages }}" as="r" hint-placeholder-count="3">
+                <div style="flex:1;min-width:140px;padding:12px 14px;border:1px solid {{ r.border }};border-radius:11px;background:{{ r.bg }};">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.13em;color:{{ r.numInk }};">{{ r.num }}</div>
+                  <div style="font-size:13px;font-weight:600;color:{{ r.ink }};margin-top:6px;">{{ r.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ resetStage1 }}" hint-placeholder-val="{{ true }}">
+              <label style="display:block;margin-bottom:20px;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">ACCOUNT EMAIL</span>
+                <input value="{{ email }}" onInput="{{ onEmail }}" placeholder="you@mail.com" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid {{ emailBorder }};border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0 0 20px;max-width:520px;">We send a one-time code rather than a reset link, and every reset revokes all active sessions.</p>
+            </sc-if>
+            <sc-if value="{{ resetStage2 }}" hint-placeholder-val="{{ false }}">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">ENTER THE CODE SENT TO {{ emailShown }}</div>
+              <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px;">
+                <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="6">
+                  <div style="width:52px;height:60px;display:grid;place-items:center;border:1px solid {{ b.border }};border-radius:11px;background:{{ b.bg }};font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#F4EDE6;">{{ b.v }}</div>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;">
+                <sc-for list="{{ keypad }}" as="k" hint-placeholder-count="11">
+                  <button onClick="{{ k.press }}" style="min-width:52px;min-height:48px;padding:13px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:#DCD2D6;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;">{{ k.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ resetStage3 }}" hint-placeholder-val="{{ false }}">
+              <label style="display:block;margin-bottom:12px;">
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">NEW PASSWORD · 12+ CHARACTERS</span>
+                <input type="password" value="{{ pw }}" onInput="{{ onPw }}" placeholder="••••••••••••" style="width:100%;padding:13px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+              </label>
+              <div style="height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;margin-bottom:9px;">
+                <div style="height:100%;width:{{ pwWidth }};background:{{ pwColor }};transition:width .25s;"></div>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ pwColor }};margin-bottom:20px;">{{ pwLabel }}</div>
+            </sc-if>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button onClick="{{ primary }}" style="min-height:48px;padding:14px 24px;font-size:14.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">{{ resetCta }}</button>
+              <a href="auth.dc.html" style="min-height:48px;display:inline-flex;align-items:center;padding:14px 20px;font-size:14px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.15);border-radius:11px;">Back to sign in</a>
+            </div>
+          </sc-if>
+
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:{{ toastInk }};margin-top:16px;">{{ toast }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:13px;">SECURITY POLICY</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ policy }}" as="p" hint-placeholder-count="5">
+              <div style="display:flex;gap:11px;">
+                <span style="flex:none;color:#00D6B4;font-size:12px;">✓</span>
+                <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ p }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">WHAT HAPPENS NEXT</div>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <sc-for list="{{ nextUp }}" as="n" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="width:24px;height:24px;flex:none;display:grid;place-items:center;border-radius:7px;border:1px solid rgba(255,106,0,.3);color:#FF8A33;font-family:'JetBrains Mono',monospace;font-size:9.5px;">{{ n.n }}</span>
+                <span style="font-size:13px;line-height:1.5;color:#C6BBC1;">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">NEED HELP</div>
+          <p style="font-size:13px;line-height:1.6;color:#8C8189;margin:0 0 13px;">Locked out, or the code never arrives? Support can verify your identity and restore access.</p>
+          <a href="requests.dc.html#new" style="display:flex;align-items:center;justify-content:center;min-height:42px;padding:12px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Open a support request</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Credentials and OAuth for identity. Wallet signatures only for ownership.</p>
+      </div>
+      <div><div class="ol-ft-t">GET STARTED</div><div class="ol-ft-col"><a href="auth.dc.html">Sign in</a><a href="onboarding.dc.html">Create account</a><a href="discover.dc.html">Discover raffles</a></div></div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="settings.dc.html">Account settings</a><a href="settings.dc.html#security">Security</a><a href="settings.dc.html#wallets">Wallets</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const FLOWS = [['signup', 'Create account'], ['verify', 'Verify email'], ['profile', 'Complete profile'], ['reset', 'Reset password']];
+
+class Component extends DCLogic {
+  state = {
+    flow: 'signup', email: '', handle: '', name: '', pw: '', otp: '', resetStage: 1,
+    consents: ['terms'], toast: '', toastOk: true, linked: []
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && FLOWS.some(f => f[0] === h)) this.setState({ flow: h });
+  }
+  flash(m, ok) { this.setState({ toast: m, toastOk: ok !== false }); }
+
+  renderVals() {
+    const S = this.state, flow = S.flow;
+    const pwLen = S.pw.length;
+    const strength = pwLen === 0 ? 0 : pwLen < 8 ? 1 : pwLen < 12 ? 2 : 3;
+    const emailOk = /.+@.+\..+/.test(S.email);
+
+    const otpBoxes = [0, 1, 2, 3, 4, 5].map(i => ({
+      v: S.otp[i] || '',
+      border: S.otp.length === i ? 'rgba(255,106,0,.55)' : 'rgba(255,255,255,.1)',
+      bg: S.otp[i] ? 'rgba(255,106,0,.06)' : 'rgba(255,255,255,.03)'
+    }));
+    const keypad = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '⌫'].map(k => ({
+      label: k,
+      press: () => this.setState(st => ({
+        otp: k === '⌫' ? st.otp.slice(0, -1) : (st.otp.length < 6 ? st.otp + k : st.otp), toast: ''
+      }))
+    }));
+
+    const titles = {
+      signup: ['STEP 1 OF 3 · ACCOUNT', 'Create your account', 'Email and password with a strong policy, or continue with a provider. Wallets come later and are never a login.'],
+      verify: ['STEP 2 OF 3 · EMAIL VERIFICATION', 'Verify your email', 'Verification protects winner notifications and claim deadlines — an unverified account cannot receive an allocation.'],
+      profile: ['STEP 3 OF 3 · PROFILE', 'Complete your profile', 'Your handle is what communities see. Linking providers now means fewer failed requirement checks later.'],
+      reset: ['ACCOUNT RECOVERY', 'Reset your password', 'We verify with a one-time code, then revoke every active session once the new password is set.']
+    };
+
+    return {
+      crumb: (FLOWS.find(f => f[0] === flow) || FLOWS[0])[1].toUpperCase(),
+      flows: FLOWS.map(f => ({
+        label: f[1],
+        pick: () => { this.setState({ flow: f[0], toast: '', otp: '', resetStage: 1 }); try { history.replaceState(null, '', '#' + f[0]); } catch (e) {} },
+        ink: f[0] === flow ? '#F4EDE6' : '#8C8189',
+        bg: f[0] === flow ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: f[0] === flow ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      eyebrow: titles[flow][0], title: titles[flow][1], sub: titles[flow][2],
+      showSteps: flow !== 'reset',
+      steps: [['signup', 'Account'], ['verify', 'Verify email'], ['profile', 'Profile']].map((s, i) => ({
+        num: 'STEP ' + (i + 1), label: s[1],
+        pick: () => this.setState({ flow: s[0], toast: '' }),
+        ink: s[0] === flow ? '#F4EDE6' : '#8C8189',
+        numInk: s[0] === flow ? '#FF8A33' : '#4E454C',
+        bg: s[0] === flow ? 'rgba(255,106,0,.07)' : 'rgba(255,255,255,.02)',
+        border: s[0] === flow ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isSignup: flow === 'signup', isVerify: flow === 'verify', isProfile: flow === 'profile', isReset: flow === 'reset',
+
+      email: S.email, onEmail: e => this.setState({ email: e.target.value }),
+      emailBorder: S.email && !emailOk ? 'rgba(255,60,0,.45)' : 'rgba(255,255,255,.1)',
+      emailShown: S.email || 'your email',
+      handle: S.handle, onHandle: e => this.setState({ handle: e.target.value }),
+      name: S.name, onName: e => this.setState({ name: e.target.value }),
+      pw: S.pw, onPw: e => this.setState({ pw: e.target.value }),
+      pwWidth: (strength * 33.3) + '%',
+      pwColor: strength >= 3 ? '#00D6B4' : strength === 2 ? '#FFB061' : '#FF6A6A',
+      pwLabel: strength === 0 ? 'REQUIRED · 12+ CHARACTERS, MIXED CASE AND A NUMBER'
+        : strength === 1 ? 'TOO SHORT · THE POLICY REQUIRES 12+ CHARACTERS'
+        : strength === 2 ? 'ACCEPTABLE · 12+ CHARACTERS IS STRONGER'
+        : 'STRONG · MEETS THE PLATFORM POLICY',
+      consents: [
+        ['terms', 'I agree to the Terms of Service and Privacy Policy.'],
+        ['emails', 'Send me raffle and win notifications by email. You can change this any time.']
+      ].map(c => {
+        const on = S.consents.indexOf(c[0]) >= 0;
+        return {
+          label: c[1], mark: on ? '✓' : '', dot: on ? '#00D6B4' : '#4E454C',
+          border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.02)',
+          toggle: () => this.setState(st => ({ consents: on ? st.consents.filter(k => k !== c[0]) : st.consents.concat([c[0]]) }))
+        };
+      }),
+      oauth: ['Discord', 'X', 'Google', 'Telegram'].map(o => ({
+        label: o, go: () => this.flash(o + ' consent screen · requests identity scopes only, no posting rights.')
+      })),
+
+      otpBoxes: otpBoxes, keypad: keypad,
+      codeTtl: '9:58',
+      resend: () => this.setState({ otp: '', toast: 'New code sent · the previous code is now invalid.' }),
+
+      links: [
+        ['DC', 'Discord', 'ROLE AND SERVER REQUIREMENTS'],
+        ['X', 'X', 'FOLLOW AND REPOST REQUIREMENTS · MULTIPLE ACCOUNTS SUPPORTED'],
+        ['WA', 'Wallet', 'HOLDER REQUIREMENTS · SIGNATURE PROVES OWNERSHIP ONLY'],
+        ['TG', 'Telegram', 'CHANNEL REQUIREMENTS AND PREMIUM ALERTS']
+      ].map(l => {
+        const on = S.linked.indexOf(l[0]) >= 0;
+        return {
+          tag: l[0], name: l[1], note: on ? 'LINKED · READ-ONLY SCOPES' : l[2],
+          art: on ? 'linear-gradient(135deg,#5ef2d6,#00806c)' : 'linear-gradient(135deg,#FFA047,#FF3C00)',
+          border: on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.02)',
+          cta: on ? 'Linked' : 'Link',
+          ctaInk: on ? '#5ef2d6' : '#08060a',
+          ctaBg: on ? 'rgba(0,214,180,.07)' : 'linear-gradient(180deg,#FFA047,#FF6A00)',
+          ctaBorder: on ? 'rgba(0,214,180,.3)' : 'transparent',
+          go: () => on
+            ? this.flash(l[1] + ' already linked · manage it in Account settings.')
+            : this.setState(st => ({ linked: st.linked.concat([l[0]]), toast: l[1] + ' linked with read-only scopes.' }))
+        };
+      }),
+
+      resetStages: [1, 2, 3].map(n => ({
+        num: 'STEP ' + n, label: ['Identify', 'One-time code', 'New password'][n - 1],
+        ink: n === S.resetStage ? '#F4EDE6' : '#8C8189',
+        numInk: n === S.resetStage ? '#FF8A33' : '#4E454C',
+        bg: n === S.resetStage ? 'rgba(255,106,0,.07)' : 'rgba(255,255,255,.02)',
+        border: n === S.resetStage ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      resetStage1: S.resetStage === 1, resetStage2: S.resetStage === 2, resetStage3: S.resetStage === 3,
+      resetCta: S.resetStage === 1 ? 'Send code' : S.resetStage === 2 ? 'Verify code' : 'Set new password',
+
+      primary: () => {
+        if (flow === 'signup') {
+          if (!emailOk) return this.flash('Enter a valid email address.', false);
+          if (strength < 2) return this.flash('The password does not meet the policy.', false);
+          if (S.consents.indexOf('terms') < 0) return this.flash('You must accept the Terms of Service.', false);
+          return this.setState({ flow: 'verify', toast: 'Account created · a 6-digit code was sent to ' + S.email + '.', toastOk: true });
+        }
+        if (flow === 'verify') {
+          if (S.otp.length < 6) return this.flash('Enter all six digits of the code.', false);
+          return this.setState({ flow: 'profile', otp: '', toast: 'Email verified · you can now receive allocations.', toastOk: true });
+        }
+        if (flow === 'profile') {
+          if (!S.handle) return this.flash('Pick a username — communities see it on entries and wins.', false);
+          return this.flash('Setup complete · welcome. Head to Discover to enter your first raffle.');
+        }
+        if (S.resetStage === 1) {
+          if (!emailOk) return this.flash('Enter the email on your account.', false);
+          return this.setState({ resetStage: 2, toast: 'Code sent to ' + S.email + '.', toastOk: true });
+        }
+        if (S.resetStage === 2) {
+          if (S.otp.length < 6) return this.flash('Enter all six digits.', false);
+          return this.setState({ resetStage: 3, toast: 'Code accepted · choose a new password.', toastOk: true });
+        }
+        if (strength < 2) return this.flash('The new password does not meet the policy.', false);
+        return this.flash('Password updated · every other session has been revoked.');
+      },
+
+      policy: [
+        'Passwords require 12+ characters and are checked against known breach lists.',
+        'A one-time code is required on every new device, and 2FA is available for all accounts.',
+        'Two-factor authentication is mandatory for community team and admin accounts.',
+        'Wallet signatures prove ownership only — they are never a login and cannot move assets.',
+        'No private key or seed phrase is ever requested, transmitted or stored.'
+      ],
+      nextUp: [
+        { n: 1, label: 'Verify your email so wins and claim deadlines reach you.' },
+        { n: 2, label: 'Link Discord and X for role, follow and repost requirements.' },
+        { n: 3, label: 'Add a wallet and verify it as your main wallet for holder requirements.' },
+        { n: 4, label: 'Enter your first raffle — entry is always free and never needs gas.' }
+      ],
+      toast: S.toast,
+      toastInk: S.toastOk ? '#00D6B4' : '#FF6A6A'
+    };
+  }
+}
+</script>
+</body>
+</html>

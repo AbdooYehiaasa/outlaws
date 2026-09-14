@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .ar-s { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:18px; align-items:start; }
+  .ar-k { display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:1px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+  @media (max-width:980px){ .ar-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="autoregister" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html" class="on">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <div style="display:flex;align-items:center;gap:11px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:#6E646C;margin-bottom:22px;">
+      <a href="index.html" style="color:#6E646C;">HOME</a><span>/</span><a href="premium.dc.html" style="color:#6E646C;">PREMIUM</a><span>/</span><span style="color:#FF8A33;">AUTO-REGISTER</span>
+    </div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-bottom:20px;">
+      <div style="min-width:0;max-width:700px;">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#FFB061;padding:5px 9px;border:1px solid rgba(255,106,0,.35);border-radius:5px;background:rgba(255,106,0,.07);">PREMIUM FEATURE</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:{{ liveInk }};padding:5px 9px;border:1px solid {{ liveBorder }};border-radius:5px;">{{ liveLabel }}</span>
+        </div>
+        <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,38px);letter-spacing:-.01em;line-height:1.05;margin:0 0 13px;">Auto-Register</h1>
+        <p style="font-size:15px;line-height:1.6;color:#9B8F96;margin:0;text-wrap:pretty;">Enter matching raffles the moment they open, using only requirements you already satisfy. Auto-Register automates the click — it never changes your odds, never skips a requirement check and never enters a raffle you are not eligible for.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onClick="{{ toggleLive }}" style="min-height:44px;padding:12px 18px;font-size:13.5px;font-weight:700;color:{{ toggleInk }};background:{{ toggleBg }};border:1px solid {{ toggleBorder }};border-radius:10px;cursor:pointer;">{{ toggleLabel }}</button>
+        <a href="premium.dc.html" style="min-height:44px;display:inline-flex;align-items:center;padding:12px 18px;font-size:13.5px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Premium plans</a>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <div class="ar-k vx-stagger" style="margin-bottom:18px;">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+          <div class="vx-spot" style="background:#0b080d;padding:18px 16px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;font-size:22px;font-weight:700;color:{{ k.ink }};">{{ k.v }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;color:#6E646C;margin-top:7px;">{{ k.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div class="ar-s">
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">HOW A RUN EXECUTES</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#6E646C;">SAME PIPELINE AS A MANUAL ENTRY</span>
+            </div>
+            <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;padding:15px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <span style="width:26px;height:26px;flex:none;display:grid;place-items:center;border-radius:8px;border:1px solid rgba(0,214,180,.35);color:#00D6B4;font-family:'JetBrains Mono',monospace;font-size:10px;">{{ p.n }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:14px;font-weight:600;color:#DCD2D6;">{{ p.label }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ p.note }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <div style="padding:17px 19px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+              <span style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">RECENT RUNS</span>
+              <button onClick="{{ goRuns }}" style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:#6E646C;background:transparent;border:0;cursor:pointer;">FULL LOG →</button>
+            </div>
+            <sc-for list="{{ runsPeek }}" as="r" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) auto;gap:13px;align-items:center;padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+                <div style="min-width:0;">
+                  <div style="font-size:13.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.raffle }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ r.meta }}</div>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ r.ink }};padding:4px 8px;border:1px solid {{ r.border }};border-radius:5px;justify-self:start;">{{ r.state }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6E646C;">{{ r.when }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">FAIRNESS GUARANTEE</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Auto-Register submits an ordinary entry with an ordinary weight. It cannot bypass CAPTCHA, cannot skip identity dedup, and gives no priority in the draw. Premium buys automation, never odds.</p>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">PROVIDER SCOPES IN USE</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ scopes }}" as="s" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid {{ s.border }};border-radius:10px;background:rgba(255,255,255,.02);">
+                  <div style="min-width:0;">
+                    <div style="font-size:13px;font-weight:600;color:#DCD2D6;">{{ s.name }}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:#6E646C;margin-top:4px;">{{ s.scope }}</div>
+                  </div>
+                  <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:{{ s.ink }};">{{ s.state }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <a href="settings.dc.html#connections" style="display:flex;align-items:center;justify-content:center;min-height:42px;margin-top:14px;padding:12px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Manage connections</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px;">
+        <div>
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Your Auto-Register rules</h2>
+          <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:620px;margin:0;text-wrap:pretty;">Each rule watches a scope — a community, a project or a category — and enters raffles that match its conditions. Rules run independently and can be paused at any time.</p>
+        </div>
+        <button onClick="{{ newRule }}" style="min-height:42px;padding:11px 17px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">+ New rule</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <sc-for list="{{ rules }}" as="r" hint-placeholder-count="4">
+          <div style="border:1px solid {{ r.border }};border-radius:15px;background:{{ r.bg }};overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.06);flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:13px;min-width:0;">
+                <button onClick="{{ r.toggle }}" aria-label="Toggle rule" style="width:42px;height:24px;flex:none;padding:0;border:1px solid {{ r.swBorder }};border-radius:99px;background:{{ r.swBg }};cursor:pointer;position:relative;">
+                  <span style="position:absolute;top:2px;left:{{ r.knob }};width:18px;height:18px;border-radius:99px;background:{{ r.knobBg }};transition:left .2s;"></span>
+                </button>
+                <div style="min-width:0;">
+                  <div style="font-size:15px;font-weight:600;color:#F4EDE6;">{{ r.name }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ r.scope }}</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <button onClick="{{ r.edit }}" style="min-height:36px;padding:9px 13px;font-size:12.5px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.13);border-radius:8px;cursor:pointer;">Conditions</button>
+                <button onClick="{{ r.remove }}" style="min-height:36px;padding:9px 13px;font-size:12.5px;font-weight:600;color:#FF6A6A;background:transparent;border:1px solid rgba(255,60,0,.3);border-radius:8px;cursor:pointer;">Delete</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:rgba(255,255,255,.06);">
+              <sc-for list="{{ r.stats }}" as="s" hint-placeholder-count="4">
+                <div style="background:#0b080d;padding:14px 15px;">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:{{ s.ink }};">{{ s.v }}</div>
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.11em;color:#6E646C;margin-top:6px;">{{ s.l }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:16px;">{{ toast }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isSetup }}" hint-placeholder-val="{{ false }}">
+      <div class="ar-s">
+        <div style="padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+          <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:22px;margin:0 0 7px;">Rule conditions</h2>
+          <p style="font-size:13.5px;line-height:1.55;color:#8C8189;margin:0 0 20px;">Auto-Register only enters raffles whose requirements you already satisfy. Conditions here narrow that further — they never loosen eligibility.</p>
+          <label style="display:block;margin-bottom:18px;">
+            <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:8px;">RULE NAME</span>
+            <input value="{{ form }}" onInput="{{ onForm }}" placeholder="e.g. ARCforge · all weighted raffles" style="width:100%;padding:12px 14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+          </label>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">WATCH SCOPE</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">
+            <sc-for list="{{ scopePick }}" as="s" hint-placeholder-count="4">
+              <button onClick="{{ s.pick }}" style="min-height:44px;padding:12px 14px;font-size:13px;font-weight:600;color:{{ s.ink }};background:{{ s.bg }};border:1px solid {{ s.border }};border-radius:10px;cursor:pointer;">{{ s.label }}</button>
+            </sc-for>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">CONDITIONS</div>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:20px;">
+            <sc-for list="{{ conds }}" as="c" hint-placeholder-count="6">
+              <button onClick="{{ c.toggle }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:13px;padding:13px 15px;border:1px solid {{ c.border }};border-radius:11px;background:{{ c.bg }};cursor:pointer;">
+                <span style="width:19px;height:19px;flex:none;display:grid;place-items:center;border-radius:6px;border:1.5px solid {{ c.dot }};color:{{ c.dot }};font-size:10px;font-weight:700;">{{ c.mark }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ c.label }}</span>
+                  <span style="display:block;font-size:12px;color:#8C8189;margin-top:5px;line-height:1.5;">{{ c.note }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:10px;">X ACCOUNT USED FOR REQUIREMENT ACTIONS</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;">
+            <sc-for list="{{ xAccounts }}" as="x" hint-placeholder-count="3">
+              <button onClick="{{ x.pick }}" style="min-height:44px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:{{ x.ink }};background:{{ x.bg }};border:1px solid {{ x.border }};border-radius:10px;cursor:pointer;">{{ x.label }}</button>
+            </sc-for>
+          </div>
+          <button onClick="{{ saveRule }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Save rule</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">EXECUTION LIMITS</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ limits }}" as="l" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;">
+                  <span style="color:#8C8189;">{{ l.k }}</span><span style="color:#F4EDE6;">{{ l.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">WHAT IT WILL MATCH</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 13px;">{{ matchText }}</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;letter-spacing:.04em;color:#5ef2d6;">{{ matchExpr }}</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isRuns }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+        <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search runs by raffle or reason…" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+        <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+          <sc-for list="{{ runChips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1.5fr) auto;gap:13px;padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+          <sc-for list="{{ runCols }}" as="c" hint-placeholder-count="4">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">{{ c }}</div>
+          </sc-for>
+        </div>
+        <sc-for list="{{ runs }}" as="r" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1.5fr) auto;gap:13px;align-items:center;padding:14px 19px;border-bottom:1px solid rgba(255,255,255,.05);">
+            <div style="min-width:0;">
+              <div style="font-size:13.5px;font-weight:600;color:#F4EDE6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ r.raffle }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ r.rule }}</div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ r.ink }};padding:4px 8px;border:1px solid {{ r.border }};border-radius:5px;justify-self:start;">{{ r.state }}</span>
+            <div style="font-size:12.5px;line-height:1.5;color:#8C8189;">{{ r.reason }}</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#6E646C;">{{ r.when }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ runsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px 22px;text-align:center;font-size:13.5px;color:#8C8189;">No runs match this filter.</div>
+        </sc-if>
+      </div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Premium automates the work, never the outcome.</p>
+      </div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="wins.dc.html">My Wins</a><a href="autoregister.dc.html">Auto-Register</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="premium.dc.html">Premium</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const TABS = [['overview', 'Overview'], ['rules', 'My rules'], ['setup', 'Rule conditions'], ['runs', 'Run log']];
+const RUNS = [
+  ['Genesis Founders Pass', 'ARCforge · weighted', 'Entered', 'All 4 requirement blocks satisfied at open time.', '14h ago'],
+  ['Relics Early Access', 'ARCforge · weighted', 'Entered', 'Entered 0.8s after open. Weight 2.0× from holdings.', '2d ago'],
+  ['Forge Pass Allowlist', 'ARCforge · all raffles', 'Skipped', 'Application mode — manual review required, never auto-entered.', '3d ago'],
+  ['Nova Public Mint', 'Category · NFT', 'Failed', 'Discord role check failed: not a member of the required server.', '4d ago'],
+  ['Halo Genesis', 'Category · NFT', 'Skipped', 'Rule condition excluded raffles with fewer than 50 winners.', '5d ago'],
+  ['Ember Final Draw', 'ARCforge · weighted', 'Entered', 'Entered and later won 1 allocation.', '6d ago'],
+  ['Northwind Whitelist', 'ARCforge · all raffles', 'Entered', 'CAPTCHA solved interactively — you were prompted once.', '8d ago'],
+  ['Cipher Drop', 'Category · Gaming', 'Failed', 'X follow requirement failed: linked account token expired.', '9d ago']
+];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'overview', live: true, query: '', chip: 'All', toast: '',
+    form: 'ARCforge · all weighted raffles', scope: 'Community',
+    conds: ['already_eligible', 'weighted_only', 'skip_application'],
+    x: '@arc_director',
+    rules: [
+      { name: 'ARCforge · all weighted raffles', scope: 'COMMUNITY SCOPE · 4 CONDITIONS', on: true, entered: 18, skipped: 5, failed: 1, won: 3 },
+      { name: 'Arc Genesis project', scope: 'PROJECT SCOPE · 3 CONDITIONS', on: true, entered: 11, skipped: 2, failed: 0, won: 2 },
+      { name: 'Category · NFT', scope: 'CATEGORY SCOPE · 5 CONDITIONS', on: false, entered: 42, skipped: 26, failed: 7, won: 4 }
+    ]
+  };
+
+  componentDidMount() {
+    const h = (location.hash || '').replace('#', '');
+    if (h && TABS.some(t => t[0] === h)) this.setState({ tab: h });
+  }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state;
+    const runs = RUNS
+      .filter(r => !S.query || r.join(' ').toLowerCase().indexOf(S.query.toLowerCase()) >= 0)
+      .filter(r => S.chip === 'All' || r[2] === S.chip);
+    const stateColor = s => /entered/i.test(s) ? ['#00D6B4', 'rgba(0,214,180,.3)']
+      : /skipped/i.test(s) ? ['#FFB061', 'rgba(255,106,0,.3)'] : ['#FF6A6A', 'rgba(255,60,0,.3)'];
+
+    return {
+      liveLabel: S.live ? 'ACTIVE · 2 RULES RUNNING' : 'PAUSED',
+      liveInk: S.live ? '#00D6B4' : '#8C8189',
+      liveBorder: S.live ? 'rgba(0,214,180,.35)' : 'rgba(255,255,255,.14)',
+      toggleLabel: S.live ? 'Pause Auto-Register' : 'Resume Auto-Register',
+      toggleInk: S.live ? '#DCD2D6' : '#08060a',
+      toggleBg: S.live ? 'transparent' : 'linear-gradient(180deg,#FFA047,#FF6A00)',
+      toggleBorder: S.live ? 'rgba(255,255,255,.14)' : 'transparent',
+      toggleLive: () => this.setState(st => ({ live: !st.live, toast: st.live ? 'Auto-Register paused — no rule will run until you resume.' : 'Auto-Register resumed.' })),
+      tabs: TABS.map(t => ({
+        label: t[1],
+        pick: () => { this.setState({ tab: t[0], toast: '' }); try { history.replaceState(null, '', '#' + t[0]); } catch (e) {} },
+        ink: t[0] === S.tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === S.tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === S.tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isOverview: S.tab === 'overview', isRules: S.tab === 'rules', isSetup: S.tab === 'setup', isRuns: S.tab === 'runs',
+
+      kpis: [
+        { v: '71', l: 'AUTO ENTRIES · 90D', ink: '#F4EDE6' },
+        { v: '9', l: 'WINS FROM AUTO', ink: '#00D6B4' },
+        { v: '33', l: 'SKIPPED BY RULE', ink: '#FFB061' },
+        { v: '8', l: 'FAILED CHECKS', ink: '#FF6A6A' },
+        { v: '0.9s', l: 'MEDIAN ENTRY TIME', ink: '#F4EDE6' },
+        { v: '3', l: 'RULES CONFIGURED', ink: '#F4EDE6' }
+      ],
+      pipeline: [
+        { n: 1, label: 'Raffle opens and matches one of your rules', note: 'SCOPE AND CONDITIONS EVALUATED FIRST' },
+        { n: 2, label: 'Eligibility re-checked against live provider data', note: 'DISCORD ROLES · X FOLLOWS · HOLDINGS' },
+        { n: 3, label: 'CAPTCHA and rate limit', note: 'YOU ARE PROMPTED WHEN A HUMAN CHECK IS REQUIRED' },
+        { n: 4, label: 'Identity dedup', note: 'ONE ENTRY PER ACCOUNT · LINKED WALLETS COLLAPSED' },
+        { n: 5, label: 'Entry created idempotently with your normal weight', note: 'NO PRIORITY · NO ODDS CHANGE' },
+        { n: 6, label: 'Result written to the run log and notified', note: 'ENTERED · SKIPPED · FAILED WITH REASON' }
+      ],
+      runsPeek: RUNS.slice(0, 5).map(r => {
+        const c = stateColor(r[2]);
+        return { raffle: r[0], meta: r[1].toUpperCase(), state: r[2].toUpperCase(), ink: c[0], border: c[1], when: r[4].toUpperCase() };
+      }),
+      goRuns: () => this.setState({ tab: 'runs' }),
+      scopes: [
+        { name: 'Discord', scope: 'GUILDS.READ · GUILD.MEMBERS.READ', state: 'VALID', ink: '#00D6B4', border: 'rgba(0,214,180,.24)' },
+        { name: 'X · 3 accounts', scope: 'USERS.READ · FOLLOWS.READ', state: '1 EXPIRING', ink: '#FFB061', border: 'rgba(255,106,0,.26)' },
+        { name: 'Wallets · 4 linked', scope: 'READ.OWNERSHIP', state: 'VALID', ink: '#00D6B4', border: 'rgba(0,214,180,.24)' },
+        { name: 'Telegram', scope: 'CHAT.MEMBER.READ', state: 'VALID', ink: '#00D6B4', border: 'rgba(0,214,180,.24)' }
+      ],
+
+      rules: S.rules.map((r, i) => ({
+        name: r.name, scope: r.scope,
+        border: r.on ? 'rgba(0,214,180,.26)' : 'rgba(255,255,255,.08)',
+        bg: r.on ? 'rgba(0,214,180,.03)' : 'rgba(255,255,255,.016)',
+        swBg: r.on ? 'rgba(0,214,180,.22)' : 'rgba(255,255,255,.05)',
+        swBorder: r.on ? 'rgba(0,214,180,.5)' : 'rgba(255,255,255,.14)',
+        knob: r.on ? '20px' : '2px', knobBg: r.on ? '#00D6B4' : '#6E646C',
+        toggle: () => this.setState(st => {
+          const rs = st.rules.slice(); rs[i] = Object.assign({}, rs[i], { on: !rs[i].on });
+          return { rules: rs, toast: rs[i].on ? rs[i].name + ' resumed.' : rs[i].name + ' paused.' };
+        }),
+        edit: () => this.setState({ tab: 'setup', form: r.name }),
+        remove: () => this.setState(st => ({ rules: st.rules.filter((x, j) => j !== i), toast: r.name + ' deleted.' })),
+        stats: [
+          { v: r.entered, l: 'ENTERED', ink: '#00D6B4' },
+          { v: r.skipped, l: 'SKIPPED', ink: '#FFB061' },
+          { v: r.failed, l: 'FAILED', ink: '#FF6A6A' },
+          { v: r.won, l: 'WON', ink: '#F4EDE6' }
+        ]
+      })),
+      newRule: () => this.setState({ tab: 'setup', form: '', toast: '' }),
+
+      form: S.form, onForm: e => this.setState({ form: e.target.value }),
+      scopePick: ['Community', 'Project', 'Category', 'Everything I follow'].map(s => ({
+        label: s, ink: S.scope === s ? '#F4EDE6' : '#C6BBC1',
+        bg: S.scope === s ? 'rgba(255,106,0,.09)' : 'rgba(255,255,255,.02)',
+        border: S.scope === s ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ scope: s })
+      })),
+      conds: [
+        ['already_eligible', 'Only raffles I already satisfy', 'Hard requirement — Auto-Register never joins a server or follows an account for you.'],
+        ['weighted_only', 'Weighted and FCFS modes only', 'Application and wallet-collect raffles always need a human decision.'],
+        ['skip_application', 'Skip application-mode raffles', 'Applications require written answers and manual review.'],
+        ['min_winners', 'At least 50 winners or spots', 'Ignores very small draws where entry has little value.'],
+        ['premium_projects', 'Verified projects only', 'Ignores unverified projects until the platform review completes.'],
+        ['notify_each', 'Notify me on every run', 'Otherwise only failures and wins are notified.']
+      ].map(c => {
+        const on = S.conds.indexOf(c[0]) >= 0;
+        return {
+          label: c[1], note: c[2], mark: on ? '✓' : '', dot: on ? '#00D6B4' : '#4E454C',
+          border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+          bg: on ? 'rgba(0,214,180,.04)' : 'rgba(255,255,255,.02)',
+          toggle: () => this.setState(st => ({ conds: on ? st.conds.filter(k => k !== c[0]) : st.conds.concat([c[0]]) }))
+        };
+      }),
+      xAccounts: ['@arc_director', '@arc_alt', '@forge_ops'].map(x => ({
+        label: x, ink: S.x === x ? '#08060a' : '#C6BBC1',
+        bg: S.x === x ? '#FF6A00' : 'rgba(255,255,255,.02)',
+        border: S.x === x ? '#FF6A00' : 'rgba(255,255,255,.08)',
+        pick: () => this.setState({ x: x })
+      })),
+      saveRule: () => this.flash(S.form ? 'Saved · ' + S.form + ' with ' + S.conds.length + ' conditions, acting through ' + S.x + '.' : 'Give the rule a name first.'),
+      limits: [
+        { k: 'MAX AUTO ENTRIES / DAY', v: '25' }, { k: 'MAX RULES', v: '10 · PREMIUM' },
+        { k: 'RATE LIMIT', v: 'PLATFORM DEFAULT' }, { k: 'CAPTCHA', v: 'ALWAYS INTERACTIVE' },
+        { k: 'PROVIDER SCOPES', v: 'READ-ONLY' }
+      ],
+      matchText: 'This rule watches ' + S.scope.toLowerCase() + '-level raffles and enters only where every requirement already passes for you.',
+      matchExpr: 'scope = ' + S.scope.toUpperCase() + '\n  AND eligible_now = TRUE\n  AND (' + S.conds.join(' AND ') + ')\n  ACTING_AS ' + S.x,
+
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      runChips: ['All', 'Entered', 'Skipped', 'Failed'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      runCols: ['RAFFLE', 'RESULT', 'REASON', 'WHEN'],
+      runs: runs.map(r => {
+        const c = stateColor(r[2]);
+        return { raffle: r[0], rule: r[1].toUpperCase(), state: r[2].toUpperCase(), ink: c[0], border: c[1], reason: r[3], when: r[4].toUpperCase() };
+      }),
+      runsEmpty: runs.length === 0,
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

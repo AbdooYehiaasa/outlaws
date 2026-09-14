@@ -118,6 +118,11 @@
           <div style="padding:22px 26px 26px;">
             <a href="{{ ctaHref }}" style="display:flex;align-items:center;justify-content:center;gap:10px;padding:15px;font-size:15px;font-weight:700;color:{{ ctaInk }};background:{{ ctaBg }};border-radius:12px;transition:transform .2s;" style-hover="transform:translateY(-2px)">{{ ctaLabel }}</a>
 
+            <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:12px;">
+              <a href="onboarding.dc.html#signup" style="flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;min-height:42px;padding:11px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.13);border-radius:10px;">Create account</a>
+              <a href="onboarding.dc.html#reset" style="flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;min-height:42px;padding:11px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.13);border-radius:10px;">Forgot password</a>
+            </div>
+
             <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);">
               <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#6E646C;margin-bottom:12px;">OPTIONAL · CONNECT LATER FROM PROFILE</div>
               <div style="display:flex;gap:9px;flex-wrap:wrap;">
@@ -198,7 +203,7 @@ class Component extends DCLogic {
       connected: s.phase === 'connected',
       sigMessage: 'THE OUTLAWS WANTS YOU TO SIGN: PROVE CONTROL OF 0x8F2C…4A9B · NONCE 8841cb · NO TRANSACTION, NO APPROVAL, NO GAS',
       ctaLabel: s.phase === 'connected' ? (isNew ? 'Finish setup' : 'Enter The Outlaws') : isNew ? 'Continue' : 'Continue',
-      ctaHref: s.phase === 'connected' ? (isNew ? 'profile.dc.html' : 'index.html') : 'index.html',
+      ctaHref: s.phase === 'connected' ? (isNew ? 'onboarding.dc.html#profile' : 'index.html') : (isNew ? 'onboarding.dc.html#signup' : 'index.html'),
       ctaInk: s.phase === 'connected' ? '#08060a' : '#9B8F96',
       ctaBg: s.phase === 'connected' ? 'linear-gradient(180deg,#5ef2d6,#00b899)' : 'rgba(255,255,255,.05)',
       socials: ['X', 'Discord', 'Telegram'].map(n => ({

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .sm-g { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; align-items:start; }
+  .sm-k { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.07); border-radius:14px; overflow:hidden; }
+</style>
+</helmet>
+
+<div data-page="sitemap" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 11px;">Page map</h1>
+    <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:700px;margin:0 0 20px;text-wrap:pretty;">Every screen in the platform, grouped by the surface it belongs to, with the role that can reach it. Use this as the handoff index — each entry links to the live screen.</p>
+    <div class="sm-k" style="margin-bottom:20px;">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+        <div style="background:#0b080d;padding:17px 16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:{{ k.ink }};">{{ k.v }}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#6E646C;margin-top:6px;">{{ k.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <input value="{{ query }}" onInput="{{ onQuery }}" placeholder="Search screens…" style="flex:1;min-width:220px;padding:13px 15px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#F4EDE6;font-size:14px;outline:none;" style-focus="border-color:rgba(255,106,0,.55)" />
+      <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;">
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+          <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <div class="sm-g vx-stagger">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="6">
+        <div class="vx-spot" style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+          <div style="padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div style="min-width:0;">
+              <div style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:15.5px;letter-spacing:.03em;">{{ g.title }}</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#6E646C;margin-top:6px;">{{ g.note }}</div>
+            </div>
+            <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.11em;color:{{ g.ink }};padding:4px 8px;border:1px solid {{ g.border }};border-radius:5px;">{{ g.count }}</span>
+          </div>
+          <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="6">
+            <a href="{{ i.href }}" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span style="min-width:0;">
+                <span style="display:block;font-size:13.5px;font-weight:600;color:#DCD2D6;">{{ i.label }}</span>
+                <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;margin-top:5px;">{{ i.meta }}</span>
+              </span>
+              <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:{{ i.roleInk }};padding:3px 7px;border:1px solid {{ i.roleBorder }};border-radius:4px;">{{ i.role }}</span>
+            </a>
+          </sc-for>
+          <sc-if value="{{ g.empty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:26px 18px;text-align:center;font-size:13px;color:#8C8189;">No screens in this group match.</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:22px;padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">HANDOFF NOTES</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px;">
+        <sc-for list="{{ notes }}" as="n" hint-placeholder-count="4">
+          <div style="display:flex;gap:11px;">
+            <span style="flex:none;color:#5ef2d6;font-size:12px;">◈</span>
+            <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ n }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Public platform, user platform, community platform and a separate admin app.</p>
+      </div>
+      <div><div class="ol-ft-t">PUBLIC</div><div class="ol-ft-col"><a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="communities.dc.html">Communities</a></div></div>
+      <div><div class="ol-ft-t">USER</div><div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="wins.dc.html">My Wins</a><a href="autoregister.dc.html">Auto-Register</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">COMMUNITY</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="hiring.dc.html">Hiring</a></div></div>
+      <div><div class="ol-ft-t">PLATFORM</div><div class="ol-ft-col"><a href="dashboard.dc.html">Admin dashboard</a><a href="states.dc.html">System states</a><a href="support.dc.html">Help center</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const GROUPS = [
+  ['Public platform', 'NO ACCOUNT REQUIRED · SEO-RENDERED', 'Public', [
+    ['Home', 'index.html', 'LANDING · LIVE RAFFLES · HOW IT WORKS'],
+    ['Discover', 'discover.dc.html', 'BROWSE AND FILTER EVERY OPEN RAFFLE'],
+    ['Projects directory', 'projects.dc.html', 'COLLECTIONS WITH CHAIN, SUPPLY, MINT DATE'],
+    ['Project detail', 'project.dc.html', 'ONE COLLECTION AND ITS RAFFLE HISTORY'],
+    ['Communities directory', 'communities.dc.html', 'ALL COMMUNITIES WITH VERIFICATION STATE'],
+    ['Community page', 'community.dc.html', 'PUBLIC PROFILE · PROJECTS · RAFFLES · TEAM'],
+    ['Raffle page', 'raffle.dc.html', 'REQUIREMENTS · COUNTDOWN · ENTRY · FAIRNESS'],
+    ['Search', 'search.dc.html', 'GLOBAL SEARCH ACROSS EVERY ENTITY'],
+    ['Help center', 'support.dc.html', 'DOCS · VERIFICATION · FAIRNESS GUIDES'],
+    ['System states', 'states.dc.html', 'STATE MACHINE AND EVERY FALLBACK SCREEN'],
+    ['Page map', 'sitemap.dc.html', 'THIS INDEX']
+  ]],
+  ['Authentication', 'CREDENTIALS AND OAUTH · NO WALLET LOGIN', 'Public', [
+    ['Sign in', 'auth.dc.html', 'CREDENTIALS + OAUTH PROVIDERS'],
+    ['Create account', 'onboarding.dc.html#signup', 'EMAIL · USERNAME · PASSWORD POLICY'],
+    ['Verify email', 'onboarding.dc.html#verify', 'SIX-DIGIT OTP WITH EXPIRY'],
+    ['Complete profile', 'onboarding.dc.html#profile', 'HANDLE AND PROVIDER LINKING'],
+    ['Reset password', 'onboarding.dc.html#reset', 'OTP RECOVERY · REVOKES ALL SESSIONS']
+  ]],
+  ['User platform', 'SIGNED-IN MEMBER SURFACE', 'User', [
+    ['My Raffles', 'myraffles.dc.html', 'ENTRIES BY LIFECYCLE STATE'],
+    ['My Wins', 'wins.dc.html', 'ALLOCATIONS · CLAIM DEADLINES · EVIDENCE'],
+    ['Calendar', 'calendar.dc.html', 'RAFFLE CLOSES AND MINT DATES'],
+    ['Notifications', 'notifications.dc.html', 'EVENT INBOX AND CHANNEL PREFERENCES'],
+    ['Messages', 'messages.dc.html', 'INTERNAL CONVERSATIONS · COMMUNITY + PLATFORM'],
+    ['Eligibility checker', 'verify.dc.html', 'WHY AN ENTRY WOULD PASS OR FAIL'],
+    ['Profile', 'profile.dc.html', 'PUBLIC PROFILE · WINS · REPUTATION'],
+    ['Account settings', 'settings.dc.html', 'IDENTITY · PROVIDERS · WALLETS · SECURITY'],
+    ['Premium', 'premium.dc.html', 'PLANS AND ENTITLEMENTS'],
+    ['Auto-Register', 'autoregister.dc.html', 'PREMIUM AUTOMATION · RULES AND RUN LOG'],
+    ['Support requests', 'requests.dc.html', 'TICKET LIST · NEW REQUEST · THREAD']
+  ]],
+  ['Community platform', 'REQUIRES A CAPABILITY SCOPE', 'Community', [
+    ['Community console', 'community-admin.dc.html', 'OVERVIEW · ATTENTION QUEUE · AUDIT PEEK'],
+    ['Create community', 'community-admin.dc.html#create', 'THREE-STEP WIZARD · PREMIUM GATED'],
+    ['Projects', 'community-admin.dc.html#projects', 'COMMUNITY COLLECTIONS'],
+    ['Raffles', 'community-admin.dc.html#raffles', 'ALL RAFFLES IN THE COMMUNITY'],
+    ['Members', 'community-admin.dc.html#members', 'FOLLOWERS AND PARTICIPANTS'],
+    ['Team', 'community-admin.dc.html#team', 'TEAM LIST · MEMBER DETAIL · INVITES'],
+    ['Roles & permissions', 'community-admin.dc.html#roles', '16-SCOPE MATRIX · CUSTOM ROLES'],
+    ['Community rules', 'community-admin.dc.html#rules', 'SELECTED PLATFORM RULES + SNAPSHOTS'],
+    ['Templates', 'community-admin.dc.html#templates', 'REUSABLE RAFFLE CONFIGURATIONS'],
+    ['Integrations', 'community-admin.dc.html#integrations', 'PROVIDER CONNECTIONS AND SCOPES'],
+    ['Community notifications', 'community-admin.dc.html#notifs', 'EVENT BROADCAST MATRIX'],
+    ['Audit log', 'community-admin.dc.html#audit', 'APPEND-ONLY COMMUNITY ACTIONS'],
+    ['Community settings', 'community-admin.dc.html#settings', 'IDENTITY · VISIBILITY · DANGER ZONE'],
+    ['Hiring', 'hiring.dc.html', 'PHASE 2 · OPENINGS AND APPLICANTS']
+  ]],
+  ['Raffle management', 'REQUIRES RAFFLE SCOPES', 'Community', [
+    ['All raffles', 'raffle-admin.dc.html', 'LIFECYCLE DIRECTORY WITH ACTIONS'],
+    ['Create raffle', 'raffle-admin.dc.html#create', 'FIVE-STEP WIZARD · MODE AND SCHEDULE'],
+    ['Requirements builder', 'raffle-admin.dc.html#requirements', 'AND BLOCKS · OR VALUES · MUTABILITY'],
+    ['Entries', 'raffle-admin.dc.html#entries', 'PER-ENTRY WEIGHTS AND CHECK RESULTS'],
+    ['Winner selection', 'raffle-admin.dc.html#winners', 'FREEZE · RECHECK · REVEAL · SELECT · PUBLISH'],
+    ['Provably fair record', 'raffle-admin.dc.html#fairness', 'COMMITMENT · SEED · LEDGER · RECOMPUTE'],
+    ['Template editor', 'raffle-admin.dc.html#templates', 'SAVE AND REUSE CONFIGURATIONS']
+  ]],
+  ['Admin application', 'SEPARATE AUTH REALM · 2FA · WEB ONLY', 'Admin', [
+    ['Platform overview', 'dashboard.dc.html', 'LIVE KPIS · DECISION QUEUE · SERVICE HEALTH'],
+    ['Users', 'dashboard.dc.html#users', 'ACCOUNTS · VERIFICATION · SUSPENSION'],
+    ['Communities', 'dashboard.dc.html#communities', 'VERIFICATION REVIEW AND ARCHIVAL'],
+    ['Projects', 'dashboard.dc.html#projects', 'COLLECTIONS AND FEATURING'],
+    ['Raffles', 'dashboard.dc.html#raffles', 'PLATFORM-WIDE RAFFLE CONTROL'],
+    ['Entries & anti-abuse', 'dashboard.dc.html#entries', 'SYBIL CLUSTERS AND DEDUP DECISIONS'],
+    ['Disputes', 'dashboard.dc.html#disputes', 'CHALLENGES REQUIRING RECOMPUTATION'],
+    ['Support queue', 'dashboard.dc.html#support', 'ALL USER REQUESTS AND ASSIGNMENT'],
+    ['Premium & billing', 'dashboard.dc.html#premium', 'SUBSCRIPTIONS · MRR · REFUNDS'],
+    ['NFT holder benefits', 'dashboard.dc.html#nft', 'COLLECTIONS AND UNLOCKED BENEFITS'],
+    ['Hiring admin', 'dashboard.dc.html#hiring', 'PHASE 2 OPENINGS ACROSS COMMUNITIES'],
+    ['Reputation engine', 'dashboard.dc.html#reputation', 'SIGNAL WEIGHTS AND RANGES'],
+    ['Providers', 'dashboard.dc.html#providers', 'ADAPTERS · SCOPES · CIRCUIT BREAKERS'],
+    ['Rule catalog', 'dashboard.dc.html#rules', 'CENTRALIZED RULES COMMUNITIES SELECT FROM'],
+    ['Audit log', 'dashboard.dc.html#audit', 'IMMUTABLE ADMIN ACTION RECORD'],
+    ['Admin roles & RBAC', 'dashboard.dc.html#rbac', 'GRANULAR ADMIN SCOPE MATRIX'],
+    ['Platform settings', 'dashboard.dc.html#flags', 'FEATURE FLAGS · LIMITS · MAINTENANCE']
+  ]]
+];
+
+class Component extends DCLogic {
+  state = { query: '', chip: 'All' };
+
+  renderVals() {
+    const S = this.state, q = S.query.toLowerCase();
+    const groups = GROUPS.map(g => {
+      const items = g[3].filter(i =>
+        (!q || (i[0] + ' ' + i[2] + ' ' + i[1]).toLowerCase().indexOf(q) >= 0) &&
+        (S.chip === 'All' || g[2] === S.chip)
+      );
+      const tone = g[2] === 'Public' ? ['#5ef2d6', 'rgba(0,214,180,.28)']
+        : g[2] === 'User' ? ['#00D6B4', 'rgba(0,214,180,.3)']
+        : g[2] === 'Community' ? ['#FFB061', 'rgba(255,106,0,.3)'] : ['#FF6A6A', 'rgba(255,60,0,.3)'];
+      return {
+        title: g[0], note: g[1], count: items.length + ' SCREENS',
+        ink: tone[0], border: tone[1], empty: items.length === 0,
+        items: items.map(i => ({
+          label: i[0], href: i[1], meta: i[2], role: g[2].toUpperCase(),
+          roleInk: tone[0], roleBorder: tone[1]
+        }))
+      };
+    }).filter(g => S.chip === 'All' || !g.empty);
+
+    const total = GROUPS.reduce((n, g) => n + g[3].length, 0);
+
+    return {
+      kpis: [
+        { v: total, l: 'TOTAL SCREENS', ink: '#F4EDE6' },
+        { v: GROUPS[0][3].length + GROUPS[1][3].length, l: 'PUBLIC + AUTH', ink: '#5ef2d6' },
+        { v: GROUPS[2][3].length, l: 'USER PLATFORM', ink: '#00D6B4' },
+        { v: GROUPS[3][3].length + GROUPS[4][3].length, l: 'COMMUNITY PLATFORM', ink: '#FFB061' },
+        { v: GROUPS[5][3].length, l: 'ADMIN MODULES', ink: '#FF6A6A' }
+      ],
+      query: S.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: ['All', 'Public', 'User', 'Community', 'Admin'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      groups: groups,
+      notes: [
+        'Capability scopes shown on community screens are enforced server-side, not just hidden in the UI.',
+        'The admin application is a separate app with its own auth realm and mandatory 2FA — never reachable from mobile.',
+        'Phase 2 screens (hiring, feed, advanced notifications) sit behind platform feature flags in the admin dashboard.',
+        'Every raffle stores a rule and requirement snapshot at creation, so later configuration changes never rewrite finished draws.'
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

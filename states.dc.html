@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .sx-g { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+  .sx-s { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,320px); gap:18px; align-items:start; }
+  @media (max-width:940px){ .sx-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="states" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 11px;">System states</h1>
+    <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:700px;margin:0 0 22px;text-wrap:pretty;">Every state the product has to handle: the raffle state machine, entry outcomes, and the empty, loading, error and permission states each screen falls back to.</p>
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ isMachine }}" hint-placeholder-val="{{ true }}">
+      <div class="sx-s">
+        <div>
+          <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+            <sc-for list="{{ machine }}" as="m" hint-placeholder-count="6">
+              <button onClick="{{ m.pick }}" style="display:flex;width:100%;text-align:left;align-items:center;gap:15px;padding:16px 18px;border:1px solid {{ m.border }};border-radius:13px;background:{{ m.bg }};cursor:pointer;">
+                <span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;border:1px solid {{ m.dotBorder }};color:{{ m.dotInk }};font-family:'JetBrains Mono',monospace;font-size:10px;">{{ m.n }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-size:15px;font-weight:600;color:#F4EDE6;">{{ m.state }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:{{ m.tagInk }};padding:3px 7px;border:1px solid {{ m.tagBorder }};border-radius:4px;">{{ m.tag }}</span>
+                  </span>
+                  <span style="display:block;font-size:12.5px;line-height:1.55;color:#8C8189;margin-top:6px;">{{ m.desc }}</span>
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.09em;color:#6E646C;">{{ m.next }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">WHAT HAPPENS IN {{ focusState }}</div>
+            <p style="font-size:14px;line-height:1.6;color:#C6BBC1;margin:0 0 15px;text-wrap:pretty;">{{ focusBody }}</p>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ focusRules }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex;gap:11px;">
+                  <span style="flex:none;color:#FF8A33;font-size:12px;">◈</span>
+                  <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ r }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(0,214,180,.24);border-radius:16px;background:rgba(0,214,180,.04);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#00D6B4;margin-bottom:12px;">IRREVERSIBLE TRANSITIONS</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0;">Freezing the pool and revealing the seed cannot be undone. A finalized raffle is never re-drawn — only individual positions can be rerolled, and both results stay published.</p>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">WINNER PATHS</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ winnerPaths }}" as="w" hint-placeholder-count="4">
+                <div style="padding:12px 14px;border:1px solid rgba(255,255,255,.07);border-radius:10px;background:rgba(255,255,255,.02);">
+                  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.07em;color:#FFB061;">{{ w.path }}</div>
+                  <div style="font-size:12.5px;line-height:1.5;color:#8C8189;margin-top:6px;">{{ w.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEntry }}" hint-placeholder-val="{{ false }}">
+      <div class="sx-g vx-stagger">
+        <sc-for list="{{ entryStates }}" as="e" hint-placeholder-count="8">
+          <div class="vx-spot" style="padding:19px;border:1px solid {{ e.border }};border-radius:15px;background:{{ e.bg }};">
+            <div style="display:flex;align-items:center;gap:11px;margin-bottom:13px;">
+              <span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;background:{{ e.iconBg }};color:{{ e.ink }};font-size:12px;">{{ e.icon }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:14.5px;font-weight:600;color:#F4EDE6;">{{ e.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:{{ e.ink }};margin-top:5px;">{{ e.code }}</div>
+              </div>
+            </div>
+            <p style="font-size:13px;line-height:1.55;color:#8C8189;margin:0 0 13px;">{{ e.desc }}</p>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.7;letter-spacing:.07em;color:#6E646C;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);">{{ e.ui }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isScreens }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;margin-bottom:18px;">
+        <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="5">
+          <button onClick="{{ k.pick }}" style="min-height:34px;padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ k.ink }};background:{{ k.bg }};border:none;border-radius:7px;cursor:pointer;">{{ k.label }}</button>
+        </sc-for>
+      </div>
+      <div class="sx-s">
+        <div style="padding:30px;border:1px solid {{ demoBorder }};border-radius:17px;background:{{ demoBg }};min-height:380px;display:grid;place-items:center;text-align:center;">
+          <div style="max-width:460px;">
+            <div style="width:52px;height:52px;margin:0 auto 18px;display:grid;place-items:center;border-radius:15px;background:{{ demoIconBg }};color:{{ demoInk }};font-size:19px;">{{ demoIcon }}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.17em;color:{{ demoInk }};margin-bottom:13px;">{{ demoCode }}</div>
+            <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 12px;">{{ demoTitle }}</h2>
+            <p style="font-size:14.5px;line-height:1.6;color:#9B8F96;margin:0 0 22px;text-wrap:pretty;">{{ demoBody }}</p>
+            <sc-if value="{{ demoLoading }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+                <sc-for list="{{ skeleton }}" as="s" hint-placeholder-count="4">
+                  <div style="height:{{ s.h }};width:{{ s.w }};border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.09),rgba(255,255,255,.04));"></div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+              <button onClick="{{ demoPrimary }}" style="min-height:44px;padding:12px 20px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">{{ demoCta }}</button>
+              <a href="support.dc.html" style="min-height:44px;display:inline-flex;align-items:center;padding:12px 18px;font-size:14px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.15);border-radius:10px;">{{ demoCta2 }}</a>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:13px;">WHERE THIS APPEARS</div>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ demoWhere }}" as="w" hint-placeholder-count="4">
+                <a href="{{ w.href }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:40px;padding:11px 13px;font-size:13px;font-weight:600;color:#C6BBC1;border:1px solid rgba(255,255,255,.09);border-radius:9px;">{{ w.label }}<span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:#6E646C;">→</span></a>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">COPY RULES</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ copyRules }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;gap:11px;">
+                  <span style="flex:none;color:#00D6B4;font-size:12px;">✓</span>
+                  <span style="font-size:13px;line-height:1.55;color:#C6BBC1;">{{ c }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;">{{ toast }}</div>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">Every state is designed, not left to a default error page.</p>
+      </div>
+      <div><div class="ol-ft-t">REFERENCE</div><div class="ol-ft-col"><a href="sitemap.dc.html">Page map</a><a href="states.dc.html">System states</a><a href="support.dc.html">Help center</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="dashboard.dc.html">Admin dashboard</a></div></div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="settings.dc.html">Account settings</a><a href="notifications.dc.html">Notifications</a><a href="wins.dc.html">My Wins</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const MACHINE = [
+  ['Draft', 'EDITABLE', 'Visible to the team only. Everything can still change, including mode and requirements.', '→ SCHEDULED',
+    'A draft is private to holders of create_raffle. Nothing is published and no snapshot exists yet.',
+    ['Mode, winners, window and requirement tree are all editable.', 'No commitment hash exists yet.', 'Deleting a draft leaves no public trace.', 'Publishing writes the rule snapshot and the seed commitment.']],
+  ['Scheduled', 'LOCKED CONFIG', 'Published with an opening time. The commitment hash is public before anyone can enter.', '→ ACTIVE',
+    'The configuration is frozen and the commitment is published, so nobody — including the team — can tune the draw after entries start.',
+    ['Mode and winner count can no longer change.', 'Requirement tree is locked to its snapshot.', 'The commitment hash is publicly visible.', 'Cancelling before open is allowed and audited.']],
+  ['Active', 'ACCEPTING ENTRIES', 'Entries are accepted, verified and deduplicated in real time.', '→ ENDED',
+    'Each entry runs CAPTCHA, rate limit, identity dedup and requirement verification, then is created idempotently with its weight.',
+    ['Counters and countdown stream over the WebSocket gateway.', 'Entry is always free and never needs gas.', 'One entry per account regardless of linked wallets.', 'Failed checks are shown with the exact reason.']],
+  ['Ended', 'AWAITING FINALIZE', 'The window has closed. Entries are no longer accepted but nothing is frozen yet.', '→ FINALIZING',
+    'A gap between closing and finalizing is deliberate: the team confirms the pool looks sane before anything irreversible happens.',
+    ['No new entries are accepted.', 'The pool can still be inspected and exported.', 'Finalizing requires the finalize_raffle scope.', 'The seed stays sealed.']],
+  ['Finalizing', 'IRREVERSIBLE', 'Pool frozen, mutable requirements rechecked, seed revealed, winners selected.', '→ FINALIZED',
+    'Freezing snapshots every entry and weight; the recheck removes members who left a server or sold a holding; then the seed is revealed and the algorithm run.',
+    ['Freezing and seed reveal cannot be undone.', 'Recheck removals are logged per entry.', 'Selection is deterministic over the frozen ledger.', 'Manual review can hold results before publication.']],
+  ['Finalized', 'PUBLISHED', 'Winners published, claim window open, full evidence bundle public.', 'REROLL ONLY',
+    'The result is permanent. Individual positions may be rerolled under policy, and every reroll keeps the previous result in history.',
+    ['Winners notified in-app, by email and on connected channels.', 'Claim window runs per raffle configuration.', 'Unclaimed positions reroll from the same seed.', 'The raffle is never re-drawn as a whole.']]
+];
+const ENTRY_STATES = [
+  ['Eligible · not entered', 'ELIGIBLE', 'Every requirement passes but the entry has not been submitted yet.', 'PRIMARY CTA ENABLED · SHOWS THE WEIGHT THAT WOULD APPLY', 0],
+  ['Entered', 'ENTERED', 'The entry exists and is valid. Nothing further is required from the user.', 'CTA REPLACED BY ENTRY RECEIPT AND WEIGHT', 0],
+  ['Pending verification', 'PENDING', 'A provider check is still running asynchronously in a verification worker.', 'CTA DISABLED WITH A LIVE PROGRESS STATE · NO SILENT SPINNER', 1],
+  ['Requirement failed', 'FAILED', 'One requirement block did not pass. The failing block is named explicitly.', 'SHOWS WHICH BLOCK FAILED AND THE ACTION THAT FIXES IT', 2],
+  ['Removed on recheck', 'REMOVED', 'The entry was valid at submission but failed the recheck at finalization.', 'EXPLAINS WHICH MUTABLE REQUIREMENT CHANGED AND WHEN', 2],
+  ['Blocked · duplicate identity', 'DEDUP', 'Another entry already uses the same account, wallet graph or social identity.', 'STATES THE DEDUP RULE · NEVER A GENERIC ERROR', 2],
+  ['Rate limited', 'THROTTLED', 'Too many attempts from the account or IP in a short window.', 'SHOWS WHEN TO RETRY · THE ENTRY IS NOT LOST', 1],
+  ['Raffle closed', 'CLOSED', 'The window closed before the entry was submitted.', 'CTA REPLACED WITH THE NEXT RAFFLE FROM THIS COMMUNITY', 3]
+];
+const SCREEN_STATES = {
+  Empty: ['◌', 'EMPTY STATE', 'Nothing here yet', 'You have not entered any raffles. Discover is the fastest way to find one you already qualify for.', 'Browse Discover', 'Read the guide',
+    [['My Raffles', 'myraffles.dc.html'], ['My Wins', 'wins.dc.html'], ['Notifications', 'notifications.dc.html'], ['Support requests', 'requests.dc.html']]],
+  Loading: ['◵', 'LOADING STATE', 'Fetching live data', 'Counters, countdowns and eligibility results stream in. Skeletons match the real layout so nothing jumps when data lands.', 'Retry now', 'Help center',
+    [['Raffle page', 'raffle.dc.html'], ['Discover', 'discover.dc.html'], ['Admin dashboard', 'dashboard.dc.html'], ['Calendar', 'calendar.dc.html']]],
+  Error: ['!', '500 · SERVICE ERROR', 'Something broke on our side', 'A verification worker or provider is unavailable. Your entry was not lost — retry, and the request is idempotent so you cannot double-enter.', 'Retry', 'Open a support request',
+    [['Raffle entry', 'raffle.dc.html'], ['Eligibility checker', 'verify.dc.html'], ['Community console', 'community-admin.dc.html'], ['Support requests', 'requests.dc.html']]],
+  Permission: ['◈', '403 · PERMISSION REQUIRED', 'Your role cannot open this', 'Capabilities are enforced server-side per community, so the section is unreachable rather than merely hidden. Ask a Founder for the scope you need.', 'View capability matrix', 'Help center',
+    [['Community console', 'community-admin.dc.html'], ['Roles & permissions', 'community-admin.dc.html#roles'], ['Raffle manager', 'raffle-admin.dc.html'], ['Admin dashboard', 'dashboard.dc.html']]],
+  'Not found': ['◇', '404 · NOT FOUND', 'This page does not exist', 'The raffle, community or project may have been archived. Archived raffles keep their winners and fairness evidence public.', 'Back to Discover', 'Page map',
+    [['Discover', 'discover.dc.html'], ['Communities', 'communities.dc.html'], ['Projects', 'projects.dc.html'], ['Page map', 'sitemap.dc.html']]]
+};
+
+class Component extends DCLogic {
+  state = { tab: 'machine', focus: 2, kind: 'Empty', toast: '' };
+
+  renderVals() {
+    const S = this.state;
+    const m = MACHINE[S.focus];
+    const k = SCREEN_STATES[S.kind];
+    const tone = i => i === 0 ? ['#00D6B4', 'rgba(0,214,180,.3)', 'rgba(0,214,180,.1)']
+      : i === 1 ? ['#FFB061', 'rgba(255,106,0,.3)', 'rgba(255,106,0,.1)']
+      : i === 2 ? ['#FF6A6A', 'rgba(255,60,0,.3)', 'rgba(255,60,0,.1)']
+      : ['#8C8189', 'rgba(255,255,255,.12)', 'rgba(255,255,255,.05)'];
+    const kindTone = S.kind === 'Error' ? ['#FF6A6A', 'rgba(255,60,0,.28)', 'rgba(255,60,0,.04)', 'rgba(255,60,0,.12)']
+      : S.kind === 'Permission' ? ['#FF8A33', 'rgba(255,106,0,.28)', 'rgba(255,106,0,.05)', 'rgba(255,106,0,.12)']
+      : S.kind === 'Loading' ? ['#5ef2d6', 'rgba(0,214,180,.24)', 'rgba(0,214,180,.03)', 'rgba(0,214,180,.1)']
+      : ['#8C8189', 'rgba(255,255,255,.09)', 'rgba(255,255,255,.016)', 'rgba(255,255,255,.05)'];
+
+    return {
+      tabs: [['machine', 'Raffle state machine'], ['entry', 'Entry outcomes'], ['screens', 'Screen states']].map(t => ({
+        label: t[1], pick: () => this.setState({ tab: t[0] }),
+        ink: t[0] === S.tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === S.tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === S.tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isMachine: S.tab === 'machine', isEntry: S.tab === 'entry', isScreens: S.tab === 'screens',
+
+      machine: MACHINE.map((x, i) => ({
+        n: i + 1, state: x[0], tag: x[1], desc: x[2], next: x[3],
+        pick: () => this.setState({ focus: i }),
+        border: i === S.focus ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)',
+        bg: i === S.focus ? 'rgba(255,106,0,.06)' : 'rgba(255,255,255,.016)',
+        dotInk: i === S.focus ? '#FF8A33' : '#6E646C',
+        dotBorder: i === S.focus ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.1)',
+        tagInk: x[1] === 'IRREVERSIBLE' ? '#FF6A6A' : x[1] === 'PUBLISHED' ? '#00D6B4' : '#8C8189',
+        tagBorder: x[1] === 'IRREVERSIBLE' ? 'rgba(255,60,0,.3)' : x[1] === 'PUBLISHED' ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.12)'
+      })),
+      focusState: m[0].toUpperCase(), focusBody: m[4], focusRules: m[5],
+      winnerPaths: [
+        { path: 'WINNER → CLAIMED → MINTED', note: 'The normal path. The claim uses the same verified main wallet as the entry.' },
+        { path: 'WINNER → EXPIRED → REROLL', note: 'Claim window missed. The position is rerolled from the same seed; both results stay public.' },
+        { path: 'WINNER → REROLL → NEW SELECTION', note: 'Policy reroll by the team. The old result is preserved in the immutable history.' },
+        { path: 'WINNER → DISPUTED → RECOMPUTED', note: 'A dispute forces a recomputation from the published evidence before any decision.' }
+      ],
+
+      entryStates: ENTRY_STATES.map(e => {
+        const t = tone(e[4]);
+        return {
+          label: e[0], code: e[1], desc: e[2], ui: e[3],
+          ink: t[0], border: t[1], iconBg: t[2], bg: 'rgba(255,255,255,.016)',
+          icon: e[4] === 0 ? '✓' : e[4] === 1 ? '◵' : e[4] === 2 ? '!' : '◇'
+        };
+      }),
+
+      kinds: Object.keys(SCREEN_STATES).map(x => ({
+        label: x.toUpperCase(), ink: S.kind === x ? '#08060a' : '#8C8189',
+        bg: S.kind === x ? '#FF6A00' : 'transparent', pick: () => this.setState({ kind: x, toast: '' })
+      })),
+      demoIcon: k[0], demoCode: k[1], demoTitle: k[2], demoBody: k[3], demoCta: k[4], demoCta2: k[5],
+      demoInk: kindTone[0], demoBorder: kindTone[1], demoBg: kindTone[2], demoIconBg: kindTone[3],
+      demoLoading: S.kind === 'Loading',
+      skeleton: [{ h: '14px', w: '100%' }, { h: '14px', w: '82%' }, { h: '14px', w: '64%' }, { h: '44px', w: '100%' }],
+      demoPrimary: () => this.setState({ toast: k[4] + ' · in the real product this retries the request or routes to the named destination.' }),
+      demoWhere: k[6].map(w => ({ label: w[0], href: w[1] })),
+      copyRules: [
+        'Name the cause, not a generic failure — "Discord role check failed", never "Something went wrong".',
+        'Always offer the single action that resolves it, and never lose the user\'s work.',
+        'Never imply a fairness or odds change; state facts the user can verify themselves.'
+      ],
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

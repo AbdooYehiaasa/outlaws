@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="outlaws.js"></script>
+<style>
+  .nt-s { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:18px; align-items:start; }
+  @media (max-width:980px){ .nt-s{grid-template-columns:minmax(0,1fr)!important} }
+</style>
+</helmet>
+
+<div data-page="notifications" style="min-height:100vh;background:#08060a;color:#F4EDE6;position:relative;overflow-x:hidden;">
+  <header class="ol-hd">
+    <div class="ol-hd-in">
+      <button class="ol-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="ol-menu">☰</button>
+      <a href="index.html" class="ol-brand"><span class="ol-diamond"><i></i></span><span class="ol-mark"><b>THE</b><s>OUTLAWS</s></span></a>
+      <nav class="ol-nav" aria-label="Primary">
+        <a href="index.html">Home</a><a href="discover.dc.html">Discover</a><a href="projects.dc.html">Projects</a><a href="myraffles.dc.html">My Raffles</a><a href="communities.dc.html">Communities</a><a href="calendar.dc.html">Calendar</a><a href="premium.dc.html">Premium</a>
+      </nav>
+      <div class="ol-srch" role="button" tabindex="0" aria-label="Search"><span>⌕</span><em>Search raffles, projects…</em><kbd>⌘K</kbd></div>
+      <button class="ol-bell" type="button" aria-label="Notifications">◵<i></i></button>
+      <a href="premium.dc.html" class="ol-sub">Subscribe</a>
+      <a href="profile.dc.html" class="ol-user"><i>A</i><s>arc_director</s></a>
+    </div>
+    <div class="ol-hairline"></div>
+  </header>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:32px 34px 0;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-bottom:22px;">
+      <div style="min-width:0;">
+        <h1 style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:clamp(26px,3vw,36px);letter-spacing:-.01em;margin:0 0 11px;">Notifications</h1>
+        <p style="font-size:14.5px;line-height:1.55;color:#9B8F96;max-width:620px;margin:0;text-wrap:pretty;">Every event the platform raises for you, and the channels each one is delivered on.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button onClick="{{ markAll }}" style="min-height:42px;padding:11px 16px;font-size:13.5px;font-weight:600;color:#DCD2D6;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;cursor:pointer;">Mark all read</button>
+        <button onClick="{{ goPrefs }}" style="min-height:42px;padding:11px 18px;font-size:13.5px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:10px;cursor:pointer;">Preferences</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.pick }}" style="min-height:38px;padding:10px 14px;font-size:13.5px;font-weight:600;color:{{ t.ink }};background:{{ t.bg }};border:1px solid {{ t.border }};border-radius:9px;cursor:pointer;white-space:nowrap;">{{ t.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="position:relative;z-index:1;max-width:min(1640px,94vw);margin:0 auto;padding:0 34px 44px;">
+    <sc-if value="{{ isFeed }}" hint-placeholder-val="{{ true }}">
+      <div class="nt-s">
+        <div>
+          <div style="display:flex;gap:5px;padding:5px;border:1px solid rgba(255,255,255,.09);border-radius:10px;flex-wrap:wrap;margin-bottom:16px;">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+              <button onClick="{{ c.pick }}" style="min-height:32px;padding:8px 13px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.09em;color:{{ c.ink }};background:{{ c.bg }};border:none;border-radius:7px;cursor:pointer;">{{ c.label }}</button>
+            </sc-for>
+          </div>
+          <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:hidden;">
+            <sc-for list="{{ feed }}" as="n" hint-placeholder-count="9">
+              <button onClick="{{ n.go }}" style="display:flex;width:100%;text-align:left;align-items:flex-start;gap:14px;padding:16px 19px;border:0;border-bottom:1px solid rgba(255,255,255,.05);background:{{ n.rowBg }};cursor:pointer;" style-hover="background:rgba(255,106,0,.05)">
+                <span style="width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:9px;background:{{ n.iconBg }};color:{{ n.iconInk }};font-size:12px;">{{ n.icon }}</span>
+                <span style="flex:1;min-width:0;">
+                  <span style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                    <span style="font-size:14px;font-weight:600;color:#F4EDE6;">{{ n.title }}</span>
+                    <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.11em;color:{{ n.tagInk }};padding:3px 7px;border:1px solid {{ n.tagBorder }};border-radius:4px;">{{ n.tag }}</span>
+                    <sc-if value="{{ n.unread }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:99px;background:#FF6A00;"></span></sc-if>
+                  </span>
+                  <span style="display:block;font-size:13px;line-height:1.55;color:#9B8F96;margin-top:7px;">{{ n.body }}</span>
+                  <span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#4E454C;margin-top:7px;">{{ n.meta }}</span>
+                </span>
+                <span style="flex:none;font-family:'JetBrains Mono',monospace;font-size:10px;color:{{ n.iconInk }};">{{ n.cta }}</span>
+              </button>
+            </sc-for>
+            <sc-if value="{{ feedEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:44px 22px;text-align:center;">
+                <div style="font-size:15px;font-weight:600;color:#DCD2D6;margin-bottom:9px;">Nothing here</div>
+                <p style="font-size:13.5px;color:#8C8189;margin:0;">No notifications match this filter.</p>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;">
+            <sc-for list="{{ counts }}" as="c" hint-placeholder-count="4">
+              <div style="background:#0b080d;padding:16px 15px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:{{ c.ink }};">{{ c.v }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;color:#6E646C;margin-top:6px;">{{ c.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,106,0,.26);border-radius:16px;background:rgba(255,106,0,.05);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#FF8A33;margin-bottom:12px;">ACTION REQUIRED</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#C6BBC1;margin:0 0 14px;">You have 1 unclaimed allocation and 1 provider link expiring. Both block future entries if ignored.</p>
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <a href="wins.dc.html" style="display:flex;align-items:center;justify-content:center;min-height:42px;padding:12px;font-size:13px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border-radius:10px;">Claim allocation</a>
+              <a href="settings.dc.html#connections" style="display:flex;align-items:center;justify-content:center;min-height:42px;padding:12px;font-size:13px;font-weight:600;color:#DCD2D6;border:1px solid rgba(255,255,255,.14);border-radius:10px;">Reconnect Discord</a>
+            </div>
+          </div>
+          <div style="padding:19px;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:#6E646C;margin-bottom:12px;">DEEP LINKS</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#8C8189;margin:0;">Every notification opens the exact raffle, community or win it refers to — the same link works from Discord, email and, in the mobile phase, a push notification.</p>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPrefs }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:18px;">
+        <h2 style="font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:24px;margin:0 0 9px;">Delivery preferences</h2>
+        <p style="font-size:14px;line-height:1.55;color:#9B8F96;max-width:660px;margin:0;text-wrap:pretty;">Choose the channel for each event. Discord DM and Telegram require a linked account; push arrives with the mobile app in the final phase.</p>
+      </div>
+      <div style="border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.016);overflow:auto;">
+        <div style="min-width:700px;">
+          <div style="display:grid;grid-template-columns:minmax(210px,1.6fr) repeat(5,minmax(80px,1fr));gap:10px;padding:13px 19px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:#4E454C;">EVENT</div>
+            <sc-for list="{{ channels }}" as="c" hint-placeholder-count="5">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;text-align:center;">{{ c }}</div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ prefRows }}" as="r" hint-placeholder-count="10">
+            <div style="display:grid;grid-template-columns:minmax(210px,1.6fr) repeat(5,minmax(80px,1fr));gap:10px;padding:12px 19px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;">
+              <div>
+                <div style="font-size:13.5px;color:#DCD2D6;">{{ r.label }}</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:#4E454C;margin-top:4px;">{{ r.key }}</div>
+              </div>
+              <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="5">
+                <div style="display:flex;justify-content:center;">
+                  <button onClick="{{ c.toggle }}" title="{{ c.title }}" style="width:34px;height:34px;display:grid;place-items:center;border:1px solid {{ c.border }};border-radius:9px;background:{{ c.bg }};color:{{ c.ink }};font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;">{{ c.mark }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;gap:11px;flex-wrap:wrap;margin-top:18px;">
+        <button onClick="{{ savePrefs }}" style="min-height:46px;padding:13px 22px;font-size:14px;font-weight:700;color:#08060a;background:linear-gradient(180deg,#FFA047,#FF6A00);border:none;border-radius:11px;cursor:pointer;">Save preferences</button>
+        <button onClick="{{ quiet }}" style="min-height:46px;padding:13px 20px;font-size:14px;font-weight:600;color:{{ quietInk }};background:{{ quietBg }};border:1px solid {{ quietBorder }};border-radius:11px;cursor:pointer;">{{ quietLabel }}</button>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;color:#00D6B4;margin-top:14px;">{{ toast }}</div>
+    </sc-if>
+  </section>
+
+  <footer class="ol-ft">
+    <div class="ol-ft-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;">
+          <span style="width:24px;height:24px;display:grid;place-items:center;border:1.5px solid #FF6A00;transform:rotate(45deg);"><span style="width:6px;height:6px;background:#FF6A00;"></span></span>
+          <span style="font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;letter-spacing:.16em;">THE OUTLAWS</span>
+        </div>
+        <p style="font-size:13.5px;line-height:1.6;color:#6E646C;max-width:320px;margin:0;">One event, one record, delivered on the channels you chose.</p>
+      </div>
+      <div><div class="ol-ft-t">ACCOUNT</div><div class="ol-ft-col"><a href="myraffles.dc.html">My Raffles</a><a href="wins.dc.html">My Wins</a><a href="messages.dc.html">Messages</a><a href="settings.dc.html">Account settings</a></div></div>
+      <div><div class="ol-ft-t">MANAGE</div><div class="ol-ft-col"><a href="community-admin.dc.html">Community console</a><a href="raffle-admin.dc.html">Raffle manager</a><a href="autoregister.dc.html">Auto-Register</a></div></div>
+      <div><div class="ol-ft-t">VERIFICATION</div><div class="ol-ft-col"><a href="verify.dc.html">Check eligibility</a><a href="raffle-admin.dc.html#fairness">Fairness records</a></div></div>
+      <div><div class="ol-ft-t">SUPPORT</div><div class="ol-ft-col"><a href="support.dc.html">Help center</a><a href="requests.dc.html">Support requests</a><a href="sitemap.dc.html">Page map</a></div></div>
+    </div>
+    <div class="ol-ft-bot">
+      <span>© 2026 THE OUTLAWS · NON-CUSTODIAL · NO PRIVATE KEYS STORED</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:5px;height:5px;border-radius:99px;background:#00D6B4;"></span>ALL SYSTEMS OPERATIONAL</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+const FEED = [
+  ['Winner', 'You won Ember Final Draw', 'One allocation on Ember Set. Claim within 48h or the spot is rerolled to another entrant.', 'ARCFORGE · 2H AGO · DEEP LINK TO WIN', 'CLAIM', 'wins.dc.html', true],
+  ['Action', 'Discord link expires in 6 days', 'Renew the connection or role-based requirements will start failing on your entries.', 'ACCOUNT · 5H AGO', 'FIX', 'settings.dc.html#connections', true],
+  ['Raffle', 'Genesis Founders Pass ends in 14 hours', 'You are entered with weight 3.0×. Nothing else is required from you.', 'ARC GENESIS · 6H AGO', 'VIEW', 'raffle.dc.html', true],
+  ['Entry', 'Entry confirmed · Relics Early Access', 'All four requirement blocks passed. Weight 2.0× from your Arc Genesis holdings.', 'ARCFORGE · 1D AGO', 'VIEW', 'raffle.dc.html', false],
+  ['Auto', 'Auto-Register entered 1 raffle for you', 'Genesis Founders Pass · entered 0.9s after open with your normal weight.', 'AUTO-REGISTER · 1D AGO', 'LOG', 'autoregister.dc.html#runs', false],
+  ['Raffle', 'Forge Pass Allowlist opens 22 Sep', 'Application mode — written answers and manual review, so Auto-Register will skip it.', 'FORGE PASS · 2D AGO', 'VIEW', 'raffle.dc.html', false],
+  ['Entry', 'Entry failed · Cipher Drop', 'X follow requirement could not be verified: the linked account token had expired.', 'CIPHER · 3D AGO', 'FIX', 'settings.dc.html#connections', false],
+  ['Community', 'ARCforge published a rule change', 'Manual winner review is now enabled for raffles created after 12 Sep.', 'ARCFORGE · 4D AGO', 'VIEW', 'community.dc.html', false],
+  ['Winner', 'Reroll · you received a rerolled allocation', 'Position 04 of Ember Final Draw was rerolled after the claim window expired.', 'ARCFORGE · 5D AGO', 'VIEW', 'wins.dc.html', false],
+  ['Support', 'Support replied to request #4821', 'Your wallet verification question was answered by the platform team.', 'SUPPORT · 6D AGO', 'OPEN', 'requests.dc.html', false]
+];
+const EVENTS = [
+  ['raffle_opened', 'Raffle opened'], ['raffle_ending', 'Raffle ending soon'],
+  ['entry_result', 'Entry success / failed'], ['winner_announced', 'Winner announced'],
+  ['reroll', 'Reroll affecting me'], ['mint_reminder', 'Mint reminder'],
+  ['autoreg_result', 'Auto-Register result'], ['oauth_expired', 'Provider link expired'],
+  ['community_post', 'Community announcement'], ['support_reply', 'Support reply']
+];
+const CHAN = ['IN-APP', 'EMAIL', 'DISCORD', 'TELEGRAM', 'PUSH'];
+
+class Component extends DCLogic {
+  state = {
+    tab: 'feed', chip: 'All', toast: '', read: [], quiet: false,
+    prefs: EVENTS.reduce((a, e) => (a[e[0]] = [true, e[0] !== 'raffle_opened', false, false, false], a), {})
+  };
+
+  componentDidMount() {
+    if ((location.hash || '') === '#preferences') this.setState({ tab: 'prefs' });
+  }
+  flash(m) { this.setState({ toast: m }); }
+
+  renderVals() {
+    const S = this.state;
+    const feed = FEED.filter(f => S.chip === 'All' || (S.chip === 'Unread' ? f[6] && S.read.indexOf(f[1]) < 0 : f[0] === S.chip));
+    const tone = t => t === 'Winner' ? ['#00D6B4', 'rgba(0,214,180,.12)', '◆', 'rgba(0,214,180,.3)']
+      : t === 'Action' ? ['#FF3C00', 'rgba(255,60,0,.12)', '!', 'rgba(255,60,0,.3)']
+      : t === 'Entry' ? ['#FFB061', 'rgba(255,106,0,.1)', '◈', 'rgba(255,106,0,.3)']
+      : t === 'Auto' ? ['#5ef2d6', 'rgba(0,214,180,.09)', '◵', 'rgba(0,214,180,.26)']
+      : ['#8C8189', 'rgba(255,255,255,.05)', '◉', 'rgba(255,255,255,.12)'];
+
+    return {
+      tabs: [['feed', 'Inbox'], ['prefs', 'Preferences']].map(t => ({
+        label: t[1], pick: () => this.setState({ tab: t[0], toast: '' }),
+        ink: t[0] === S.tab ? '#F4EDE6' : '#8C8189',
+        bg: t[0] === S.tab ? 'rgba(255,106,0,.12)' : 'transparent',
+        border: t[0] === S.tab ? 'rgba(255,106,0,.4)' : 'rgba(255,255,255,.08)'
+      })),
+      isFeed: S.tab === 'feed', isPrefs: S.tab === 'prefs',
+      goPrefs: () => this.setState({ tab: 'prefs' }),
+      markAll: () => this.setState({ read: FEED.map(f => f[1]), toast: 'All notifications marked read.' }),
+      chips: ['All', 'Unread', 'Winner', 'Entry', 'Raffle', 'Action', 'Community'].map(c => ({
+        label: c.toUpperCase(), ink: S.chip === c ? '#08060a' : '#8C8189',
+        bg: S.chip === c ? '#FF6A00' : 'transparent', pick: () => this.setState({ chip: c })
+      })),
+      feed: feed.map(f => {
+        const t = tone(f[0]);
+        const unread = f[6] && S.read.indexOf(f[1]) < 0;
+        return {
+          title: f[1], body: f[2], meta: f[3], cta: f[4], tag: f[0].toUpperCase(),
+          icon: t[2], iconInk: t[0], iconBg: t[1], tagInk: t[0], tagBorder: t[3],
+          unread: unread, rowBg: unread ? 'rgba(255,106,0,.03)' : 'transparent',
+          go: () => { this.setState(st => ({ read: st.read.concat([f[1]]) })); location.href = f[5]; }
+        };
+      }),
+      feedEmpty: feed.length === 0,
+      counts: [
+        { v: FEED.filter(f => f[6] && S.read.indexOf(f[1]) < 0).length, l: 'UNREAD', ink: '#FF8A33' },
+        { v: '2', l: 'NEED ACTION', ink: '#FF6A6A' },
+        { v: '9', l: 'WINS TOTAL', ink: '#00D6B4' },
+        { v: '71', l: 'AUTO ENTRIES', ink: '#F4EDE6' }
+      ],
+
+      channels: CHAN,
+      prefRows: EVENTS.map(e => ({
+        label: e[1], key: e[0],
+        cells: CHAN.map((c, ci) => {
+          const on = (S.prefs[e[0]] || [])[ci];
+          return {
+            mark: on ? '✓' : '·', title: c + (ci === 4 ? ' · mobile phase' : ci > 1 ? ' · requires linked account' : ''),
+            ink: on ? '#00D6B4' : '#4E454C',
+            bg: on ? 'rgba(0,214,180,.08)' : 'rgba(255,255,255,.02)',
+            border: on ? 'rgba(0,214,180,.3)' : 'rgba(255,255,255,.08)',
+            toggle: () => this.setState(st => {
+              const row = (st.prefs[e[0]] || []).slice(); row[ci] = !row[ci];
+              return { prefs: Object.assign({}, st.prefs, { [e[0]]: row }), toast: '' };
+            })
+          };
+        })
+      })),
+      savePrefs: () => this.flash('Preferences saved · applies to every community you follow.'),
+      quietLabel: S.quiet ? 'Quiet hours on · 23:00–08:00' : 'Enable quiet hours',
+      quietInk: S.quiet ? '#08060a' : '#DCD2D6',
+      quietBg: S.quiet ? 'linear-gradient(180deg,#5ef2d6,#00A88F)' : 'transparent',
+      quietBorder: S.quiet ? 'transparent' : 'rgba(255,255,255,.15)',
+      quiet: () => this.setState(st => ({ quiet: !st.quiet, toast: st.quiet ? 'Quiet hours off.' : 'Quiet hours on — urgent win and claim alerts still come through.' })),
+      toast: S.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
